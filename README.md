@@ -1,6 +1,6 @@
 # Judul Tugas Akhir Anda
 
-Nama Anda - Nomor (NPM) Anda - Jurusan Anda Universitas Indonesia (Tingkatan, Tahun)
+Carles Octavianus - 2006568613 - Matematika Unversitas Indonesia (S1, 2023)
 
 ----------
 
