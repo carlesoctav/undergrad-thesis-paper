@@ -1,0 +1,3 @@
+ - [ ] coba run experiment pakai yang gw udah latih.
+ - [ ] benerin dataloader di pytorch
+ - [ ] coba training modelnya, isih 
