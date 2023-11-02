@@ -13,3 +13,5 @@
 **/*.synctex(busy)
 **/*.fdb_latexmk
 **/*.fls
+
+refs

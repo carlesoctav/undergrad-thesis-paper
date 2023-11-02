@@ -8,8 +8,10 @@ Bab ini membahas mengenai proses fine tuning model Bidirectional Encoder Represe
 \section{Spesifikasi Mesin dan Perangkat Lunak}
 \label{sec:spesifikasi}
 
-\todo{
-    banyak sih :'D
+\noindent\todo{
+    banyak sih :'D,
+    tambahin tabel isi qid, pid, label buat mmarco train
+    tambahin tabel isi qid, pid, label buat miracl test, tunjukkin ini lebih dense dari mrtydi dan mmarco dev/ mrtydi test
 }
 
 Proses fine tuning model BERT untuk pemeringkatan teks dilakukan menggunakan mesin dan perangkat lunak yang tertera pada  berikut.
@@ -36,10 +38,13 @@ menunjukkan tahapan simulasi yang dilakukan dalam penelitian ini.
 \label{sec:datasetuji}
 
 \subsubsection{Mmarco Indonesia DEV Set}
+\label{sec:mmarcodev}
 
 \subsubsection{Mrtydi Indonesia TEST Set}
+\label{sec:mrtyditest}
 
 \subsubsection{Miracl Indonesia TEST Set}
+\label{sec:miracltest}
 
 \section{Metriks Evaluasi}
 \label{sec:metriksbab4}
@@ -52,7 +57,7 @@ menunjukkan tahapan simulasi yang dilakukan dalam penelitian ini.
 
 \subsection{$\text{IndoBERT}_{\text{DOT}}$}
 
-\subsection{$\text{IndoBERT}_{\text{DOT}}$+Hardnegs}
+\subsection{$\text{IndoBERT}_{\text{DOThardnegs}}$}
 
 \subsection{$\text{IndoBERT}_{\text{DOTMargin}}$}
 
@@ -63,15 +68,157 @@ menunjukkan tahapan simulasi yang dilakukan dalam penelitian ini.
 \label{sec:hasil}
 
 \subsection{Evaluasi BM25}
+\label{sec:resultbm25}
+    
+\begin{table}[!ht]
+    \centering
+    \caption{Caption}
+    \label{}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            
+    \end{tabular}
+    
+    
+\end{table}
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{MEAN}}$}
+\label{sec:resultindobertmean}
+
+\begin{table}[!ht]
+    \centering
+    \caption{Caption}
+    \label{tab:indobertmean}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & \b{.114} & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{MEAN}}$ & .000 & .000 & .000 & .000 & .000 & .000\\ \hline
+    \end{tabular}
+\end{table}
+
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{CAT}}$}
+\label{sec:resultindobertcat}
+
+\begin{table}
+    \centering
+    \caption{Caption}
+    \label{tab:indobertcat}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{CAT}}$ & .181 & .642 & .447 & .858 & .455 & .971\\ \hline
+            
+    \end{tabular}
+    
+    \label{tab:my_label}
+\end{table}
+
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{DOT}}$}
+\label{sec:resultindobertdot}
 
-\subsection{Evaluasi $\text{IndoBERT}_{\text{DOTHardnegs}}$}
+\begin{table}
+    \centering
+    \caption{Caption}
+    \label{tab:indobertdot}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{DOT}}$ & .192 & .847 & .378 & .936 & .355 & .920\\ \hline
+    \end{tabular}
+    
+\end{table}
+
+\subsection{Evaluasi $\text{IndoBERT}_{\text{DOThardnegs}}$}
+\label{sec:resultindobertdothardnegs}
+
+\begin{table}
+    \centering
+    \caption{Caption}
+    \label{tab:indobertdothardnegs}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{DOThardnegs}}$ & .232 & .847 & .471 & .921 & .397 & .898\\ \hline
+    \end{tabular}
+\end{table}
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{DOTMargin}}$}
+\label{sec:resultindobertdotmargin}
+
+\begin{table}
+    \centering
+    \caption{Caption}
+    \label{tab:indobertdotmargin}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{DOTMargin}}$ & .207 & .799 & .446 & .929 & .387 & .899\\ \hline            
+    \end{tabular}
+\end{table}
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{KD}}$}
+\label{sec:resultindobertkd}
+
+\begin{table}
+    \centering
+    \caption{Caption}
+    \label{tab:indobertkd}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{KD}}$ & - & .803 & .300 & .761 & - & -\\ \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Perbandingan Hasil Evaluasi}
+\label{sec:perbandinganhasil}
+
+\begin{table}
+    \centering
+    \caption{Caption}
+    \label{tab:evaluasisemuamodel}
+    \begin{tabular}{|c|cc|cc|cc|} \hline 
+         Model&  \multicolumn{2}{|c|}{Mmarco Dev}& 
+         \multicolumn{2}{|c|}{MrTyDi Test}&  \multicolumn{2}{|c|}{Miracl Dev}\\ \hline 
+            & MRR@10 & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K\\ \hline 
+            BM25 (Elastic Search) & .114 & .642 & .279 & .858 & .391 & .971\\ \hline
+            $\text{IndoBERT}_{\text{MEAN}}$ & .000 & .000 & .000 & .000 & .000 & .000\\ \hline
+            $\text{IndoBERT}_{\text{CAT}}$ & .181 & .642 & .447 & .858 & .455 & .971\\ \hline
+            $\text{IndoBERT}_{\text{DOT}}$ & .192 & .847 & .378 & .936 & .355 & .920\\ \hline
+            $\text{IndoBERT}_{\text{DOTdnegs}}$ & .232 & .847 & .471 & .921 & .397 & .898\\ \hline
+            $\text{IndoBERT}_{\text{DOTMargin}}$ & .207 & .799 & .446 & .929 & .387 & .899\\ \hline
+            $\text{IndoBERT}_{\text{KD}}$ & - & .803 & .300 & .761 & - & -\\ \hline
+    \end{tabular}
+    
+\end{table}
+
+
+\begin{table}[!ht]
+    \centering
+    \caption{Caption}
+    \label{tab:latensimemori}
+    \begin{tabular}{|l|l|l|}
+    \hline
+    Model                                   & Latensi (ms) & Memori(MB)   \\ \hline
+    $\text{BM25 (Elastic Search)}$           &  6.55        &  800         \\ \hline
+    $\text{IndoBERT}_{\text{DOT}}$           &  9.9         &   3072        \\ \hline
+    $\text{IndoBERT}_{\text{CAT}}$           &  242         &   800        \\ \hline
+    \end{tabular}
+\end{table}
