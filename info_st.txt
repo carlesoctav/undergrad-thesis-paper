@@ -1,0 +1,5 @@
+This model utilizes a newer version of Sentence Transformers. If you're having trouble using this model, please try installing the latest version of Sentence Transformers with:
+
+```bash
+pip install --upgrade --force-reinstall --no-deps git+https://github.com/UKPLab/sentence-transformers.git
+```

@@ -1,8 +1,6 @@
 \chapter{\babTiga}
 \label{bab:3}
 
-
-
 \noindent\todo{
 	jabarin sih isinya mau gmna
 }
@@ -51,20 +49,35 @@ Mekanisme \f{attention} menggambarkan rata-rata terbobot dari barisan elemen den
 	\text{Output} &= \sum_{i=1} \alpha_i \mathbf{v}_i \label{eq:attentionoutput}
 \end{align}
 
-Biasanya, hasil fungsi skor diterapkan pada fungsi softmax untuk mendapatkan bobot yang dinormalisasi. Bobot tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari nilai. \equ~\ref{eq:attentionweight} menujukkan bagaimana bobot dihitung, dan \equ~\ref{eq:attentionoutput} menunjukkan proses perhitungan rata-rata terbobot.
+Biasanya, hasil fungsi skor diterapkan fungsi \f{softmax} untuk mendapatkan bobot yang dinormalisasi, $\alpha_i \in [0, 1], \sum_{i=1} \alpha_i = 1$. Bobot tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari vektor nilai. \equ~\ref{eq:attentionweight} menujukkan bagaimana bobot dihitung, dan \equ~\ref{eq:attentionoutput} menunjukkan proses perhitungan rata-rata terbobot.
+
+\subsubsection{\f{Scaled Dot-Product Attention}}
+
+$\begin{psmallmatrix}
+	\mathbf{q}_1 \\
+	\vdots \\
+	\mathbf{q}_m
+\end{psmallmatrix}
+$
+
+\subsubsection{\f{Multi-Head Attention}}
 
 \subsubsection{\f{Self-Attention}}
 
-
-\subsubsection{\f{Multi-Head Attention}}
 \subsection{\f{Positional Encoding}}
+
 \subsection{\f{Feed Forward Network}}
+
+
 \subsection{Arsitektur \f{Transformer} Enkoder}
 
 \section{\f{Bidirectional Encoder Representation from Transformer (BERT)}}
+
 \subsection{model pralatih BERT}
 \subsubsection{Tugas \f{Masked Language Model (MLM)}}
+
 \subsubsection{Tugas \f{Next Sentence Prediction (NSP)}}
+
 \subsection{IndoBERT}
 \section{Arsitektur \bertcat~Untuk Pemeringkatan Teks}
 \section{Arsitektur \bertdot~Untuk Pemeringkatan Teks}

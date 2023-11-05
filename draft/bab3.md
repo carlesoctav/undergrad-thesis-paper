@@ -1,3 +1,5 @@
+# transformers
+<!-- verdict good -->
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{assets/pics/transformers_seq.png}
@@ -19,18 +21,19 @@ Terdapat tiga jenis \f{attention} yang digunakan dalam model \f{transformers} \c
 
 
 # ATTENTION
+<!-- verdict good -->
 
-Mekanisme \f{attention} menggambarkan rata-rata terbobot dari barisan elemen dengan bobot yang dihitung secara dinamis berdasarkan kueri masukan dan Kunci elemen. Tujuannya adalah untuk mengambil rata-rata dari fitur beberapa elemen. Namun, daripada memberi bobot setiap elemen secara merata, kita ingin memberi bobot tergantung pada "nilai" elemen tersebut. Dengan kata lain, kita ingin secara dinamis memutuskan elemen masukan mana yang ingin kita perhatikan lebih dari yang lain. Mekanisme \f{attention} biasanya memiliki empat bagian yang perlu ditentukan:
+Mekanisme \f{attention} menggambarkan rata-rata terbobot dari barisan elemen dengan bobot yang dihitung secara dinamis berdasarkan kueri dan kunci elemen. Tujuannya adalah untuk mengambil rata-rata dari fitur atau nilai dari beberapa elemen dalam barisan tersebut. Namun, daripada memberi bobot setiap elemen secara merata, pemberian bobot dilakukan secara dinamis bergantung pada "nilai" elemen tersebut. Dengan kata lain, mekanisme \f{attention} secara dinamis memutuskan elemen tertentu yang ingin diperhatikan lebih dari elemen lainnya. Mekanisme \f{attention} biasanya memiliki empat bagian yang perlu ditentukan:
 
-1. vektor kueri ($\mathbf{q}$): Kueri adalah vektor yang merepresentasikan apa yang ingin dicari dalam barisan elemen.
+1. vektor kueri ($\mathbf{q}$). Vektor kueri yang merepresentasikan hal yang ingin dicari dalam barisan elemen.
 
-2. vektor kunci ($\mathbf{k}$): Untuk setiap elemen dalam barisan, terdapat vektor yang disebut kunci. Vektor fitur ini secara kasar merepresentasikan apa yang ditawarkan elemen tersebut, atau kapan elemen tersebut menjadi penting. Kunci harus dirancang sedemikian rupa sehingga kita dapat mengidentifikasi elemen yang ingin kita perhatikan berdasarkan kueri.
+2. vektor kunci ($\mathbf{k}$). Untuk setiap elemen dalam barisan, terdapat vektor kunci. Vektor kunci merepresentasikan apa yang ditawarkan elemen tersebut, atau kapan elemen tersebut menjadi penting.Vektor kunci harus dirancang sedemikian rupa sehingga mekanisme \f{attention} dapat mengidentifikasi elemen yang ingin diperhatikan berdasarkan vektor kueri-nya.
 
-3. vektor nilai ($\mathbf{v}$): Untuk setiap elemen dalam barisan, terdapat vektor yang disebut nilai. vektor nilai ini yang ingin dirata-ratakan.
+3. vektor nilai ($\mathbf{v}$). Untuk setiap elemen dalam barisan, terdapat vektor nilai. Vektor nilai merupakan fitur yang ingin diambil rata-rata terbobotnya.
 
-4. fungsi skor ($f_{\text{attn}}(\mathbf{q}, \mathbf{k})$): Fungsi skor memberikan bobot-bobot pada pada nilai berdasarkan kueri dan kunci. Fungsi skor dapat dihitung dengan berbagai cara, seperti cara sederhana berupa perkalian skalar atau jarak kosinus, dan dapat juga dihitung menggunakan fungsi skor yang lebih kompleks seperti \f{multi-layer perceptron} (MLP).
+4. fungsi skor ($f_{\text{attn}}(\mathbf{q}, \mathbf{k})$. Fungsi skor memberikan bobot-bobot pada pada nilai berdasarkan kueri dan kunci. Keluaran dari fungsi skor disebut sebagai nilai atensi. Fungsi skor biasanya dihitung dengan metrik-metrik yang menunjukkan similaritas, seperti perkalian skalar atau jarak kosinus. Selain itu, fungsi skor juga dapat menggunakan \f{neural network} untuk menghitung nilai atensi.
 
-Biasanya, hasil fungsi skor diterapkan pada fungsi softmax untuk mendapatkan bobot yang dinormalisasi. Bobot tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari nilai
+Biasanya, hasil fungsi skor diterapkan pada fungsi \f{softmax} untuk mendapatkan bobot yang dinormalisasi. Bobot tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari nilai. 
 
 $$
 \begin{aligned}
@@ -41,38 +44,57 @@ $$
 $$
 
 # scaled dot product attention
-jelek perlu diubah
-
-Mekanimse \f{attention} yang diterapkan pada transformer disebut sebagai \f{self-attention}. Setiap elemen pada barisan mempunyai kueri, kunci, dan nilai, berbeda dengan mekanisme \f{attention} lainnya yang hanya memiliki nilai dan kunci. Untuk setiap elemen pada barisan, \f{attention layer} akan menggunakan kueri-nya dan semua kunci pada elemen yang lain untuk menghasilkan vektor keluaran yang menjadi representasi kontekstual dari elemen tersebut. Implementasi \f{self-attention} pada \f{transformer} tersebut disebut sebagai \f{scaled dot product attention}.
-
-Misalkan $\mathbf{X}\in \mathbb{R}^{n\times d}$ adalah barisan $n$ elemen dengan dimensi $d$. Untuk setiap elemen pada barisan, kita akan menghasilkan vektor keluaran $\mathbf{Y}\in \mathbb{R}^{n\times d_v}$ yang merupakan representasi kontekstual dari elemen tersebut. Untuk menghasilkan vektor keluaran tersebut, kita akan menggunakan kueri $\mathbf{Q}\in \mathbb{R}^{n\times d_k}$, kunci $\mathbf{K}\in \mathbb{R}^{n\times d_k}$, dan nilai $\mathbf{V}\in \mathbb{R}^{n\times d_v}$ yang di hitung dengan
+<!-- verdict bad -->
 
 $$
-\begin{aligned}
-\mathbf{Q} &= \mathbf{X} \mathbf{W}^Q \\
-\mathbf{K} &= \mathbf{X} \mathbf{W}^K \\
-\mathbf{V} &= \mathbf{X} \mathbf{W}^V,
-\end{aligned}
+\mathbf{X} = \begin{smallmatrix}
+\mathbf{x}_1 \\
+\vdots \\
+\mathbf{x}_n
+\end{smallmatrix}
+\in \mathbb{R}^{n \times d_k}
 $$
 
-Dengan $\mathbf{W}^&Q\in \mathbb{R}^{d\times d_k}$, $\mathbf{W}^K\in \mathbb{R}^{d\times d_k}$, dan $\mathbf{W}^V\in \mathbb{R}^{d\times d_v}$ adalah matriks bobot yang merupakan paramater. Pada \f{scaled dot product attention}, fungsi skor dihitung dengan:
-
-$$ 
+Mekanimse \f{attention} yang diterapkan pada transformer disebut sebagai \f{scaled dot product attention}.
+\f{Scaled dot product attention} menggunakan fungsi skor berupa hasil kali skalar antara kueri dan kunci yang dibagi dengan $\sqrt{d_k}$, dimana $d_k$ merupakan dimensi dari vektor kunci. Untuk Kumpulan vektor kueri $\mathbf{Q}= 
+\begin{smallmatrix}
+\mathbf{q}_1 \\
+\vdots \\
+\mathbf{q}_m
+\end{smallmatrix}
+\in \mathbb{R}^{m \times d_k}$ dan kumpulan vektor kunci $K =
+\begin{smallmatrix}
+\mathbf{k}_1 \\
+\vdots \\
+\mathbf{k}_T
+\end{smallmatrix}
+\in \mathbb{R}^{n \times d_k}$,
+$
+dengan $n,m,d_k$ merupakan banyaknya elemen dalam barisan, banyaknya kueri, dan dimensi dari vektor kunci secara berturut-turut, \f{Scaled dot product attention} dapat dihitung sebagai berikut:
+j
+$$
 \begin{equation}
 \mathbf{Y} = \text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right)\mathbf{V}
 \end{equation}
 $$
 
+Perkalian matriks $\mathbf{Q}\mathbf{K}^T$ menghasilkan matriks $\mathbf{A} \in \mathbb{R}^{m \times n}$, dimana elemen $a_{ij}$ merupakan hasil perkalian skalar antara $\mathbf{q}_i$ dan $\mathbf{k}_j$. Kemudian, matriks $\mathbf{C}$ dibagi dengan $\sqrt{d_k}$ dan diaplikasikan fungsi \f{softmax} untuk mendapatkan bobot $\alpha_{ij}$ yang dinormalisasi. Bobot tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari nilai $\mathbf{V}$.
 
-<!-- TODO -->
-dari persamaan \todocite, fungsi skor yang digunakan adalah hasil kali skalar antara kueri dan kunci yang dibagi dengan $\sqrt{d_k}$. Pembagian dengan $\sqrt{d_k}$ dilakukan untuk menghindari nilai skor yang terlalu besar atau kecil ketika $d_k$ cukup besar. yang mengakibatkan nilai softmax menjadi sangat kecil.
+Pembagian dengan $\sqrt{d_k}$ dilakukan untuk menjaga variansi dari nilai atensi tetap \f{appropritate}.
+pada subab 2.3 telah dijelaskan bahwa model \f{deep learning} yang baik harus memiliki variansi yang seragam untuk setiap keluaran dari \f{hidden layer}.
+Perkalian skalar antara $\mathbf{q}$ dan $\mathbf{k}$ pada dua buah vektor dengan variansi $\sigma^2$ menghasilkan variansi yang dengan faktor $d_k$ seperti yang ditunjukkan pada persamaan xx.
+$$
+\begin{equation}
+q_i \sim \mathcal{N}\left(0, \sigma^2\right), k_i \sim \mathcal{N}\left(0, \sigma^2\right) \rightarrow \operatorname{Var}\left(\sum_{i=1}^{d_k} q_i \cdot k_i\right)=\sigma^2 (\sigma^2) (d_k) . \quad q_i, k_i \text{ independen}
+\end{equation}
+$$
+
+faktor $d_k$ pada variansi menyebabkan nilai atensi menjadi sangat besar atau sangat kecil. fungsi \f{softmax} yang digunakan untuk mendapatkan bobot yang dinormalisasi akan menghasilkan nilai yang dekat ke 0 di satu sisi dan dekat ke 1 di sisi lainnya. Hal ini menyebabkan gradien ketika proses pelatihan akan dekat ke 0. Akibatnya model tidak dapat belajar dengan baik.
 
 
-$\mathbf{Y}$ Merupakan matriks yang berisi representasi kontekstual dari setiap elemen pada barisan $\mathbf{X}$. Matriks $Y$ dapat menjadi masukan untuk \f{attention layer} selanjutnya.
+faktor tambahan $\sigma^2$ pada persamaan xx tidak menjadi masalah karena biasanya, proses inisialisasi parameter memiliki variansi $\sigma^2 \approx 1$, dengan initilaisasi xavier.
 
-# MULTI-HEAD ATTENTION
-
-
+# Multi-Head Attention
 
 $$
 \begin{aligned}
@@ -84,14 +106,15 @@ $$
 \end{aligned}
 $$
 
-
 ## Pointwise Feed Forward Network
 
 $$
 \begin{align}
-\text{FFN}(\mathbf{X}) &= \max(0, \mathbf{X}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \\
+\text{FFN}(\mathbf{Y}) &= \max(0, \mathbf{Y}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \\
 \end{align}
 $$
 
 # Positional Encoding
+
+
 
