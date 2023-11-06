@@ -92,29 +92,72 @@ $$
 faktor $d_k$ pada variansi menyebabkan nilai atensi menjadi sangat besar atau sangat kecil. fungsi \f{softmax} yang digunakan untuk mendapatkan bobot yang dinormalisasi akan menghasilkan nilai yang dekat ke 0 di satu sisi dan dekat ke 1 di sisi lainnya. Hal ini menyebabkan gradien ketika proses pelatihan akan dekat ke 0. Akibatnya model tidak dapat belajar dengan baik.
 
 
-faktor tambahan $\sigma^2$ pada persamaan xx tidak menjadi masalah karena biasanya, proses inisialisasi parameter memiliki variansi $\sigma^2 \approx 1$, dengan initilaisasi xavier.
+faktor tambahan $\sigma^2$ pada persamaan xx tidak menjadi masalah karena biasanya, variansi dari $\mathbf{q}$ dan $\mathbf{k}$ mendekati 1, $\sigma^2 \approx 1$.
+
 
 # Multi-Head Attention
 
-$$
-\begin{aligned}
-\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O \\
-\text{head}_i &= \text{Attention}(\mathbf{Q_i}, \mathbf{K_i}, \mathbf{V_i}) \\
-\mathbf{Q_i} &= \mathbf{X} \mathbf{W}_i^Q \\
-\mathbf{K_i} &= \mathbf{X} \mathbf{W}_i^K \\
-\mathbf{V_i} &= \mathbf{X} \mathbf{W}_i^V 
-\end{aligned}
-$$
-
-## Pointwise Feed Forward Network
+\f{Multi-Head Attention} adalah arsitektur yang melakukan mekanisme \f{attention} sebanyak $h$ kali. Biasanya, terdapat beberapa aspek pada barisan elemen yang ingin diberikan atensi. Satu buah rata-rata terbobot tidak dapat \f{mengcapture} semua aspek tersebut. 
+Oleh karena itu, \f{multi-head attention} melakukan mekanisme \f{attention} sebanyak $h$ kali dengan menggunakan $h$ buah vektor kueri, $h$ buah vektor kunci, dan $h$ buah vektor nilai yang berbeda. Untuk mendapatkan vektor kueri, kunci, value yang berbeda, petakan $\mathbf{Q}, \mathbf{K}, \mathbf{V}$ ke dalam $h$ buah ruang fitur yang berbeda dengan menggunakan matriks bobot $\mathbf{W}_i^Q, \mathbf{W}_i^K, \in \mathbb{R}^{d_{\text{model}} \times d_k}$, dan $\mathbf{W}_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}$ untuk $i=1,\dots,h$, dengan $d_{\text{model}}$ merupakan banyaknya elemen dalam barisan, $d_k$ merupakan dimensi dari vektor kunci, dan $d_v$ merupakan dimensi dari vektor nilai. Kemudian, setiap hasil mekanisme \f{attention} akan digabungkan menjadi satu barisan dengan menggunakan matriks bobot $\mathbf{W}^O \in \mathbb{R}^{h \cdot d_v \times d_{\text{model}}}$. persamaan xx menunjukkan bagaimana \f{multi-head attention} dihitung.
 
 $$
 \begin{align}
-\text{FFN}(\mathbf{Y}) &= \max(0, \mathbf{Y}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \\
+\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O, \\
+\text{dengan} \quad \text{head}_i &= \text{Attention}(\mathbf{Q}\mathbf{W}_i^Q, \mathbf{K}\mathbf{W}_i^K, \mathbf{V}\mathbf{W}_i^V), \\
+\end{align} \\
+\mathbf{W}_i^Q, \mathbf{W}_i^K, \in \mathbb{R}^{d_{\text{x}} \times d_k}, \quad \mathbf{W}_i^V \in \mathbb{R}^{d_{\text{x}} \times d_v}, \quad \mathbf{W}^O \in \mathbb{R}^{h \cdot d_v \times d_{\text{x}}}
+$$
+
+
+
+
+
+
+## Positin-wise Feed Forward Network
+\f{Position-wise feed forward network} (FFN)adalah \f{feed forward network} yang terdiri dari dua \f{layer linear} dengan fungsi aktivasi \f{ReLU} diantara kedua lapisan tersebut. Persamaan xx menunjukkan bagaimana \f{position-wise feed forward network} dihitung.
+
+
+
+
+
+$$
+\begin{align}
+\text{FFN}(\mathbf{X}) &= \max(0, \mathbf{X}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \\
 \end{align}
 $$
 
+
+
+## Self-attention
+\f{self-attention} adalah mekanisme \f{attention} dimana kueri, kunci, dan nilai berasal dari barisan yang sama.Salah satu penerapan \f{self-attention} yang mudah adalah dengan membiarkan $\mathbf{Q}, \mathbf{K}, \mathbf{V}$ sama dengan $\mathbf{X}$,  dimana $\mathbf{X}$ merupakan barisan elemen masukan. Dengan demikian, \f{self-attention} dapat dihitung sebagai berikut:
+$$
+\begin{align}
+\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O, \\
+\text{dengan} \quad \text{head}_i &= \text{Attention}(\mathbf{X}\mathbf{W}_i^Q, \mathbf{X}\mathbf{W}_i^K, \mathbf{X}\mathbf{W}_i^V), \\
+\end{align} \\
+$$
+
+
 # Positional Encoding
 
+Salah satu permasalahan pengunaan mekanisme \f{attention} untuk pemodelan bahasa adalah mekanisme \f{attention} bersifat permutasi equivarian, artinya, jika kita mengubah urutan dari elemen dalam barisan, maka hasil dari mekanisme \f{attention} tidak akan berubah. Dengan kata lain, mekanisme \f{attention} bekerja pada himpunan $\{\mathbf{x}_1, \dots, \mathbf{x}_n\}$, bukan pada urutan $[\mathbf{x}_1, \dots, \mathbf{x}_n]$. Hal ini menyebabkan model tidak dapat mempelajari pentingnya urutan posisi.
+
+Untuk mengatasi masalah tersebut, \cite{transformerori} menambahkan informasi posisi pada barisan elemen dengan menambahkan vektor posisi pada vektor representasi elemen. Vektor posisi,$\textbf{p} \in \mathbb{R}^{d_{input}}$ tersebut disebut sebagai \f{positional encoding}. Persamaan xx menunjukkan bagaimana \f{positional encoding} dihitung.
+
+
+$$
+\text{PE}_{ \text {pos }, i}= \begin{cases}\sin \left(\frac{p o s}{10000^{i / d_{\text {model }}}}\right) & \text {jika } i \bmod 2=0 ,\\ \cos \left(\frac{p o s}{10000^{(i-1) / d_{\text {model }}}}\right) & \text { lainnya. }\end{cases}
+$$
+
+dimana $pos \leq d_{\text{model}}$ merupakan posisi dari elemen dalam barisan, $i\leq d_x$ merupakan indeks dari vektor posisi, dan $d_{\text{model}}$ merupakan banyaknya elemen dalam barisan.
+
+Jika $\mathbf{X} \in \mathbb{R}^{d_{\text{model}}\times d_x}$ merupakan \f{word embedding} dari barisan elemen masukan, barisan baru yang telah ditambahkan \f{positional encoding} dapat dihitung sebagai berikut:
+$$
+\begin{equation}
+\mathbf{X'} = \mathbf{X} + \text{PE}
+\end{equation}
+$$
+
+## LayerNorm 
 
 
