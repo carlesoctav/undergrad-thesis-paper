@@ -31,7 +31,7 @@ Mekanisme \f{attention} menggambarkan rata-rata terbobot dari barisan elemen den
 
 3. vektor nilai ($\mathbf{v}$). Untuk setiap elemen dalam barisan, terdapat vektor nilai. Vektor nilai merupakan fitur yang ingin diambil rata-rata terbobotnya.
 
-4. fungsi skor ($f_{\text{attn}}(\mathbf{q}, \mathbf{k})$. Fungsi skor memberikan bobot-bobot pada pada nilai berdasarkan kueri dan kunci. Keluaran dari fungsi skor disebut sebagai nilai atensi. Fungsi skor biasanya dihitung dengan metrik-metrik yang menunjukkan similaritas, seperti perkalian skalar atau jarak kosinus. Selain itu, fungsi skor juga dapat menggunakan \f{neural network} untuk menghitung nilai atensi.
+4. fungsi skor ($f_{\text{attn}}(\mathbf{q}, \mathbf{k}))$. Fungsi skor memberikan bobot-bobot pada pada nilai berdasarkan kueri dan kunci. Keluaran dari fungsi skor disebut sebagai nilai atensi. Fungsi skor biasanya dihitung dengan metrik-metrik yang menunjukkan similaritas, seperti perkalian skalar atau jarak kosinus. Selain itu, fungsi skor juga dapat menggunakan \f{neural network} untuk menghitung nilai atensi.
 
 Biasanya, hasil fungsi skor diterapkan pada fungsi \f{softmax} untuk mendapatkan bobot yang dinormalisasi. Bobot tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari nilai. 
 
@@ -113,7 +113,7 @@ $$
 
 
 
-## Positin-wise Feed Forward Network
+# Positin-wise Feed Forward Network
 \f{Position-wise feed forward network} (FFN)adalah \f{feed forward network} yang terdiri dari dua \f{layer linear} dengan fungsi aktivasi \f{ReLU} diantara kedua lapisan tersebut. Persamaan xx menunjukkan bagaimana \f{position-wise feed forward network} dihitung.
 
 
@@ -128,7 +128,7 @@ $$
 
 
 
-## Self-attention
+# Self-attention
 \f{self-attention} adalah mekanisme \f{attention} dimana kueri, kunci, dan nilai berasal dari barisan yang sama.Salah satu penerapan \f{self-attention} yang mudah adalah dengan membiarkan $\mathbf{Q}, \mathbf{K}, \mathbf{V}$ sama dengan $\mathbf{X}$,  dimana $\mathbf{X}$ merupakan barisan elemen masukan. Dengan demikian, \f{self-attention} dapat dihitung sebagai berikut:
 $$
 \begin{align}
@@ -140,7 +140,7 @@ $$
 
 # Positional Encoding
 
-Salah satu permasalahan pengunaan mekanisme \f{attention} untuk pemodelan bahasa adalah mekanisme \f{attention} bersifat permutasi equivarian, artinya, jika kita mengubah urutan dari elemen dalam barisan, maka hasil dari mekanisme \f{attention} tidak akan berubah. Dengan kata lain, mekanisme \f{attention} bekerja pada himpunan $\{\mathbf{x}_1, \dots, \mathbf{x}_n\}$, bukan pada urutan $[\mathbf{x}_1, \dots, \mathbf{x}_n]$. Hal ini menyebabkan model tidak dapat mempelajari pentingnya urutan posisi.
+Salah satu permasalahan pengunaan mekanisme \f{attention} untuk pemodelan bahasa adalah mekanisme \f{attention} bersifat permutasi equivarian, artinya, jika kita mengubah urutan dari elemen dalam barisan, maka hasil dari mekanisme \f{attention} tidak akan berubah. Dengan kata lain, mekanisme \f{attention} bekerja pada himpunan $\{\mathbf{x}_1, \dots, \mathbf{x}_n\}$, bukan pada barisan $[\mathbf{x}_1, \dots, \mathbf{x}_n]$. Hal ini menyebabkan model tidak dapat mempelajari pentingnya urutan posisi.
 
 Untuk mengatasi masalah tersebut, \cite{transformerori} menambahkan informasi posisi pada barisan elemen dengan menambahkan vektor posisi pada vektor representasi elemen. Vektor posisi,$\textbf{p} \in \mathbb{R}^{d_{input}}$ tersebut disebut sebagai \f{positional encoding}. Persamaan xx menunjukkan bagaimana \f{positional encoding} dihitung.
 
@@ -158,6 +158,8 @@ $$
 \end{equation}
 $$
 
-## LayerNorm 
+## Embedding Token
+
+
 
 
