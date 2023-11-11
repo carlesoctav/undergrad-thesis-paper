@@ -237,7 +237,7 @@ $\mathbf{Q} = \mathbf{K} = \mathbf{V} = \mathbf{X}$.
 
 $$
 \begin{align}
-\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O, \\
+\text{MultiHead}_h(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \text{Concat}(\text{head}_1, \dots, \text{head}_h)\mathbf{W}^O, \\
 \text{dengan} \quad \text{head}_i &= \text{Attention}_i(\mathbf{Q}, \mathbf{K}, \mathbf{V}) \\
 \end{align} \\
 
@@ -275,7 +275,7 @@ ini learnable parameter, jadi bisa di initaliaze random terus selama di train ak
 dengan begitu untuk suatu barisan $\mathbf{t} = [t_{i_1}, t_{i_2}, \dots, t_{i_L}]$ kita dapat menghitung representasi vektor dari barisan tersebut dengan
 
 $$
-\mathbf{E} = \begin{bmatrix}
+\text{Embed}(\mathbf{t})= \mathbf{E} = \begin{bmatrix}
 \mathbf{e}_{t_{i_1}} \\
 \mathbf{e}_{t_{i_2}} \\
 \vdots \\
@@ -312,7 +312,7 @@ $$
 $$
 dengan posisi 1 ada di index ke $\text{pos}$.
 $$
-\text{PE} = \begin{bmatrix}
+\text{Pos}(\mathbf{t})= \text{PE} = \begin{bmatrix}
 \text{pe}_1 \\
 \text{pe}_2 \\
 \vdots \\
@@ -325,12 +325,108 @@ $$
 
 \f{Position-wise feed forward network} (FFN)adalah \f{feed forward network} yang terdiri dari dua \f{layer linear} dengan fungsi aktivasi \f{ReLU} diantara kedua lapisan tersebut. Persamaan xx menunjukkan bagaimana \f{position-wise feed forward network} dihitung.
 
-
-
-
-
 $$
 \begin{align}
 \text{FFN}(\mathbf{X}) &= \max(0, \mathbf{X}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \\
 \end{align}
 $$
+
+## Putting it all together
+
+$$
+\begin{align}
+\text{EncoderBlock}(\mathbf{t}) &= \mathbf{Y} \\
+\mathbf{Y} &= \text{FFN}(\text{LayerNorm}(\mathbf{Z})+\mathbf{Z}) \\
+\mathbf{Z} &= \text{LayerNorm}(\text{MultiHead}_h(\mathbf{X}, \mathbf{X}, \mathbf{X}) + \mathbf{X}) \\
+\mathbf{X}  &= \text{Embed}(\mathbf{t}) + \text{Pos}(\mathbf{t}) \times \gamma \\
+\end{align}
+$$
+
+dan kita punya transformers encoder adalah sekumpulan encoder block yang di stack. dengan begitu jika kita punya $n$ transformer block, maka:
+
+$$
+\begin{align}
+\text{Encoder}(\mathbf{t}) &= \text{EncoderBlock}_n(\text{EncoderBlock}_{n-1}(\dots(\text{EncoderBlock}_1(\mathbf{t})))) \\
+\end{align}
+$$
+## BERT stack of encoder
+<!-- $$
+\begin{align}
+\mathcal{L}_{\text{MLM}} &= -\sum_{i=1}^{L} \log p(t_i | \mathbf{t}_{\backslash i}) \\
+&= -\sum_{i=1}^{L} \log \text{Softmax}(\mathbf{X}\mathbf{W}^o)_{t_i} \\
+\end{align}
+$$ -->
+
+$$
+\begin{equation}
+\text{BERT}(\mathbf{t}) = \text{Encoder}(\mathbf{t}) = \text{EncoderBlock}_n(\text{EncoderBlock}_{n-1}(\dots(\text{EncoderBlock}_1(\mathbf{t}))))
+\end{equation}
+$$
+
+
+$$
+\text{Seg}([\text{[CLS]},\mathbf{t}_1, \text{[SEP]}, \mathbf{t}_2, \text{[SEP]}]) = \mathbf{s} \in \mathbb{R}^{L_1+L_2+1+2}
+$$
+
+$$
+\begin{equation}
+s_i = \begin{cases}
+\mathbf{0}, & \text{jika } i \leq L_1 + 2 \\
+\mathbf{1}, & \text{jika } i > L_1 + 2
+\end{cases}
+\end{equation}
+$$
+
+$\mathbf{t} = [\text{[CLS]}, t_{i_1}, t_{i_2}, \dots, t_{i_L} ]$
+
+
+bert in NSP
+
+$$
+p(y|\mathbf{t}_1, \mathbf{t}_2) = \text{Ber}(y|\sigma(\text{BERT}([\mathbf{t}_1, \mathbf{t}_2])_{\text{[CLS]}} \mathbf{W}^o))
+$$
+
+$$
+p(y=1|\mathbf{t}_1, \mathbf{t}_2) = \sigma(\text{BERT}([\mathbf{t}_1, \mathbf{t}_2])_{\text{[CLS]}} \mathbf{W}^o)
+$$
+
+# BERT buat information retreival
+
+BERTCAT
+
+$$
+
+p(\text{relevan}|q, d) = \text{Ber}(y| \sigma(\text{BERT}([\mathbf{q}, \mathbf{d}])_{\text{[CLS]}} \mathbf{W}^o))
+$$
+
+$$
+p(\text{relevan} = 1|q, d) = \sigma(\text{BERT}([\mathbf{q}, \mathbf{d}])_{\text{[CLS]}} \mathbf{W}^o)
+$$
+use this as direct skoring.
+
+$$
+\text{BERT}_{\text{DOT}}(q,d) = f_{\text{sim}}\left(\text{BERT}(q)_\text{[CLS]}, \text{BERT}(d)_\text{[CLS]}\right)
+$$
+
+kalau pakai dot product
+
+$$
+\text{BERT}_{\text{DOT}}(q,d) = \text{BERT}(q)_\text{[CLS]}^{\top} \text{BERT}(d)_\text{[CLS]}
+$$
+indivdual skor ga ada makna, but it's okeay since we just need to rank them.
+
+
+
+## Representasion learning
+
+
+$$
+\mathcal{L}\left(\mathbf{\theta}|x, , x^+, \{x^-_k\}_{k=1}^n\right) = - \log \frac{\exp\left(f_{\text{sim}}\left(\mathbf{e}_x, \mathbf{e}_{x^+}\right)\right)}{\exp\left(f_{\text{sim}}\left(\mathbf{e}_x, \mathbf{e}_{x^+}\right)\right) + \sum_{k=1}^{n} \exp\left(f_{\text{sim}}\left(\mathbf{e}_x, \mathbf{e}_{x^-_k}\right)\right)}
+$$
+
+if f_sim is dot product, 
+$$
+\mathcal{L}\left(\mathbf{\theta}|x, , x^+, \{x^-_k\}_{k=1}^n\right) = - \log \frac{\exp\left(\mathbf{e}_x^{\top} \mathbf{e}_{x^+}\right)}{\exp\left(\mathbf{e}_x^{\top} \mathbf{e}_{x^+}\right) + \sum_{k=1}^{n} \exp\left(\mathbf{e}_x^{\top} \mathbf{e}_{x^-_k}\right)}
+$$
+
+
