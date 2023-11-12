@@ -38,6 +38,7 @@ umumnya dataset evaluasi untuk masalah pemeringkatan teks terdiri dari 3 file be
 ---
 
 ### Judgements
+
 Untuk permasalahan pemeringkatan teks, pada umumnya dataset yang digunakan untuk evaluasi berbentuk $(q, d, r)$, di mana $r$ adalah penilaian relevansi (**judgements**) yang diberikan oleh manusia atau sistem. $r$ bisa berupa variabel biner yang menunjukkan apakah $d$ relevan dengan $q$ atau tidak, atau bisa juga berupa variabel numerik yang menunjukkan seberapa relevan pasangan $(q,d)$.
 
 ---

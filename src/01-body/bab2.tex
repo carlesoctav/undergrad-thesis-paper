@@ -7,4 +7,71 @@
 }
 
 \section{Masalah Pemeringkatan Teks}
-\subsection{Pemeringkatan Teks}
+    \subsection{Pemeringkatan Teks}
+
+    Permasalahan pemeringkatan teks adalah Permasalahan untuk menentukan urutan dokumen yang paling relevan dengan \f{query} $q$ yang diberikan. Dalam bahasa yang lebih formal, diberikan \f{query} $q$ dan himpunan dokumen terbatas $\mathcal{D}= \{d_1, d_2, ..., d_n\}$, keluaran yang diinginkan dari permasalahan ini adalah barisan dokumen $D_k = [d_{i_1}, d_{i_2}, ..., d_{i_k}]$ yang merupakan $k$ dokumen yang paling relevan dengan \f{query} $q$. Selain itu, biasanya nilai $k$ akan lebih kecil dari banyaknya dokumen yang ada, sehingga permasalahan pemeringkatan sering juga disebut sebagai \f{top-k retrieval}. Untuk mengukur performa suatu model pemeringkatan, biasanya digunakan metrik evaluasi seperti presisi, \f{recall}, \f{reciprocal rank}, dan \f{normalized discounted cumulative gain} (nDCG) yang akan dijelaskan pada \sect~\ref{sec:metrik-evaluasi}. \equ~\ref{eq:top-k-retrieval}.
+
+    \subsection{Bentuk Umum Dataset untuk Evaluasi Pemeringkatan Teks}
+    \label{sec:dataset-umum}
+    
+
+
+        \subsubsection{\f{Judgement}}
+    
+
+    \subsection{Metrik Evaluasi dalam Pemeringkatan Teks}
+    \label{sec:metrik-evaluasi}
+        \subsubsection{Presisi dan \f{Recall}}
+
+        \subsubsection{\f{Reciprocal Rank}}
+
+        \subsubsection{\f{Normalized Discounted Cumulative Gain} (nDCG)}
+
+
+\section{Pemeringkatan Teks dengan Statistik}
+    \subsection{\f{Term Frequency - Inverse Document Frequency} (TF-IDF)}
+    \subsection{\f{Best Match 25} (BM25)}
+
+
+\section{Arsitektur \f{Deep Learning}}
+
+    \subsection{\f{Multilayer Perceptron} (MLP)}
+
+    \subsection{Fungsi Aktivasi}
+
+    \subsection{\f{Maximum Likelihood Estimation} (MLE)}
+
+    \subsection{Fungsi \f{Loss}}
+        \subsubsection{\f{Binary Cross Entropy} (BCE)}
+
+        \subsubsection{\f{Categorical Cross Entropy} (CCE)}
+
+        \subsubsection{Justifikasi Pemilihan Fungsi \f{Loss} dari MLE}
+
+    \subsection{\f{Backpropagation}}
+
+    \subsection{Inisialisasi Bobot}
+        \subsubsection{Inisialisasi Kaiming Menjaga Variansi \f{ouput} pada \f{Hidden Layer}}
+
+        \subsubsection{Insialisasi Kaiming Menjaga Variansi Gradien}
+
+
+
+\section{Pembelajaran Representasi}
+
+    \subsection{Fungsi \f{Loss} pada Pembelajaran Representasi}
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
