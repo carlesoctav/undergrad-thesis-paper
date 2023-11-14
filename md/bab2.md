@@ -45,7 +45,7 @@ D_k &= (d_{i_1}, d_{i_2}, \dots, d_{i_k}) \\
 \end{cases} \\
 
 
-\text{FirstRank}(q,D_k) &= \min\left(\{j | d_{i_j} \in D_k \text{ dan } \text{rel}(q, d_{i_j}) = 1\}\right)
+\text{FirstRank}(q,D_k) &= \text{posisi dokumen relevan pertama } d\in D_k \text{ dengan } \text{rel}(q, d) = 1 \\
  
 \end{align}
 $$
@@ -198,3 +198,5 @@ $$
 $$
 
 ---
+
+
