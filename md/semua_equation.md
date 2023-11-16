@@ -302,6 +302,64 @@ $$
 \end{equation}
 $$
 
+
+kasih contoh E+PE yang berbeda.
+
+$$
+\begin{align}
+\mathbf{X} = 
+\underbrace{\begin{bmatrix}
+0.2 & 0.1 & 0.3 & 0.4 \\
+0.1 & 0.3 & 0.2 & 0.4 \\
+0.3 & 0.2 & 0.1 & 0.4 \\
+\end{bmatrix}}_{\text{Embed}((t_1,t_2,t_3))}
++
+\underbrace{\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+\end{bmatrix}}_{\text{pos}((t_1,t_2,t_3))}
+
+= \begin{bmatrix}
+0.3 & 0.1 & 0.3 & 0.4 \\
+0.1 & 0.4 & 0.2 & 0.4 \\
+0.3 & 0.2 & 0.2 & 0.4 \\
+\end{bmatrix} \\
+\mathbf{X'} =
+\underbrace{\begin{bmatrix}
+0.3 & 0.2 & 0.1 & 0.4 \\
+0.1 & 0.3 & 0.2 & 0.4 \\
+0.2 & 0.1 & 0.3 & 0.4 \\
+\end{bmatrix}}_{\text{Embed}((t_3,t_2,t_1))}
++
+\underbrace{\begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+\end{bmatrix}}_{\text{pos}((t_3,t_2,t_1))}
+= \begin{bmatrix}
+0.4 & 0.2 & 0.1 & 0.4 \\
+0.1 & 0.4 & 0.2 & 0.4 \\
+0.2 & 0.1 & 0.4 & 0.4 \\
+\end{bmatrix}  \\
+\end{align}
+$$
+
+if we're just using token embedding  as the input of the transformer, then the model will be permutation equivariant.
+
+$$
+\begin{align}
+E_{(t_1,t_2,t_3)} &= \text{Embed}((t_1,t_2,t_3)) \\
+\text{Attention}( E_{(t_1,t_2,t_3)}, E_{(t_1,t_2,t_3)}, E_{(t_1,t_2,t_3)}) &= \text{Attention}( E_{(t_3,t_2,t_1)}, E_{(t_3,t_2,t_1)}, E_{(t_3,t_2,t_1)}) \\
+
+\end{align}
+$$
+
+$$
+but 
+$$
+
+
 parameter skalanya adalah parameter yang digunakan untuk mengontrol besarnya skala dari \f{positional encoding}.
 paper aslinya pakai $\sqrt{d_{\text{model}}}$, jujur gatau kenapa :D.
 
@@ -350,6 +408,7 @@ $$
 \end{align}
 $$
 ## BERT stack of encoder
+
 <!-- $$
 \begin{align}
 \mathcal{L}_{\text{MLM}} &= -\sum_{i=1}^{L} \log p(t_i | \mathbf{t}_{\backslash i}) \\
@@ -414,8 +473,6 @@ $$
 \text{BERT}_{\text{DOT}}(q,d) = \text{BERT}(q)_\text{[CLS]}^{\top} \text{BERT}(d)_\text{[CLS]}
 $$
 indivdual skor ga ada makna, but it's okeay since we just need to rank them.
-
-
 
 ## Representasion learning
 

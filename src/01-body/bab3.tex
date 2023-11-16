@@ -25,8 +25,8 @@
 		\vdots \\
 		\mathbf{v}_n
 	\end{bmatrix} \in \mathbb{R}^{n \times d_v}, \\
-	\text{Attention}(q, \mathbf{K}, \mathbf{V}) &= \mathbf{\alpha}\mathbf{V} \in \mathbb{R}^{d_v},\\
-	\mathbf{\alpha} &= [\alpha_{1}, \alpha_{2}, \dots, \alpha_{n}], \\
+	\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) &= \bm{\alpha}\mathbf{V} \in \mathbb{R}^{d_v},\\
+	\bm{\alpha} &= [\alpha_{1}, \alpha_{2}, \dots, \alpha_{n}], \\
 	\label{equ:hard-attention-end}
 	\text{dengan } \alpha_i &= 
 	\begin{cases}
@@ -47,9 +47,9 @@
 
 	\begin{align}
 		\label{equ:soft-attention-start}
-		\text{Attention}(q, \mathbf{K}, \mathbf{V}) &= \mathbf{\alpha}\mathbf{V} \in \mathbb{R}^{d_v},\\
-		\text{dengan } \mathbf{\alpha} &= [\alpha_{1}, \alpha_{2}, \dots, \alpha_{n}], \\
-		\text{dan } \alpha_{i}(\mathbf{q},\mathbf{k}_i) &= \text{Softmax}_i(\mathbf{\alpha}) = \frac{\exp(f_{attn}(\mathbf{q}, \mathbf{k}_i))}{\sum_{j=1}^{n} \exp(f_{attn}(\mathbf{q}, \mathbf{k}_j))}, \\
+		\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) &= \mathbf{\alpha}\mathbf{V} \in \mathbb{R}^{d_v},\\
+		\text{dengan } \bm{\alpha} &= [\alpha_{1}, \alpha_{2}, \dots, \alpha_{n}], \\
+		\text{dan } \alpha_{i}(\mathbf{q},\mathbf{k}_i) &= \text{Softmax}_i(\bm{\alpha}) = \frac{\exp(f_{attn}(\mathbf{q}, \mathbf{k}_i))}{\sum_{j=1}^{n} \exp(f_{attn}(\mathbf{q}, \mathbf{k}_j))}, \\
 		\sum_{i=1}^{n} \alpha_{i} &= 1, \\
 		\label{equ:soft-attention-end}
 		0 \leq \alpha_{i} &\leq 1.
@@ -125,7 +125,7 @@
 
 	\begin{align}
 	\label{equ:additive-attention}
-	f_{attn}(\mathbf{q}, \mathbf{k}) &= (\mathbf{q} \mathbf{W}^q  + \mathbf{k} \mathbf{W}^k)  \mathbf{W}^{\text{out}} \in \mathbb{R}, \\
+	f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) &= (\mathbf{q} \mathbf{W}^q  + \mathbf{k} \mathbf{W}^k)  \mathbf{W}^{\text{out}} \in \mathbb{R}, \\
 	\text{dengan } &\mathbf{W}^q \in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}, \mathbf{W}_{\text{out}} \in \mathbb{R}^{d_{\text{attn}} \times 1},
 	\end{align}
 
@@ -133,7 +133,7 @@
 
 	\begin{align}
 		\label{equ:dot-product-attention}
-		f_{attn}(\mathbf{q}, \mathbf{k}) = (\mathbf{q} \mathbf{W}^q) (\mathbf{k} \mathbf{W}^k)^{\top}\\
+		f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) = (\mathbf{q} \mathbf{W}^q) (\mathbf{k} \mathbf{W}^k)^{\top}\\
 		\text{dengan } \mathbf{W}^q \in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}.
 	\end{align}
 
@@ -151,64 +151,128 @@
 	\end{enumerate}
 
 	\subsection{\f{Token Embedding}}
+	\label{sec:token-embedding}
 
 	Perlu diingat kembali bahwa \f{input} dari \f{Attention} (dan tentunya \f{transformer}) adalah barisan vektor. Jika \f{Attention} ingin dapat digunakan pada permasalahan bahasa, barisan kata atau subkata (selanjutnya disebut token) harus terlebih dahulu diubah menjadi barisan vektor.
 
-	Representasi vektor dari token yang paling sederhana adalah dengan \f{one-hot encoding}. Andaikan $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ adalah semua kemungkinan token yang mungkin muncul dalam permasalahan bahasa yang ingin diselesaikan. Untuk sembarang barisan token $\mathbf{t} = [t_{i_1}, t_{i_2}, \dots, t_{i_L}]$, representasi vektor dari token $t_{i_j}$ adalah vektor $\mathbf{oh}_{i_j} = [0, \dots, 0, 1, 0, \dots, 0] \in \mathbb{R}^{|\mathcal{T}|}$, dengan nilai 1 pada indeks ke $i_j$ dan nilai 0 pada indeks lainnya. \f{One-hot encoding} Tentunya memiliki kelemahan:
+	Representasi vektor dari token yang paling sederhana adalah dengan \f{one-hot encoding}. Andaikan $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ adalah semua kemungkinan token yang mungkin muncul dalam permasalahan bahasa yang ingin diselesaikan. Untuk sembarang barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$, representasi vektor dari token $t_{i_j}$ adalah vektor $\mathbf{oh}_{i_j} = [0, \dots, 0, 1, 0, \dots, 0] \in \mathbb{R}^{|\mathcal{T}|}$, dengan nilai 1 pada indeks ke $j$ dan nilai 0 pada indeks lainnya. \f{One-hot encoding} tentunya memiliki kelemahan:
 
 	\begin{enumerate}
 		\item Vektor yang dihasilkan adalah \f{sparse vector}, dan ukuran vektor yang dihasilkan cukup besar, yaitu $|\mathcal{T}|$.
 		\item Representasi token yang buruk. Operasi vektor yang dilakukan pada \f{one-hot encoding} tidaklah bermakna. Misalnya, Jarak antar token akan selalu sama pada \f{one-hot encoding}, yaitu $\sqrt{2}$.
 	\end{enumerate}
 
-	Vektor yang padat (\f{dense}) dan memiliki representasi token yang baik adalah vektor yang dinginkan. Representasi vektor yang baik diharapkan dapat dipelajari selama proses pelatihan model. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start} hingga \equ~\ref{equ:token-embedding-end} menunjukkan bagaimana representasi vektor dari barisan suatu token $\mathbf{t}$ dihitung. 
+	Vektor yang padat (\f{dense}) dan memiliki representasi token yang baik adalah vektor yang dinginkan. Representasi vektor yang baik diharapkan dapat dipelajari selama proses pelatihan model. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start} hingga \equ~\ref{equ:token-embedding-end} menunjukkan bagaimana representasi vektor dari barisan suatu token $t$ dihitung. 
 
 	\begin{align}
 		\label{equ:token-embedding-start}
-		\mathbf{t} &= [t_{i_1}, t_{i_2}, \dots, t_{i_L}], \\
-		e_{i_j} &= \mathbf{oh}_{i_j} \mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{d_{\text{token}}}, \\
+		t &= (t_{i_1}, t_{i_2}, \dots, t_{i_L}), \\
+		\mathbf{e}_{i_j} &= \mathbf{oh}_{i_j} \mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{d_{\text{token}}}, \\
 		\label{equ:token-embedding-end}
-		\text{Embed}(\mathbf{t}) &= \mathbf{E}_{\mathbf{t}} = \begin{bmatrix}
-			e_{i_1} \\
-			e_{i_2} \\
+		\text{Embed}(t) &= \mathbf{E}_{t} = \begin{bmatrix}
+			\mathbf{e}_{i_1} \\
+			\mathbf{e}_{i_2} \\
 			\vdots \\
-			e_{i_L}
+			\mathbf{e}_{i_L}
 		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}}.
 	\end{align}
 
 	\subsection{\f{Scaled Dot-Product Attention}}
-	\f{Scaled dot-product attention} adalah mekanisme \f{Attention} parametrik yang digunakan dalam \f{transformers}. \f{Scaled dot-product attention} menghitung keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$ pada ruang vektor yang dipelajari (\f{learned embedding space}) dengan fungsi keserupaan $f_{attn}(\mathbf{q}, \mathbf{k})$ adalah perkalian titik antara $\mathbf{q}$ dan $\mathbf{k}$ yang kemudian dibagi dengan $\sqrt{d_{attn}}$, seperti pada \equ~\ref{equ:scaled-dot-product-attention}.
+	\label{sec:scaled-dot-product-attention}
+	\f{Scaled dot-product attention} adalah mekanisme \f{Attention} parametrik yang digunakan dalam \f{transformers}. \f{Scaled dot-product attention} menghitung keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$ pada ruang vektor yang dipelajari (\f{learned embedding space}) dengan fungsi keserupaan $f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k}\mathbf{W}^k) $ adalah perkalian titik antara $\mathbf{qW}^q$ dan $\mathbf{kW}^k$ yang kemudian dibagi dengan $\sqrt{d_{attn}}$, seperti pada \equ~\ref{equ:scaled-dot-product-attention}.
 
 	\begin{align}
 		\label{equ:scaled-dot-product-attention}
-		f_{attn}(\mathbf{q}, \mathbf{k}) &= \frac{\mathbf{q} \mathbf{W}^q (\mathbf{k} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}} \in \mathbb{R}, \\
+		f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) &= \frac{\mathbf{q} \mathbf{W}^q (\mathbf{k} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}} \in \mathbb{R}, \\
 		\text{dengan } &\mathbf{W}^q \in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}.
 	\end{align}
 
-
-
-	pembagian dengan $\sqrt{d_{attn}}$ dilakukan menjaga variansi dari nilai atensi sehingga tetaplah sama dengan variansi dari vektor kueri $\mathbf{qW}^q$ dan vektor kunci $\mathbf{kW}^k$ (\f{pre-attention layer}). Seperti yang dapat dilihat pada \equ~\ref{equ:initialize-dot-product-attention} dan \equ~\ref{equ:variance-dot-product-attention}, hasil kali skalar antara vektor kueri $\mathbf{qW}^q$ dan vektor kunci $\mathbf{kW}^k$ memiliki faktor tambahan $\sigma^2 d_{attn}$, sehingga variansi dari nilai atensi $\mathbf{qW}^q (\mathbf{kW}^k)^{\top}$ adalah $\sigma^4 d_{attn}$. Pembagian dengan $\sqrt{d_{attn}}$ dilakukan untuk menghasilkan variansi yang sama dengan variansi dari vektor kueri $\mathbf{qW}^q$ dan vektor kunci $\mathbf{kW}^k$ seperti yang ditunjukkan pada \equ~\ref{equ:variance-scaled-dot-product-attention}. Faktor $\sigma^2$ tidaklah terlalu penting karena biasanya kita menjaga nilai dari $\sigma^2 \approx 1$, sehingga $\sigma^4 \approx 1$.
+	pembagian dengan $\sqrt{d_{attn}}$ dilakukan untuk menjaga variansi dari nilai atensi $\mathbf{q} \mathbf{W}^q (\mathbf{k} \mathbf{W}^k)^{\top}$ tetap serupa dengan variansi $\mathbf{qW}^q$ dan $\mathbf{kW}^k$. Tanpa pembagian $\sqrt{d_{attn}}$, variansi dari nilai atensi akan memiliki faktor tambahan $\sigma^2 d_{attn}$, seperti yang ditunjukkan pada \equ~\ref{equ:initialize-dot-product-attention} hingga \equ~\ref{equ:variance-dot-product-attention}.
 
 	\begin{align}
 		\label{equ:initialize-dot-product-attention}
 		\mathbf{qW}^q \sim \mathcal{N}(0, \sigma^2) \text{ dan } \mathbf{kW}^k \sim \mathcal{N}(0, \sigma^2). \\
 		\label{equ:variance-dot-product-attention}
-		\text{Var}(\mathbf{qW}^q (\mathbf{kW}^k)^{\top}) = \sum_{i=1}^{d_{attn}} \text{Var}\left((\mathbf{qW}^q)_i ((\mathbf{kW}^k)^{\top}_i\right) = \sigma^4 d_{attn} \\
+		\text{Var}(\mathbf{qW}^q (\mathbf{kW}^k)^{\top}) = \sum_{i=1}^{d_{attn}} \text{Var}\left((\mathbf{qW}^q)_i ((\mathbf{kW}^k)^{\top}_i\right) = \sigma^4 d_{attn}.
+	\end{align}
+	
+	Akibatnya, untuk nilai $d_{attn}$ yang cukup besar, akan terdapat satu elemen atensi acak $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i$ sehinnga $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i \gg (\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_j$ untuk sembarang nilai atensi lainnya. Jika kita tidak menghilangkan faktor $d_{attn}$, \f{softmax} dari nilai atensi akan jenuh ke 1 untuk satu elemen acak tersebut dan 0 untuk elemen lainnya. Akibatnya, gradien pada fungsi \f{softmax} akan mendekati nol sehingga model tidak dapat belajar parameter dengan baik. 
+
+	Dengan \f{scaled dot product attention}, tidak ada faktor $d_{attn}$ pada variansi dari nilai atensi. faktor $\sigma^4$ pada \equ~\ref{equ:variance-scaled-dot-product-attention} tidak menjadi masalah karena dengan inisialisasi bobot Kaiming dan \f{layer normalisasi} yang dijelaskan pada \sect~\ref{sec:kaiminginit} dan \sect~\ref{sec:layer-normalization}, nilai $\sigma^2 \approx 1$ sehingga $\sigma^4 \approx \sigma^2 \approx 1$.
+
+	\begin{align}
 		\label{equ:variance-scaled-dot-product-attention}
 		\text{(scaled dot product attention) }\text{Var}\left(\frac{\mathbf{qW}^q (\mathbf{kW}^k)^{\top}}{\sqrt{d_{attn}}}\right) = \frac{\sigma^4 d_{attn}}{d_{attn}} = \sigma^4
 	\end{align}
 
-	Jika kita tidak menghilangkan faktor $d_{attn}$ , softmax dari nilai atensi akan jenuh ke 1 untuk satu elemen acak dan 0 untuk yang lainnya. Akibatnya, gradien pada fungsi softmax akan mendekati nol sehingga model tidak dapat belajar parameter dengan baik.
+	Terakhir, untuk kumpulan vektor kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, dan kumpulan vektor kunci dan nilai $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, \f{scaled dot product attention} dapat dihitung secara bersamaan dengan menggunakan operasi matriks. \equ~\ref{equ:scaled-dot-product-attention-matrix-start} hingga \equ~\ref{equ:scaled-dot-product-attention-matrix-end} menunjukkan bagaimana \f{scaled dot product attention} dihitung.
 
+	\begin{align}
+	\label{equ:scaled-dot-product-attention-matrix-start}
+	\text{Tulis Kembali } \mathbf{Q} &= \begin{bmatrix}
+		\mathbf{q}_1 \\
+		\mathbf{q}_2 \\
+		\vdots \\
+		\mathbf{q}_m \\
+	\end{bmatrix} \in \mathbb{R}^{m \times d_{q}}, \\
+	\mathbf{K} &= \begin{bmatrix}
+		\mathbf{k}_1 \\
+		\mathbf{k}_2 \\
+		\vdots \\
+		\mathbf{k}_n \\
+	\end{bmatrix} \in \mathbb{R}^{n \times d_{k}}, \\
+	\text{dan } \mathbf{V} &= \begin{bmatrix}
+		\mathbf{v}_1 \\
+		\mathbf{v}_2 \\
+		\vdots \\
+		\mathbf{v}_n \\
+	\end{bmatrix} \in \mathbb{R}^{n \times d_{v}}, \\
+	\label{equ:scaled-dot-product-attention-matrix-end}
+	\text{Attention}(\mathbf{QW}^q, \mathbf{KW}^k, \mathbf{V}) &= \text{Softmax}( \frac{\mathbf{QW}^q (\mathbf{KW}^k)^{\top}}{\sqrt{d_{attn}}}) \mathbf{V} \in \mathbb{R}^{m \times d_{v}}, \\
+	\text{dengan } \mathbf{W}^q &\in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}.
+	\end{align}
+
+	\subsection{\f{Self-Attention}}
+
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\textwidth]{assets/pics/rnn-compare-selfattention.png}
+		\caption{Perbandingan RNN dan \f{self-attention} dalam menghasilkan representasi vektor kontekstual. Pada RNN, representasi vektor kontekstual setiap token bergantung pada perhitungan token sebelumnya. Pada \f{self-attention}, representasi vektor kontekstual setiap token dihitung secara independen dan paralel.}
+		\label{fig:self-attention-rnn}
+	\end{figure}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\textwidth]{assets/pics/self-attn-example.png}
+		\caption{Ilustrasi \f{self-attention} dalam menghasilkan representasi vektor kontekstual dari barisan token. Representasi vektor dari token \f{it} akan bergantung terhadap barisan token \f{input}.}
+		\label{fig:self-attention-example}
+	\end{figure}
+
+	\f{self-Attention layer} pada gambarxx adalah layer yang digunakan \f{transformer} untuk menghasilkan representasi vektor yang kontekstual dari barisan token input. Berbeda dengan RNN dalam menghasilkan representasi vektor kontekstual, \f{self-attention} tidak memerlukan ketergantungan sekuensial. Artinya representasi vektor kontekstual setiap tokennya dapat dihitung secara independen dan paralel.\pic~\ref{fig:self-attention-rnn} mengambarkan perbedaan kedua arsitektur dalam menghasilkan representasi vektor kontekstual. Kemampuan Paralelisme dari \f{self-attention} membuat proses komputasi menjadi lebih cepat pada \f{hardware} yang mendukung paralelisme. 
+
+	Perhitungan \f{self-attention} pada \f{transformer} yang digunakan adalah \f{scaled dot product attention} yang telah dijelaskan pada \sect~\ref{sec:scaled-dot-product-attention}. Pada \f{self-attention}, vektor kueri $\mathbf{q}$, vektor kunci $\mathbf{k}$, dan vektor nilai $\mathbf{v}$ adalah vektor yang sama, yaitu \f{embedding} token $\mathbf{E}$ yang dijelaskan pada \sect~\ref{sec:token-embedding}. \equ~\ref{equ:self-attention-start} hingga \equ~\ref{equ:self-attention-end} menunjukkan bagaimana \f{self-attention} dihitung.
+
+	\begin{align}
+		\label{equ:self-attention-start}
+		\text{Self-Attention}(\mathbf{E}) &= \text{Attention}(\mathbf{EW}^q, \mathbf{EW}^k, \mathbf{EW}^v) \\
+		\label{equ:self-attention-end}
+		&= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q (\mathbf{E} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}}) (\mathbf{E} \mathbf{W}^v) \in \mathbb{R}^{L \times d_{\text{attn}}}
+	\end{align}
+
+	\f{self-attention} dapat dikonsepsikan sebagai proses pembentukan represenatsi token yang kontekstual. untuk setiap tokennya, \f{self-attention} menghitung keserupaan antara token tersebut ($\mathbf{e}_{t_i} \mathbf{W}^q$) dengan seluruh token lainnya ($\mathbf{E} \mathbf{W}^k$) dengan \f{scaled dot product attention}. Hasil dari \f{scaled dot product attention} adalah vektor yang menunjukkan bobot atensi dari token tersebut terhadap token lainnya. Bobot atensi tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari seluruh token lainnya ($\mathbf{E} \mathbf{W}^v$). Hasil dari rata-rata terbobot tersebut adalah representasi vektor kontekstual dari token tersebut. \pic~\ref{fig:self-attention-example} adalah contoh dari \f{self-attention} yang menghasilkan representasi vektor kontekstual pada token \f{it}. Pada \pic~\ref{fig:self-attention-example} kiri token \f{it} memiliki bobot atensi yang tinggi terhadap token dan \f{animal} sehingga representasi vektor kontekstual dari token \f{it} akan memiliki nilai yang serupa dengan representasi token \f{animal}. Di lain sisi, token \f{it} pada \pic~\ref{fig:self-attention-example} memiliki bobot atensi yang tinggi terhadap token \f{street}.
+	
 	\subsection{\f{Multi-Head Self-Attention}}
 	
 	\f{Multi-Head Attention} adalah arsiktetur \f{deep learning} yang melakukan mekanisme \f{attention} sebanyak
 	
-	\subsection{\f{Self-Attention}}
 	
 	\subsection{\f{Positional Encoding}}
 
 	\subsection{\f{Position-wise Feed-Forward Network}}
+
+	\subsection{Koneksi Residual dan \f{Layer Normalization}}
+	\label{sec:layer-normalization}
 
 	\subsection{Transformer Encoder}
 
