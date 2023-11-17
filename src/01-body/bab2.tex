@@ -116,13 +116,28 @@
 
 
 \section{Pemeringkatan Teks dengan Statistik}
-        Untuk mengambil $k$ dokumen dari kumpulan $\mathcal{D}$ diperlukan suatu fungsi skor $s(q, d, \mathcal{D})$ yang mengukur relevansi antara kueri $q$ dan dokumen $d$. dengan mencari skor antar $q$ terhadap semua dokumen pada $\mathcal{D}$, Barisan dokumen $D_k = (d_{i_1}, d_{i_2},\dots, d_{i_k})$ dapat dipilih sehingga $\text{score}(q, d_{i_1},\mathcal{D}), \text{score}(q, d_{i_2},\mathcal{D}), \dots, \text{score}(q, d_{i_k},\mathcal{D})$ adalah $k$ skor tertinggi.
+        Untuk mengambil $k$ dokumen dari kumpulan $\mathcal{D}$ diperlukan suatu fungsi skor $s(q, d, \mathcal{D})$ yang mengukur relevansi antara kueri $q$ dan dokumen $d$. dengan mencari skor antar $q$ terhadap semua dokumen pada $\mathcal{D}$, Barisan dokumen $D_k = (d_{i_1}, d_{i_2},\dots, d_{i_k})$ dapat dipilih sehingga $\text{score}(q, d_{i_1}) \geq \text{score}(q, d_{i_2}) \geq \dots \geq \text{score}(q, d_{i_k})$ adalah $k$ dokumen dengan skor tertinggi.
         
         Pada bagian ini, akan dijelaskan beberapa fungsi skor stastistik sederhana yang sering digunakan dalam pemeringkatan teks. \sect~\ref{sec:tfidf} menjelaskan fungsi skor statistik yang berdasarkan pada frekuensi kemunculan kata pada dokumen dan kueri. Selanjutnya, \sect~\ref{sec:bm25} membahas fungsi skor statistik yang menjadi standar \f{de facto} dalam pemeringkatan teks.
 
 
     \subsection{\f{Term Frequency - Inverse Document Frequency} (TF-IDF)}
     \label{sec:tfidf}
+
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.50\textwidth]{assets/pics/tf-idf-matriks.png}
+        \caption{\license.}
+        \label{fig:tf-idf-matriks}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.50\textwidth]{assets/pics/idf-graph.png}
+        \caption{\license.}
+        \label{fig:idf-graph}
+    \end{figure}
 
     fungsi skor TF-IDF adalah fungsi skor statistik yang mengukur relevansi antara kueri $q$ dan dokumen $d$ dengan menghitung frekuensi kemunculan kata pada dokumen dan kueri. Untuk suatu kueri $q$, misalkan $T_q= \{t_1, t_2, \dots, t_{L_1}\}$ adalah himpunan kata yang terdapat pada kueri $q$. Selain itu, misalkan $T_d = \{t_1, t_2, \dots, t_n\}$ adalah himpunan kata yang terdapat pada dokumen $d$. nilai skor antara $q$ dan $d$ diberikan oleh persamaan \equ~\ref{eq:tfidf-start} sampai \equ~\ref{eq:tfidf-end}.
 
@@ -134,8 +149,12 @@
         \text{tf}(t, d) &= \frac{\text{Count}(t, d)}{|d|} \\
         \text{Count}(t, d) &= \text{jumlah kemunculan } t \text{ dalam } d \\
         \text{df}(t, \mathcal{D}) &= \text{jumlah dokumen pada } \mathcal{D} \text{ yang mengandung } t \\
-        \text{idf}(t, \mathcal{D}) &= \log_2\left(\frac{|\mathcal{D}|}{\text{df}(t, \mathcal{D})}\right) \\
-        \text{tf-idf}(t, d, \mathcal{D}) &= \log(1 + \text{tf}(t, d)) \times \text{idf}(t, \mathcal{D}) \\
+        \text{idf}(t, \mathcal{D}) &= \begin{cases}
+            \log_2\left(\frac{|\mathcal{D}|}{\text{df}(t, \mathcal{D})}\right) & \text{jika } \text{df}(t, \mathcal{D}) > 0 \\
+            0 & \text{jika } \text{df}(t, \mathcal{D}) = 0
+        \end{cases} \\
+        \label{eq:tf-idf-weight}
+        \text{tf-idf}(t, d, \mathcal{D}) &= \text{tf}(t, d) \times \text{idf}(t, \mathcal{D}) \\
         \label{eq:tfidf-end}
         \text{score}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{tf-idf}(t, d, \mathcal{D})
     \end{align}
@@ -143,18 +162,69 @@
     skor untuk pasangan terurut $(q,d)$ dihitung dengan menjumlahkan skor TF-IDF dari setiap kata yang terdapat pada kueri $q$ dan dokumen $d$ ($T_q \cap T_d$). skor TF-IDF dari suatu kata $t$ adalah perkalian antar $\log$ dari \f{term frequency} ($\text{tf}(q,d)$) dan \f{inverse document frequency} ($\text{idf}(t,\mathcal{D})$). fungsi skor pada \equ~\ref{eq:tfidf-end} dapat dijelaskan sebagai dua bagian utama, yaitu:
 
     \begin{enumerate}
-        \item faktor $\log_2(1 + \text{tf}(t, d))$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan bertambahnya frekuensi kemunculan kata $t$ pada dokumen $d$. Selain itu, penggunaan fungsi $\log$ pada faktor ini bertujuan untuk mengurangi dampak dari peningkatan frekuensi kemunculan kata $t$. 
-        \item Faktor $\text{idf}(t, \mathcal{D})$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan \textit{rarity} dari kata $t$ pada himpunan dokumen $\mathcal{D}$. Akibatnya, kata yang jarang muncul pada himpunan dokumen $\mathcal{D}$ dan muncul pada suatu dokumen tertentu akan menghasilkan skor yang tinggi. Sementara itu, kata-kata yang sering muncul pada koleksi dokumen $\mathcal{D}$ akan memiliki kemampuannya \textit{downgraded}.
+        \item faktor $\text{tf}(t, d)$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan bertambahnya frekuensi kemunculan kata $t$ pada dokumen $d$.
+        \item Faktor $\text{idf}(t, \mathcal{D})$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan \textit{rarity} dari kata $t$ pada himpunan dokumen $\mathcal{D}$. Akibatnya, kata yang jarang muncul pada himpunan dokumen $\mathcal{D}$ dan muncul pada suatu dokumen tertentu akan menghasilkan skor yang tinggi. Sementara itu, kata-kata yang sering muncul pada koleksi dokumen $\mathcal{D}$ memiliki nilai \textit{downgraded}.
     \end{enumerate}
 
     Kata-kata seperti preposisi atau kata ganti akan menghasilkan skor TF-IDF yang sangat rendah. Ini menyiratkan bahwa kata-kata tersebut memiliki sedikit relevansi dalam dokumen dan bisa diabaikan. Di sisi lain, kata-kata yang muncul secara berlebihan dalam satu dokumen tetapi jarang muncul dalam dokumen lainnya akan menghasilkan nilai $\text{tf}(t, d)$ dan $\log \left(\frac{\mathcal{D}}{\text{df}(t, \mathcal{D})}\right)$ yang relatif besar. Dampaknya adalah skor TF-IDF yang dihasilkan juga menjadi signifikan.
 
     \subsection{\f{Best Match 25} (BM25)}
-
-
-
     \label{sec:bm25}
 
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{assets/pics/smoothed-idf.png}
+        \caption{\license.};
+        \label{fig:smoothed-idf}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{assets/pics/effect-bm25-long-doc.png}
+        \caption{\license.};
+        \label{fig:effect-bm25-long-doc}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{assets/pics/effect-bm25-param-b.png}
+        \caption{\license.};
+        \label{fig:effect-bm25-param-b}
+    \end{figure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{assets/pics/effect-bm25-param-k.png}
+        \caption{\license.};
+        \label{fig:effect-bm25-param-k}
+    \end{figure}
+
+
+    BM25 (\f{Best Match attempt} 25)  merupakan pengembangan dari fungsi skor TF-IDF dengan perbedaan utamanya adalah fungsi nilai menggunakan $\text{score}_{\text{BM25}}(q,d)$ (\equ~\ref{eq:bm25-weight}) daripada $\text{tf}(q,d)$ (\equ~\ref{eq:tf-idf-weight}). pada fungsi $\text{score}_{\text{BM25}(q,d)}$ terdapat 2 parameter yang dapat diatur, yaitu $b$, dan $k_1$. Setiap parameter mempunyai efek yang berbeda terhadap skor yang dihasilkan. Selain itu, Perbedaan \f{minor} lainnya ada di fungsi $\text{idf}$. Pada fungsi $\text{idf}$ pada BM25, terdapat \f{smoothing} yang bertujuan untuk menghindari nilai $\text{idf}$ yang bernilai 0 ketika kata $t$ tidak muncul pada himpunan dokumen $\mathcal{D}$. \equ~\ref{eq:smoothed-idf} hingga \equ~\ref{eq:bm25-end} menunjukkan perhitungan skor relevansi dengan BM25.
+
+    \begin{align}
+        \label{eq:smoothed-idf}
+        \text{idf}_{\text{BM25}}(t, \mathcal{D}) &= \log\left(1+\frac{|\mathcal{D}| - \text{df}(t, \mathcal{D}) + 0.5}{\text{df}(t, \mathcal{D}) + 0.5}\right) \\
+        \label{eq:bm25scoring}
+        \text{score}_{\text{BM25}}(t,d) &= \frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times (1 - b + b \times \frac{|d|}{\text{avgdl}})} \\
+        \label{eq:bm25-weight}
+        \text{BM25}(t, d, \mathcal{D}) &= \text{idf}_{\text{BM25}}(t, \mathcal{D}) \times \text{score}_{\text{BM25}}(q,d,\mathcal{D}) \\
+        \text{avgdl} &= \text{rata-rata panjang dokumen pada koleksi } \mathcal{D} \\
+        \label{eq:bm25-end}
+        \text{score}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{BM25}(t, d, \mathcal{D}) \\
+    \end{align}
+
+    
+    \pic~\ref{fig:smoothed-idf} Menunjukkan Perbedaan antara $\text{idf}_{BM25}$ dan $\text{idf}$. Perbedaan utamanya terjadi ketika $\text{df}(t,\mathcal{D}) = 0$, nilai dari  $\text{idf}_{BM25}$ tak nol dan mengikuti pola yang diharapkan, yaitu semakin jarang kata $t$ muncul pada himpunan dokumen $\mathcal{D}$, semakin tinggi nilai $\text{idf}_{BM25}$ yang dihasilkan. Ketika $\text{df}(t,\mathcal{D})>0$, nilai dari $\text{idf}_{\text{BM25}}$ dan $\text{idf}$ hampir serupa.
+
+    Perbedaan antar $\text{score}_{\text{BM25}}(t,d)$ dengan $\text{tf}(t, d)$ jauh lebih kompleks karena adanya parameter tambahan $k_1,$ dan $b$ serta faktor baru $\text{avgdl}$. Berikut adalah penjelasan dari masing-masing parameter dan efeknya terhadap skor yang dihasilkan:
+
+    \begin{enumerate}
+        \item faktor $\frac{|\text{d}|}{\text{avgdl}}$ pada $\frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times \left(1 - b + b \times \textcolor{yellow}{\frac{|d|}{\text{avgdl}}}\right)}$ men-\f{penalize} skor pada dokumen yang panjangnya lebih besar dari rata-rata panjang dokumen pada himpunan dokumen $\mathcal{D}$. \pic~\ref{fig:effect-bm25-long-doc} Menjukkan efek dari perbedaan nilai $\text{avgdl}$ terhadap skor yang dihasilkan. Semakin besar rasio $\frac{|d|}{\text{avgdl}}$, semakin kecil skor yang dihasilkan.
+        \item nilai $b$ menentukan seberapa besar efek dari faktor $\frac{|d|}{\text{avgdl}}$ terhadap skor yang dihasilkan. \pic~\ref{fig:effect-bm25-param-b} Menunjukkan efek dari perbedaan nilai $b$ terhadap skor yang dihasilkan. Untuk $\frac{|d|}{\text{avgdl}}<1$, semakin besar nilai $b$, semakin kecil skor yang dihasilkan. Sedangkan untuk $\frac{|d|}{\text{avgdl}}>1$, semakin besar nilai $b$, semakin besar $\text{score}_{\text{BM25}}(t,d)$ yang dihasilkan.
+        \item 
+    \end{enumerate}
+    
 
 \section{Arsitektur \f{Deep Learning}}
 

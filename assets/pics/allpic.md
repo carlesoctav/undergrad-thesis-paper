@@ -19,3 +19,18 @@
 ![](rnn-compare-selfattention.png)
 
 ![](self-attn-example.png)
+
+
+![](tf-idf-matriks.png)
+
+![](idf-graph.png)
+
+![](smoothed-idf.png)
+
+![](effect-bm25-long-doc.png)
+
+![](effect-bm25-param-b.png)
+
+![](effect-bm25-param-k.png)
+
+

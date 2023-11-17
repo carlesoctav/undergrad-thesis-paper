@@ -196,7 +196,7 @@
 		\text{Var}(\mathbf{qW}^q (\mathbf{kW}^k)^{\top}) = \sum_{i=1}^{d_{attn}} \text{Var}\left((\mathbf{qW}^q)_i ((\mathbf{kW}^k)^{\top}_i\right) = \sigma^4 d_{attn}.
 	\end{align}
 	
-	Akibatnya, untuk nilai $d_{attn}$ yang cukup besar, akan terdapat satu elemen atensi acak $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i$ sehinnga $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i \gg (\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_j$ untuk sembarang nilai atensi lainnya. Jika kita tidak menghilangkan faktor $d_{attn}$, \f{softmax} dari nilai atensi akan jenuh ke 1 untuk satu elemen acak tersebut dan 0 untuk elemen lainnya. Akibatnya, gradien pada fungsi \f{softmax} akan mendekati nol sehingga model tidak dapat belajar parameter dengan baik. 
+	Akibatnya, untuk nilai $d_{attn}$ yang cukup besar, akan terdapat satu elemen atensi acak $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i$ sehinnga $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i \gg (\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_j$ untuk sembarang nilai atensi lainnya. Jika faktor $d_{attn}$ tidak dihilangkan, \f{softmax} dari nilai atensi akan jenuh ke 1 untuk satu elemen acak tersebut dan 0 untuk elemen lainnya. Akibatnya, gradien pada fungsi \f{softmax} akan mendekati nol sehingga model tidak dapat belajar parameter dengan baik. 
 
 	Dengan \f{scaled dot product attention}, tidak ada faktor $d_{attn}$ pada variansi dari nilai atensi. faktor $\sigma^4$ pada \equ~\ref{equ:variance-scaled-dot-product-attention} tidak menjadi masalah karena dengan inisialisasi bobot Kaiming dan \f{layer normalisasi} yang dijelaskan pada \sect~\ref{sec:kaiminginit} dan \sect~\ref{sec:layer-normalization}, nilai $\sigma^2 \approx 1$ sehingga $\sigma^4 \approx \sigma^2 \approx 1$.
 
