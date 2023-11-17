@@ -37,9 +37,7 @@
             \label{fig:recall-precision}
         \end{figure}
         
-
-        
-        Presisi dan \f{recall} adalah metrik yang paling sederhana untuk mengukur kemampuan dari suatu model pemeringkatan teks. \f{Recall} mengukur kemampuan model untuk mengembalikan dokumen yang relevan dengan kueri $q$ dari seluruh dokumen yang relevan dengan kueri $q$ \citep{textrankingsurvey}. Di lain sisi, presisi mengukur kemampuan model dalam mengembalikan dokumen yang relevan dengan kueri $q$ dari seluruh dokumen yang dikembalikan oleh model \citep{textrankingsurvey}. Untuk suatu kueri $q$, kumpulan dokumen $\mathcal{D} = \{d_1, d_2, ..., d_n\}$, dan barisan $k$ dokumen yang diambil oleh model, $\mathcal{D}_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$, \f{recall} dan presisi dapat dihitung dengan \equ~\ref{eq:recall} dan \equ~\ref{eq:presisi}.
+        Presisi dan \f{recall} adalah metrik yang paling sederhana untuk mengukur kemampuan dari suatu model pemeringkatan teks. \f{Recall} mengukur kemampuan model untuk mengembalikan dokumen yang relevan dengan kueri $q$ dari seluruh dokumen yang relevan dengan kueri $q$ \citep{textrankingsurvey}. Di lain sisi, presisi mengukur kemampuan model dalam mengembalikan dokumen yang relevan dengan kueri $q$ dari seluruh dokumen yang dikembalikan oleh model \citep{textrankingsurvey}. Untuk suatu kueri $q$, kumpulan dokumen $\mathcal{D} = \{d_1, d_2, ..., d_n\}$, dan barisan $k$ dokumen yang diambil oleh model, $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$, \f{recall} dan presisi dapat dihitung dengan \equ~\ref{eq:recall} dan \equ~\ref{eq:presisi}.
 
         \begin{align}
             \label{eq:recall}
@@ -80,7 +78,15 @@
 
         \pic~\ref{fig:reciprocal-rank} mengilustrasikan metrik RR. Pada gambar tersebut, nilai RR dari sistem A adalah 1 $(\frac{1}{1})$ karena posisi dari dokumen yang relevan pertama adalah 1. Sedangkan nilai RR dari sistem B dan sistem C masing-masing adalah  0.33 $(\frac{1}{3})$ dan 0.5 $(\frac{1}{2})$ karena posisi dari dokumen yang relevan pertama adalah 3 dan 2. Selain itu, jika tidak terdapat dokumen yang relevan dengan kueri $q$ pada $D_k$, maka nilai RR dari sistem tersebut adalah 0. 
 
-        \subsubsection{\f{Normalized Discounted Cumulative Gain} (nDCG)}
+    \subsubsection{\f{Normalized Discounted Cumulative Gain} (nDCG)}
+
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.70\textwidth]{assets/pics/contohnDCG.png}
+            \caption{\license.}
+            \label{fig:ndcg}
+        \end{figure}
+
         \f{Normalized Discounted Cumulative Gain} (nDCG) adalah metrik yang umumnya digunakan untuk mengukur kualitas dari pencarian situs web. Tidak seperti metrik yang telah disebutkan sebelumnya, nDCG dirancang untuk suatu \f{judgements} $r$ yang tak biner. Fungsi $\text{rel}(q, d)$ pada \equ~\ref{eq:rel} berubah menjadi $\text{rel(q,d)}  = r $ ketika menghitung metrik nDCG. \equ~\ref{eq:ndcg-start} hingga \equ~\ref{eq:ndcg-end} menunjukkan cara menghitung nDCG dari suatu kueri $q$ dan barisan $k$ dokumen yang diambil oleh model.
 
         \begin{align}
@@ -110,9 +116,44 @@
 
 
 \section{Pemeringkatan Teks dengan Statistik}
+        Untuk mengambil $k$ dokumen dari kumpulan $\mathcal{D}$ diperlukan suatu fungsi skor $s(q, d, \mathcal{D})$ yang mengukur relevansi antara kueri $q$ dan dokumen $d$. dengan mencari skor antar $q$ terhadap semua dokumen pada $\mathcal{D}$, Barisan dokumen $D_k = (d_{i_1}, d_{i_2},\dots, d_{i_k})$ dapat dipilih sehingga $\text{score}(q, d_{i_1},\mathcal{D}), \text{score}(q, d_{i_2},\mathcal{D}), \dots, \text{score}(q, d_{i_k},\mathcal{D})$ adalah $k$ skor tertinggi.
+        
+        Pada bagian ini, akan dijelaskan beberapa fungsi skor stastistik sederhana yang sering digunakan dalam pemeringkatan teks. \sect~\ref{sec:tfidf} menjelaskan fungsi skor statistik yang berdasarkan pada frekuensi kemunculan kata pada dokumen dan kueri. Selanjutnya, \sect~\ref{sec:bm25} membahas fungsi skor statistik yang menjadi standar \f{de facto} dalam pemeringkatan teks.
+
 
     \subsection{\f{Term Frequency - Inverse Document Frequency} (TF-IDF)}
+    \label{sec:tfidf}
+
+    fungsi skor TF-IDF adalah fungsi skor statistik yang mengukur relevansi antara kueri $q$ dan dokumen $d$ dengan menghitung frekuensi kemunculan kata pada dokumen dan kueri. Untuk suatu kueri $q$, misalkan $T_q= \{t_1, t_2, \dots, t_{L_1}\}$ adalah himpunan kata yang terdapat pada kueri $q$. Selain itu, misalkan $T_d = \{t_1, t_2, \dots, t_n\}$ adalah himpunan kata yang terdapat pada dokumen $d$. nilai skor antara $q$ dan $d$ diberikan oleh persamaan \equ~\ref{eq:tfidf-start} sampai \equ~\ref{eq:tfidf-end}.
+
+    \begin{align}
+        \label{eq:tfidf-start}
+        \mathcal{D} &= \{d_1, d_2, \dots, d_n\} \\
+        T_q &= \{t_1, t_2, \dots, t_{L_1}\} \\
+        T_d &= \{t_1, t_2, \dots, t_{L_2}\} \\
+        \text{tf}(t, d) &= \frac{\text{Count}(t, d)}{|d|} \\
+        \text{Count}(t, d) &= \text{jumlah kemunculan } t \text{ dalam } d \\
+        \text{df}(t, \mathcal{D}) &= \text{jumlah dokumen pada } \mathcal{D} \text{ yang mengandung } t \\
+        \text{idf}(t, \mathcal{D}) &= \log_2\left(\frac{|\mathcal{D}|}{\text{df}(t, \mathcal{D})}\right) \\
+        \text{tf-idf}(t, d, \mathcal{D}) &= \log(1 + \text{tf}(t, d)) \times \text{idf}(t, \mathcal{D}) \\
+        \label{eq:tfidf-end}
+        \text{score}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{tf-idf}(t, d, \mathcal{D})
+    \end{align}
+
+    skor untuk pasangan terurut $(q,d)$ dihitung dengan menjumlahkan skor TF-IDF dari setiap kata yang terdapat pada kueri $q$ dan dokumen $d$ ($T_q \cap T_d$). skor TF-IDF dari suatu kata $t$ adalah perkalian antar $\log$ dari \f{term frequency} ($\text{tf}(q,d)$) dan \f{inverse document frequency} ($\text{idf}(t,\mathcal{D})$). fungsi skor pada \equ~\ref{eq:tfidf-end} dapat dijelaskan sebagai dua bagian utama, yaitu:
+
+    \begin{enumerate}
+        \item faktor $\log_2(1 + \text{tf}(t, d))$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan bertambahnya frekuensi kemunculan kata $t$ pada dokumen $d$. Selain itu, penggunaan fungsi $\log$ pada faktor ini bertujuan untuk mengurangi dampak dari peningkatan frekuensi kemunculan kata $t$. 
+        \item Faktor $\text{idf}(t, \mathcal{D})$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan \textit{rarity} dari kata $t$ pada himpunan dokumen $\mathcal{D}$. Akibatnya, kata yang jarang muncul pada himpunan dokumen $\mathcal{D}$ dan muncul pada suatu dokumen tertentu akan menghasilkan skor yang tinggi. Sementara itu, kata-kata yang sering muncul pada koleksi dokumen $\mathcal{D}$ akan memiliki kemampuannya \textit{downgraded}.
+    \end{enumerate}
+
+    Kata-kata seperti preposisi atau kata ganti akan menghasilkan skor TF-IDF yang sangat rendah. Ini menyiratkan bahwa kata-kata tersebut memiliki sedikit relevansi dalam dokumen dan bisa diabaikan. Di sisi lain, kata-kata yang muncul secara berlebihan dalam satu dokumen tetapi jarang muncul dalam dokumen lainnya akan menghasilkan nilai $\text{tf}(t, d)$ dan $\log \left(\frac{\mathcal{D}}{\text{df}(t, \mathcal{D})}\right)$ yang relatif besar. Dampaknya adalah skor TF-IDF yang dihasilkan juga menjadi signifikan.
+
     \subsection{\f{Best Match 25} (BM25)}
+
+
+
+    \label{sec:bm25}
 
 
 \section{Arsitektur \f{Deep Learning}}
@@ -127,6 +168,8 @@
 
     \subsection{Inisialisasi Bobot}
     \label{sec:kaiminginit}
+
+
         \subsubsection{Inisialisasi Kaiming Menjaga Variansi \f{ouput} pada \f{Hidden Layer}}
 
         \subsubsection{Insialisasi Kaiming Menjaga Variansi Gradien}
