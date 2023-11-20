@@ -15,7 +15,7 @@
 \section{Masalah Pemeringkatan Teks}
     \subsection{Pemeringkatan Teks}
 
-    Permasalahan pemeringkatan teks adalah Permasalahan untuk menentukan urutan dokumen yang paling relevan dengan kueri $q$ yang diberikan. Dalam bahasa yang lebih formal, diberikan kueri $q$ dan himpunan dokumen terbatas $\mathcal{D}= \{d_1, d_2, ..., d_n\}$, keluaran yang diinginkan dari permasalahan ini adalah barisan dokumen $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$ yang merupakan $k$ dokumen yang paling relevan dengan kueri $q$. Selain itu, biasanya nilai $k$ akan lebih kecil dari banyaknya dokumen yang ada, sehingga permasalahan pemeringkatan sering juga disebut sebagai \f{top-k retrieval}. Untuk mengukur performa suatu model pemeringkatan, biasanya digunakan metrik evaluasi seperti presisi, \f{recall}, \f{reciprocal rank}, dan \f{normalized discounted cumulative gain} (nDCG) yang akan dijelaskan pada \sect~\ref{sec:metrik-evaluasi}. \equ~\ref{eq:top-k-retrieval}.
+    Permasalahan pemeringkatan teks adalah Permasalahan untuk menentukan urutan dokumen yang paling relevan dengan kueri $q$ yang diberikan. Dalam bahasa yang lebih formal, diberikan kueri $q$ dan himpunan dokumen terbatas $\mathcal{D}= \{d_1, d_2, ..., d_n\}$, keluaran yang diinginkan dari permasalahan ini adalah barisan dokumen $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$ yang merupakan $k$ dokumen yang paling relevan dengan kueri $q$. Selain itu, biasanya nilai $k$ akan lebih kecil dari banyaknya dokumen yang ada, sehingga permasalahan pemeringkatan sering juga disebut sebagai \f{top-k retrieval}. Untuk mengukur performa suatu model pemeringkatan, biasanya digunakan metrik evaluasi seperti presisi, \f{recall}, \f{reciprocal rank}, dan \f{normalized discounted cumulative gain} (nDCG) yang akan dijelaskan pada \sect~\ref{sec:metrik-evaluasi}.
 
     \subsection{Bentuk Umum Dataset untuk Evaluasi Pemeringkatan Teks}
     \label{sec:dataset-umum}
@@ -33,11 +33,11 @@
         \begin{figure}
             \centering
             \includegraphics[width=0.50\textwidth]{assets/pics/recall-presisi.png}
-            \caption{\license.}
+            \caption{Ilustrasi \f{recall} dan presisi. Nilai \f{recall} dihitung sebagai rasio dokumen relevan yang diambil oleh model terhadap seluruh dokumen yang relevan dengan kueri $q$. Sedangkan nilai presisi dihitung sebagai rasio dokumen relevan yang diambil oleh model terhadap seluruh dokumen yang diambil oleh model.}
             \label{fig:recall-precision}
         \end{figure}
         
-        Presisi dan \f{recall} adalah metrik yang paling sederhana untuk mengukur kemampuan dari suatu model pemeringkatan teks. \f{Recall} mengukur kemampuan model untuk mengembalikan dokumen yang relevan dengan kueri $q$ dari seluruh dokumen yang relevan dengan kueri $q$ \citep{textrankingsurvey}. Di lain sisi, presisi mengukur kemampuan model dalam mengembalikan dokumen yang relevan dengan kueri $q$ dari seluruh dokumen yang dikembalikan oleh model \citep{textrankingsurvey}. Untuk suatu kueri $q$, kumpulan dokumen $\mathcal{D} = \{d_1, d_2, ..., d_n\}$, dan barisan $k$ dokumen yang diambil oleh model, $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$, \f{recall} dan presisi dapat dihitung dengan \equ~\ref{eq:recall} dan \equ~\ref{eq:presisi}.
+        Presisi dan \f{recall} adalah metrik yang paling sederhana untuk mengukur kemampuan dari suatu model pemeringkatan teks. Untuk suatu kueri $q$, kumpulan dokumen $\mathcal{D} = \{d_1, d_2, ..., d_n\}$, dan barisan $k$ dokumen yang diambil oleh model, $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$, \f{recall} dan presisi dapat dihitung dengan \equ~\ref{eq:recall} dan \equ~\ref{eq:presisi}.
 
         \begin{align}
             \label{eq:recall}
@@ -53,18 +53,21 @@
             \end{cases}        
         \end{align}
 
-        Sebagai Contoh, Jika terdapat 10 dokumen yang relevan dengan kueri $q$, dan model mengembalikan $k=100$ dokumen, namun hanya terdapat 5 dokumen yang relevan pada $D_k$  maka \f{recall} dan presisi dari model tersebut adalah 0.5 ($\frac{5}{10}$) dan 0.05 ($\frac{5}{100}$) masing-masing. Baik \f{recall} maupun presisi memiliki rentang nilai dari 0 hingga 1, dimana nilai 1 menunjukkan performa model yang terbaik. \pic~\ref{fig:recall-precision} mengilustrasikan metrik \f{recall} dan presisi.
+        Sebagai Contoh, Jika terdapat 10 dokumen yang relevan dengan kueri $q$, dan model mengembalikan $k=100$ dokumen, namun hanya terdapat 5 dokumen yang relevan pada $D_k$  maka \f{recall} dan presisi dari model tersebut adalah 0.5 ($\frac{5}{10}$) dan 0.05 ($\frac{5}{100}$) masing-masing. 
+        
+        Baik \f{recall} maupun presisi memiliki rentang nilai dari 0 hingga 1, dimana nilai 1 menunjukkan performa model yang terbaik. perhitungan \f{recall} biasanya dilakukan untuk $k$ yang cukup besar ($k = 100,1000 $), sedangkan perhitungan presisi dilakukan untuk $k$ yang kecil ($k = 1, 3, 5$) \citep{irlecture}.
+
 
         \subsubsection{\f{Reciprocal Rank}}
 
         \begin{figure}
             \centering
             \includegraphics[width=0.50\textwidth]{assets/pics/rr.png}
-            \caption{idk.}
+            \caption{Ilustrasi \f{reciprocal rank}.}
             \label{fig:reciprocal-rank}
         \end{figure}
 
-        Metrik lainnya yang sering digunakan untuk mengukur performa model pemeringkatan adalah \f{reciprocal rank} (RR). Metrik RR menitikberatkan pada peringkat pertama dari dokumen yang relevan dengan kueri $q$. Semakin tinggi peringkat dari dokumen yang relevan dengan kueri $q$. \equ~\ref{eq:reciprocal-rank-start} hingga \equ~\ref{eq:reciprocal-rank-end} menunjukkan cara menghitung RR dari suatu kueri $q$ dan barisan $k$ dokumen yang diambil oleh model.
+        Metrik lainnya yang sering digunakan untuk mengukur performa model pemeringkatan adalah \f{reciprocal rank} (RR). Metrik RR menitikberatkan pada peringkat pertama dari dokumen yang relevan dengan kueri $q$. Semakin tinggi peringkat dari dokumen yang relevan dengan kueri $q$. \equ~\ref{eq:reciprocal-rank-start} hingga \equ~\ref{eq:reciprocal-rank-end} menunjukkan cara menghitung RR dari suatu kueri $q$ dan barisan $k$ dokumen yang diambil oleh model \citep{irlecture, textrankingsurvey}.
 
         \begin{align}
             \text{RR}(q, D_k)\text{@k} &= \begin{cases}
@@ -120,10 +123,8 @@
         
         Pada bagian ini, akan dijelaskan beberapa fungsi skor stastistik sederhana yang sering digunakan dalam pemeringkatan teks. \sect~\ref{sec:tfidf} menjelaskan fungsi skor statistik yang berdasarkan pada frekuensi kemunculan kata pada dokumen dan kueri. Selanjutnya, \sect~\ref{sec:bm25} membahas fungsi skor statistik yang menjadi standar \f{de facto} dalam pemeringkatan teks.
 
-
     \subsection{\f{Term Frequency - Inverse Document Frequency} (TF-IDF)}
     \label{sec:tfidf}
-
 
     \begin{figure}
         \centering
@@ -221,28 +222,167 @@
 
     \begin{enumerate}
         \item faktor $\frac{|\text{d}|}{\text{avgdl}}$ pada $\frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times \left(1 - b + b \times \textcolor{yellow}{\frac{|d|}{\text{avgdl}}}\right)}$ men-\f{penalize} skor pada dokumen yang panjangnya lebih besar dari rata-rata panjang dokumen pada himpunan dokumen $\mathcal{D}$. \pic~\ref{fig:effect-bm25-long-doc} Menjukkan efek dari perbedaan nilai $\text{avgdl}$ terhadap skor yang dihasilkan. Semakin besar rasio $\frac{|d|}{\text{avgdl}}$, semakin kecil skor yang dihasilkan.
-        \item nilai $b$ menentukan seberapa besar efek dari faktor $\frac{|d|}{\text{avgdl}}$ terhadap skor yang dihasilkan. \pic~\ref{fig:effect-bm25-param-b} Menunjukkan efek dari perbedaan nilai $b$ terhadap skor yang dihasilkan. Untuk $\frac{|d|}{\text{avgdl}}<1$, semakin besar nilai $b$, semakin kecil skor yang dihasilkan. Sedangkan untuk $\frac{|d|}{\text{avgdl}}>1$, semakin besar nilai $b$, semakin besar $\text{score}_{\text{BM25}}(t,d)$ yang dihasilkan.
-        \item 
+        \item nilai $b$ menentukan seberapa besar efek dari faktor $\frac{|d|}{\text{avgdl}}$ terhadap skor yang dihasilkan. \pic~\ref{fig:effect-bm25-param-b} Menunjukkjan efek dari perbedaan nilai $b$ terhadap skor yang dihasilkan. Untuk $\frac{|d|}{\text{avgdl}}=1$, Faktor $b$ tidak memiliki pengaruh terhadap skor.
+        \item  nilai $k_1$ men-\f{penalize} kemunculan kata $t$ pada dokumen $d$ yang sering. \pic~\ref{fig:effect-bm25-param-k} Menunjukkan efek dari perbedaan nilai $k_1$ terhadap skor yang dihasilkan. Perhatikan bahwa ketika kemunculan kata $t$ pada dokumen $d$ semakin sering, skor penigkatan skor yang dihasilkan semakin kecil.
     \end{enumerate}
     
 
-\section{Arsitektur \f{Deep Learning}}
+\section{\f{Deep Learning}}
 
-    \subsection{\f{Multilayer Perceptron} (MLP)}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.50\textwidth]{assets/pics/dag-dl.png}
+        \caption{\license.}
+        \label{fig:deep-learning-FFN-dag}
+    \end{figure}
+
+    Arsitektur \f{Deep learning} merujuk pada model \f{machine learning} yang tersusun dari fungsi-fungsi terturunkan ( yang biasa disebut sebagai \f{layer}), dimana komposisi antar fungsi-fungsi tersebut dapat digambarkan sebagai \f{directed acyclic graph} (DAG) yang memetakan suatu \f{input} ke suatu \f{output}. Biasanya, setiap fungsi tersebut dalam Arsitektur \f{Deep learning} memiliki parameter yang ingin diestimasi atau dicari dengan data.
+    
+    \pic~\ref{fig:deep-learning-FFN-dag} menunjukkan arsitektur deep learning yang sederhana, yaitu \f{feed-forward neural network} (FFN). Pada \pic~\ref{fig:deep-learning-FFN-dag}, \f{input} $\mathbf{x}$ akan dipetakan ke \f{output} $\hat y$ melalui serangkaian fungsi $f_1, f_2, f_3$ yang disebut sebagai \f{layer}. Setiap \f{layer} $f_i$ memiliki parameter $\theta_i$ yang akan diestimasi dengan data. Selain itu, \f{Output} dari \f{layer} $f_i$ akan menjadi \f{input} dari \f{layer} $f_{i+1}$. \f{Output} dari \f{layer} $f_3$ adalah \f{output} dari model. Model pada \pic~\ref{fig:deep-learning-FFN-dag} dapat ditulis sebagai \equ~\ref{eq:deep-learning-FFN-dag}.
+
+    \begin{align}
+        \label{eq:deep-learning-FFN-dag}
+        \hat y = f_{\text{model}}(\mathbf{x}; \bm{\theta}) &= f_3(f_2(f_1(\mathbf{x}; \bm{\theta}_1); \bm{\theta}_2); \bm{\theta}_3) \\
+        \label{eq:deep-learning-FFN-dag-end}
+        \text{dengan } \bm{\theta} &= \{\bm{\theta}_1, \bm{\theta}_2, \bm{\theta}_3\}
+    \end{align}
+
+    \subsection{\f{Feed-Forward Neural Network} (FFN)}
+
+    \f{Feed-Forward Neural Network} (FFN) adalah salah satu arsitektur \f{deep learning} yang paling sederhana. Pada \f{feed-forward neural network}, setiap fungsi $f_i$ adalah fungsi linear yang diikuti oleh fungsi aktivasi non-linear $\phi$  yang diterapkan \f{element-wise} pada setiap \f{output}-nya. \f{hyperparameter} lainnya selain fungsi aktivasi adalah kedalamaan model $L$, dan dimensi \f{output} dari setiap \f{layer} $d_1, d_2, \dots, d_L$.
+
+    Untuk permasalahan regresi dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \mathbb{R}^{d_L}$, \equ~\ref{eq:FFN-regesi-start} hingga \equ~\ref{eq:FFN-regesi-end} menunjukkan arsitektur \f{feed-forward neural network} untuk permasalahan regresi dengan kedalaman $L$.
+
+
+    \begin{align}
+        \label{eq:FFN-regesi-start}
+        f_l(\mathbf{x};\mathbf{W}_l, b_l) &= \phi( \mathbf{x} \mathbf{W}_l + \mathbf{b}_l) \in \mathbb{R}^{d_l}, \quad l = 1, 2, \dots, L-1 \\
+        f_L(\mathbf{x}) &= \mathbf{x} \mathbf{W}_L + \mathbf{b}_L \in \mathbb{R}^{d_L} \\
+        f_{\text{model}}(\mathbf{x};\bm{\theta}) &= f_L(f_{L-1}(\dots f_1(\mathbf{x})) \dots) \\
+        \phi(\mathbf{x}) &= \text{fungsi aktivitasi non-linear} \\
+        \bm{\theta} &= \{\mathbf{W}_1, \mathbf{b}_1, \mathbf{W}_2, \mathbf{b}_2, \dots, \mathbf{W}_L, \mathbf{b}_L\} \\
+        \mathbf{W}_l &= \text{matriks bobot}  \in \mathbb{R}^{d_{l-1} \times d_l} \\
+        \label{eq:FFN-regesi-end}
+        \mathbf{b}_l &= \text{vektor bias} \in \mathbb{R}^{d_l}
+    \end{align} 
+
+    Untuk Permasalahan Klasifikasi Biner dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \{0, 1\}$, \equ~\ref{eq:FFN-klasifikasi-biner-start} hingga \equ~\ref{eq:FFN-klasifikasi-biner-end} menunjukkan arsitektur \f{feed-forward neural network} untuk permasalahan klasifikasi.
+
+    \begin{align}
+        \label{eq:FFN-klasifikasi-biner-start}
+        f_{\text{model}}(\mathbf{x};\bm{\theta}) &= f_L(f_{L-1}(\dots f_1(\mathbf{x})) \dots), \\
+        f_L(\mathbf{x}) &= \sigma(\mathbf{x} \mathbf{W}_L + \mathbf{b}_L \in \mathbb{R}), \\
+        \sigma(x) &= \frac{1}{1 + e^{x}} \in (0, 1), \\
+        \text{decision}(\mathbf{x};\bm{\theta}) &= \begin{cases}
+        1 & \text{jika } f(\mathbf{x};\bm{\theta}) \geq \text{threshold} \\
+        0 & \text{jika } f(\mathbf{x};\bm{\theta}) < \text{threshold} \\
+        \end{cases}, \\
+        \label{eq:FFN-klasifikasi-biner-end}
+        \text{threshold}&\in [0, 1].
+    \end{align}
+
+    Perbedaan utama antara \f{feed-forward neural network} untuk permasalahan regresi dan klasifikasi adalah fungsi aktivasi pada \f{output layer}. Pada permasalahan regresi, fungsi aktivasi pada \f{output layer} adalah fungsi identitas, sedangkan pada permasalahan klasifikasi, fungsi aktivasi pada \f{output layer} adalah fungsi \f{sigmoid}. Tujuan digunakan fungsi \f{sigmoid} pada permasalahan klasifikasi adalah untuk memastikan bahwa \f{output} dari model berada pada rentang $[0, 1]$, dimana nilai tersebut dapat diinterpretasikan sebagai probabilitas $\mathbf{x}$ termasuk pada kelas positif. Selain itu, \f{threshold} pada \equ~\ref{eq:FFN-klasifikasi-biner-end} digunakan untuk menentukan apakah $\mathbf{x}$ termasuk pada kelas positif atau negatif.
 
     \subsection{Fungsi Aktivasi}
 
+    Fungsi Aktivasi pada setiap \f{layer} $f_i$ pada \f{feed-forward neural network} digunakan untuk menambahkan non-linearitas pada model. Sebab, tanpa adanya fungsi aktivasi non-linear, model \f{feed-forward neural network} akan menjadi model linear. Selain itu, fungsi aktivasi juga biasanya adalah fungsi yang terturunkan, meskipun tidak perlu terturunkan disetiap titik. \tab~\ref{tab:activation-function} menunjukkan beberapa fungsi aktivasi yang sering digunakan pada \f{feed-forward neural network}. \pic~\ref{fig:activation-function} menunjukkan grafik dari fungsi aktivasi pada \tab~\ref{tab:activation-function} dan turunannya.
+
+    \begin{table}
+        \centering
+        \caption{Beberapa fungsi aktivasi yang sering digunakan pada \f{feed-forward neural network}.}
+        \label{tab:activation-function}
+        \begin{tabular}{|c|c|}
+            \hline
+            \textbf{Fungsi Aktivasi} & \textbf{Persamaan} \\
+            \hline
+            \hline
+            \f{Sigmoid} & $\sigma(x) = \frac{1}{1 + e^{-x}}$ \\
+            \hline
+            \f{Tanh} & $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ \\
+            \hline
+            \f{ReLU} & $\text{ReLU}(x) = \max(0, x)$ \\
+            \hline
+            \f{Leaky ReLU} & $\text{LeakyReLU}(x) = \max(\alpha x, x), \alpha \in [0, 1]$ \\
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.50\textwidth]{assets/pics/act_function.png}
+        \caption{\license.}
+        \label{fig:activation-function}
+    \end{figure}
+
+
     \subsection{Fungsi \f{Loss}}
-        
+    Misalkan $\mathcal{D} = \{(\mathbf{x}_1, \mathbf{y}_1), (\mathbf{x}_2, \mathbf{y}_2), \dots, (\mathbf{x}_n, \mathbf{y}_n)\}$ adalah \f{dataset} yang terdiri dari $n$ pasangan \f{input} dan \f{output}. Parameter $\bm{\theta}$ pada $f_{\text{model}}$ diestimasi dengan melakukan \f{fitting} pada \f{dataset} $\mathcal{D}$. Untuk melakukan \f{fitting} pada \f{dataset} $\mathcal{D}$, diperlukan suatu fungsi \f{loss} yang mengukur seberapa baik hasil pemetaan $f_{\text{model}}$ dengan \f{input} $\mathbf{x}_i$ terhadap \f{output} $\mathbf{y}_i$. Meskipun sembarang fungsi yang terturunkan dapat digunakan sebagai fungsi \f{loss}, namun pemilihan fungsi \f{loss} berdasarkan \f{maximum likelihood estimation} (MLE) lebih disarankan. 
+    
+    Untuk permasalahan klasifikasi biner, fungsi \f{loss} yang sering digunakan adalah \f{binary cross entropy} (BCE) seperti yang ditinjukkan pada \equ~\ref{eq:bce}. Penurunan fungsi \f{loss} BCE dengan mengikuti prinsip MLE yang akan dijelaskan pada bagian selanjutnya.
+    
+    Misalkan $y_i \mid \mathbf{x}$ mengikuti distribusi bernouli dengan parameter $\text{p} = f_{\text{model}}(\mathbf{x};\bm{\theta})$ yang saling independen antar satu sama lainnya. \equ~\ref{eq:definisi-random-variable} menunjukkan definisi dari $y_i \mid \mathbf{x}$.
+
+    \begin{align}
+        \label{eq:definisi-random-variable}
+        y_i \mid \mathbf{x} &\overset{\text{iid}}{\sim} \text{Bernoulli}(f_{\text{model}}(\mathbf{x};\bm{\theta})) \\
+        p(y_i \mid \mathbf{x}) &= f_{\text{model}}(\mathbf{x};\bm{\theta})^{y_i} (1 - f_{\text{model}}(\mathbf{x};\bm{\theta}))^{1 - y_i} 
+    \end{align} 
+
+    Fungsi $\f{likelihood}$ dari $\bm{\theta}$ terhadap \f{dataset} $\mathcal{D}$ dapat ditulis sebagai berikut:
+
+    \begin{align}
+        \mathcal{L}(\bm{\theta}) &= \prod_{i=1}^N p(y_i \mid \mathbf{x}_i; \bm{\theta}).
+    \end{align}
+
+    Dengan prinsip MLE, parameter $\bm{\theta}$ yang dicari adalah parameter $\bm{\theta}$ yang memaksimalkan fungsi \f{likelihood} $\mathcal{L}(\bm{\theta})$,
+
+    \begin{align}
+        \bm{\theta}_{\text{MLE}} &= \arg\max_{\bm{\theta}} \mathcal{L}(\bm{\theta}).
+    \end{align}
+
+    Untuk mempermudah perhitungan, fungsi \f{likelihood} diubah menjadi negatif \f{log-likelihood} $\mathcal{\ell}(\bm{\theta})$, sehingga permasalahan optimasi menjadi:
+
+    \begin{align}
+        \ell{(\bm{\theta})} &= -\log\mathcal{L}(\bm{\theta}), \\
+        &= -\sum_{i=1}^N \log\left(p(y_i \mid \mathbf{x}_i; \bm{\theta})\right), \\
+        \bm{\theta}_{\text{MLE}} &= \arg\min_{\bm{\theta}} \ell(\bm{\theta}).
+    \end{align} 
+
+    Dengan mengganti $p(y_i \mid \mathbf{x}_i; \bm{\theta})$ dengan fungsi distribusi-nya, maka fungsi \f{loss} yang digunakan untuk permasalahan klasifikasi biner adalah \f{binary cross entropy} (BCE) seperti pada \equ~\ref{eq:bce}.
+
+    \begin{align}
+        \bm{\theta}_{\text{MLE}} &= \arg\min_{\bm{\theta}}\sum_{i=1}^{N}\underbrace{-y_i \log\left(f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right) - (1 - y_i) \log\left(1 - f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right)}_{\text{Binary Cross Entropy Loss } L(y_i, f_{\text{model}}(\mathbf{x}_i; \bm{\theta}))}, \\
+        \label{eq:bce} 
+        L(y_i, f_{\text{model}}(\mathbf{x}_i; \bm{\theta})) &= -y_i \log\left(f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right) - (1 - y_i) \log\left(1 - f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right).
+    \end{align}
+
+    Untuk mendapatkan $f_\text{model}$ dengan performa yang baik, dibutuhkan model dengan nilai $\ell(\bm{\theta})$ seminimum mungkin. Namun, pencarian $\bm{\theta}$ sehingga $ \ell (\bm{\theta})$ minumum secara analitik tidak dapat dilakukan karena non-linearitas yang ada pada model, dengan kata lain solusi dari $\nabla_{\bm{\theta}} \ell(\bm{\theta}) = 0$ tidak dapat dicari secara analitik. Sebagai gantinya, pencarian $\bm{\theta}$ dilakukan secara numerik dengan menggunakan metode \f{gradient descent} yang akan dijelaskan pada bagian selanjutnya.
+    
     \subsection{\f{Backpropagation}}
+
+    \subsection{\f{Optimisasi}}
+
+    \f{Gradient Descent} adalah metode numerik yang digunakan untuk mencari nilai $\bm{\theta}$ yang meminimalkan fungsi \f{loss} $\ell(\bm{\theta})$. Pada metode \f{gradient descent}, nilai $\bm{\theta}$ diupdate secara iteratif dengan mengikuti arah negatif dari \f{gradient} $\nabla_{\bm{\theta}} \mathcal{L}(\bm{\theta})$ yang menunjukkan arah dari penurunan fungsi \f{loss} $\mathcal{L}(\bm{\theta})$. \equ~\ref{eq:gradient-descent} menunjukkan algoritma \f{gradient descent}.
+
+    \begin{align}
+        \mathcal{D} &= \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \dots, (\mathbf{x}_n, y_n)\} \\
+        \label{eq:gradient-descent}
+        \bm{\theta}^{(t+1)} &= \bm{\theta}^{(t)} - \eta \frac{1}{n} \sum_{i=1}^{n} \nabla_{\bm{\theta}} L(y_i, f_{\text{model}}(\mathbf{x}_i; \bm{\theta}^{(t)})), \\
+        \text{dengan } \eta &\in \mathbb{R}^+ \text{ adalah \f{learning rate}}.
+    \end{align}
+
+    Perlu diketahui bahwa pada metode \f{gradient descent} memperbarui parameter dengan mengambil rata-rata \f{gradient} dari semua data pada \f{dataset} pelatihan $\mathcal{D}$. Hal ini menciptakan masalah ketika model menggunakan banyak parameter dan jumlah data pada \f{datasets} latih besar, yaitu komputasi \f{forward pass} dan \f{backward pass} menjadi sangat mahal dan diperlukan memori yang besar untuk menyimpan gradient dari semua data pada \f{dataset} latih. Untuk mengatasi masalah tersebut, digunakan metode \f{stochastic gradient descent} (SGD) dimana setiap \f{update} dari parameter $\bm{\theta}$ dihitung dengan mengambil rata-rata \f{gradient} dari sebagian data pada \f{dataset} $\mathcal{B}\subseteq\mathcal{D}$. \equ~\ref{eq:stochastic-gradient-descent} menunjukkan algoritma \f{stochastic gradient descent}.
+
+    \begin{align}
+        \mathcal{B} = \{(\mathbf{x}_{i_1}, y_{i_1}), (\mathbf{x}_{i_2}, y_{i_2}), \dots, (\mathbf{x}_{i_b}, y_{i_b})\} &\subseteq \mathcal{D}, \mid \mathcal{B} \mid \ll \mid \mathcal{D} \mid,j \\
+        \label{eq:stochastic-gradient-descent-approx}
+        \frac{1}{n} \sum_{i=1}^{n} \nabla_{\bm{\theta}} L(y_i, f_{\text{model}}(\mathbf{x}_i; \bm{\theta})) &\approx \frac{1}{b} \sum_{i=1}^{b} \nabla_{\bm{\theta}} L(y_{i}, f_{\text{model}}(\mathbf{x}_{i}; \bm{\theta})), \\
+        \label{eq:stochastic-gradient-descent}
+        \bm{\theta}^{(t+1)} &= \bm{\theta}^{(t)} - \eta \frac{1}{b} \sum_{i=1}^{b} \nabla_{\bm{\theta}} L(y_{i}, f_{\text{model}}(\mathbf{x}_{i}; \bm{\theta}^{(t)})).
+    \end{align}
 
     \subsection{Inisialisasi Bobot}
     \label{sec:kaiminginit}
-
-
-        \subsubsection{Inisialisasi Kaiming Menjaga Variansi \f{ouput} pada \f{Hidden Layer}}
-
-        \subsubsection{Insialisasi Kaiming Menjaga Variansi Gradien}
 
 
 

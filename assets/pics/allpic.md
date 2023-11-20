@@ -34,3 +34,10 @@
 ![](effect-bm25-param-k.png)
 
 
+![](act_function.png)
+
+![](dag-dl.png)
+
+![](dl-different-hidden-func.png)
+
+![](lilianweng-transformer.png)

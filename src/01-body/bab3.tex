@@ -32,18 +32,21 @@
 	\begin{cases}
 	1, & \text{jika } i = \arg\max_{j} f_{attn}(\mathbf{q}, \mathbf{k}_j) \\
 	0, & \text{lainnya}
-	\end{cases},
+	\end{cases}.
 	\end{align}
-	
 
-	dan $f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi yang menghitung nilai keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi. 
+	$f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi yang menghitung nilai keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi.
 
+	Sebagai contoh, untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[1,0]), ([1,2],[0,1])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$, nilai dari $\text{Attention}( \mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $[0,1]$, karena nilai maksimal $f_\text{attn}$ terjadi ketika $\mathbf{k} = [1,2]$. 
 
-	Kasih contoh hard attention.
+	Mekansime \f{attention} pada \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention} yang tidak terturunkan, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi \f{softmax}. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} dan \pic~\ref{fig:soft-attention} menunjukkan bagaimana \f{soft attention} dilakukan.
 
-
-	Mekansime \f{attention} pada \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention} yang tidak terturunkan, akibatnya \f{hard attention} tidak dapat dilatih dengan \f{backpropagation}, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi softmax. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} dan gambarxx menunjukkan bagaimana \f{soft attention} dilakukan.
-
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/softattention.png}
+		\caption{Ilustrasi dari mekanisme \f{soft attention} \citep{zhang2023dive}}
+		\label{fig:soft-attention}
+	\end{figure}
 
 	\begin{align}
 		\label{equ:soft-attention-start}
@@ -55,9 +58,9 @@
 		0 \leq \alpha_{i} &\leq 1.
 	\end{align}
 
-	Dengan rata-rata terbobot dari $\mathbf{V}$, \f{soft attention} dapat dilatih dengan \f{backpropagation} yang merupakan syarat \f{fundamental} yang harus dimiliki oleh sebuah model \f{deep learning}.
+	Dengan rata-rata terbobot dari $\mathbf{V}$, \f{soft attention} dapat dicari turunannya dengan \f{backpropagation} yang merupakan syarat \f{fundamental} yang harus dimiliki oleh sebuah model \f{deep learning}.
 
-	kasih contoh soft attention.
+	Untuk contoh yang serupa dengan \f{hard attention},hasil dari $\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $0.268 [1,0] + 0.732 [0,1] = [0.732, 0.268]$ dengan $\alpha_1 = \frac{\exp(4)}{\exp(4) + \exp(5)} \approx 0.268$ dan $\alpha_2 = \frac{\exp(5)}{\exp(4) + \exp(5)} \approx 0.732$.
 
 	Pada kasus kumpulan kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, Perhitungan atensi untuk setiap triplet $(\mathbf{q}_i, \mathbf{K}, \mathbf{V})$ dapat dihitung secara bersamaan dengan menggunakan operasi matriks. \equ~\ref{equ:soft-attention-start} hingga \equ~\ref{equ:soft-attention-end} yang digunakan untuk kasus 1 kueri dapat ditulis ulang seperti pada \equ~\ref{equ:soft-attention-matrix-start} hingga \equ~\ref{equ:soft-attention-matrix-end}.
 
@@ -71,10 +74,10 @@
 		\end{bmatrix} \in \mathbb{R}^{m \times d_k}, \\
 		\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \mathbf{A} \mathbf{V} \in \mathbb{R}^{m \times d_v},\\
 		\mathbf{A} &= \begin{bmatrix}
-			\mathbf{\alpha}_1 \\
-			\mathbf{\alpha}_2 \\
+			\bm{\alpha}_1 \\
+			\bm{\alpha}_2 \\
 			\vdots \\
-			\mathbf{\alpha}_m
+			\bm{\alpha}_m
 		\end{bmatrix} = \begin{bmatrix}
 			\alpha_{11} & \alpha_{12} & \dots & \alpha_{1n} \\
 			\alpha_{21} & \alpha_{22} & \dots & \alpha_{2n} \\
@@ -92,16 +95,16 @@
 
 	Salah satu pengunaan mekanisme \f{attention} terdapat pada regresi kernel, yang merupakan model statistik non-parametrik. \f{Attention} berubah menjadi regresi kernel dengan memilih fungsi keserupaan $f_{attn}(\mathbf{q}, \mathbf{k})$ menjadi fungsi non-parametrik $\mathcal{K}(\mathbf{q}, \mathbf{k})$, dan mengganti fungsi softmax menjadi fungsi normalisasi standar, seperti pada \equ~\ref{equ:regresi-kernel-end}.
 	
-	Pada model non-parametrik, model yang dibangun tidak memiliki parameter yang harus dicari atau dipelajari, melainkan model non-parametrik menggunakan seluruh atau sebagian dari \f{datasets} latih $\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \dots, (\mathbf{x}_n, y_n)\}$ untuk memberikan prediksi $y_*$ untuk sebuah data uji $\mathbf{x}_*$. \equ~\ref{equ:regresi-kernel-start} hingga \equ~\ref{equ:regresi-kernel-end} menunjukkan bagaimana model regresi kernel melakukan prediksi $y_*$ untuk sebuah data uji $\mathbf{x}_*$.
+	Pada model non-parametrik, model yang dibangun tidak memiliki parameter yang harus diestimasi atau dipelajari, melainkan model non-parametrik menggunakan seluruh atau sebagian dari \f{datasets} latih $\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \dots, (\mathbf{x}_n, y_n)\}$ untuk memberikan prediksi $y_*$ untuk sebuah data uji $\mathbf{x}_*$. \equ~\ref{equ:regresi-kernel-start} hingga \equ~\ref{equ:regresi-kernel-end} menunjukkan bagaimana model regresi kernel melakukan prediksi $y_*$ untuk sebuah data uji $\mathbf{x}_*$.
 
 	\begin{align}
 		\label{equ:regresi-kernel-start}
 		y_{*} = f(\mathbf{x}_{*}) &= \sum_{i=1}^{n} \alpha_{i}(\mathbf{x}_{*},\mathbf{x}_i) y_i, \\
 		\label{equ:regresi-kernel-end}
-		\text{dengan } \alpha_{i}(\mathbf{x}_{*},\mathbf{x}_i) &= \frac{\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i)}{\sum_{j=1}^{n} \mathcal{K}(\mathbf{x}_{*},\mathbf{x}_j)} \in [0, 1],
+		\text{dengan } \alpha_{i}(\mathbf{x}_{*},\mathbf{x}_i) &= \frac{\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i)}{\sum_{j=1}^{n} \mathcal{K}(\mathbf{x}_{*},\mathbf{x}_j)} \in [0, 1].
 	\end{align}
 
-	dan $\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i)$ adalah fungsi kernel (non-parametrik) yang menghitung keserupaan antara data uji $\mathbf{x}_{*}$ dengan data latih $\mathbf{x}_i$.\equ~\ref{equ:regresi-kernel-end} merupakan bentuk khusus dari mekansime \f{soft attention} \equ~\ref{equ:soft-attention-start}, dengan kueri $\mathbf{q}$ adalah data uji $\mathbf{x}_{*}$, kunci $\mathbf{k}_i$ adalah data latih $\mathbf{x}_i$, nilai $\mathbf{v}_i$ adalah $y_i$. Gambarxx dan \equ~\ref{equ:regresi-kernel-gaussian-start} menujukkan contoh kernel regresi dengan pemilihan kernel Gaussian $\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i) = \exp(-\frac{||\mathbf{x}_{*} - \mathbf{x}_i||^2 \beta}{2})$.
+	$\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i)$ adalah fungsi kernel (non-parametrik) yang menghitung keserupaan antara data uji $\mathbf{x}_{*}$ dengan data latih $\mathbf{x}_i$. \equ~\ref{equ:regresi-kernel-end} merupakan bentuk khusus dari mekansime \f{soft attention} \equ~\ref{equ:soft-attention-start}, dengan kueri $\mathbf{q}$ adalah data uji $\mathbf{x}_{*}$, kunci $\mathbf{k}_i$ adalah data latih $\mathbf{x}_i$, nilai $\mathbf{v}_i$ adalah $y_i$. \equ~\ref{equ:regresi-kernel-gaussian-start} menujukkan contoh kernel regresi dengan pemilihan kernel Gaussian $\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i) = \exp(-\frac{||\mathbf{x}_{*} - \mathbf{x}_i||^2 \beta}{2})$.
 
 	\begin{align}
 		\label{equ:regresi-kernel-gaussian-start}
@@ -129,7 +132,7 @@
 	\text{dengan } &\mathbf{W}^q \in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}, \mathbf{W}_{\text{out}} \in \mathbb{R}^{d_{\text{attn}} \times 1},
 	\end{align}
 
-	Dengan $\mathbf{W}^q$, $\mathbf{W}^k$, dan $\mathbf{W}^{\text{out}}$ adalah matriks parameter bobot yang akan dicari atau dipelajari selama proses pelatihan. Contoh parametrik \f{attention} yang lebih sederhana adalah \f{dot-product attention}. Fungsi $f_{attn}$ yang digunakan adalah perkalian titik antara $\mathbf{q}$ dan $\mathbf{k}$ di ruang vektor yang dipelajari (\f{learned embedding space}). \equ~\ref{equ:dot-product-attention} menunjukkan bagaimana \f{dot-product attention} dihitung.
+	Dengan $\mathbf{W}^q$, $\mathbf{W}^k$, dan $\mathbf{W}^{\text{out}}$ adalah matriks parameter bobot yang akan diestimasi atau dipelajari selama proses pelatihan. Contoh parametrik \f{attention} yang lebih sederhana adalah \f{dot-product attention}. Fungsi $f_{attn}$ yang digunakan adalah perkalian titik antara $\mathbf{q}$ dan $\mathbf{k}$ di ruang vektor yang dipelajari (\f{learned embedding space}). \equ~\ref{equ:dot-product-attention} menunjukkan bagaimana \f{dot-product attention} dihitung.
 
 	\begin{align}
 		\label{equ:dot-product-attention}
@@ -138,6 +141,14 @@
 	\end{align}
 
 \section{Transformer}
+
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/lilianweng-transformer.png}
+		\caption{Arsitektur \f{transformer} \citep{weng2018attention}.}
+		\label{fig:transformer}
+	\end{figure}
 
 	\f{Transformers} merupakan Arsitektur \f{deep learning} yang pertama kali diperkenalkan oleh \cite{transformerori}. Awalnya Transformers merupakan model \f{sequance to sequance} yang diperuntukkan untuk permasalahan mesin translasi neural (\f{neural machine translation}). Namun, sekarang \f{transformer} juga digunakan untuk permasalahan pemrosesan bahasa alami lainnya. model-model yang berarsitektur \f{transformer} menjadi model \f{state-of-the-art} untuk permasalahan pemrosesan bahasa alami lainnya, seperti \f{question answering}, \f{sentiment analysis}, dan \f{named entity recognition}.
  
@@ -150,7 +161,9 @@
 		\item \f{Decoder-encoder attention}: menggunakan barisan representasi kontekstual dari \f{input}, dan barisan representasi kontekstual dari \f{target} untuk menghasilkan token berikutnya yang merupakan hasil prediksi dari model. Barisan \f{target} yang digabung dengan token hasil prediksi tersebut akan menjadi barisan \f{target} untuk prediksi selanjutnya.
 	\end{enumerate}
 
-	\subsection{\f{Token Embedding}}
+	Arsitektur dari \f{transformer} mengimplementasikan struktur pasangan encoder-decoder. Aristektur dari \f{transformer} dapat dilihat pada \pic~\ref{fig:transformer}. Lapisan\f{encoder} berfungsi untuk memahami konteks suatu kata dalam dokumen atau kalimat, sementara lapisan \f{decoder} digunakan untuk menyelesaikan masalah translasi menuju bahasa berbeda. \sect~\ref{sec:token-embedding} hingga \sect~\ref{sec:encoder} menjelaskan arsitektur model \f{transformer} dan berbagai mekanisme yang menyusun model \f{transformer}, khususnya \f{transformer encoder} yang menjadi \f{building block} dari \f{Biderectional Encoder Representations from Transformers} (BERT).
+
+	\subsection{\f{Token Embedding (Input Embedding)}}
 	\label{sec:token-embedding}
 
 	Perlu diingat kembali bahwa \f{input} dari \f{Attention} (dan tentunya \f{transformer}) adalah barisan vektor. Jika \f{Attention} ingin dapat digunakan pada permasalahan bahasa, barisan kata atau subkata (selanjutnya disebut token) harus terlebih dahulu diubah menjadi barisan vektor.
@@ -162,7 +175,7 @@
 		\item Representasi token yang buruk. Operasi vektor yang dilakukan pada \f{one-hot encoding} tidaklah bermakna. Misalnya, Jarak antar token akan selalu sama pada \f{one-hot encoding}, yaitu $\sqrt{2}$.
 	\end{enumerate}
 
-	Vektor yang padat (\f{dense}) dan memiliki representasi token yang baik adalah vektor yang dinginkan. Representasi vektor yang baik diharapkan dapat dipelajari selama proses pelatihan model. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start} hingga \equ~\ref{equ:token-embedding-end} menunjukkan bagaimana representasi vektor dari barisan suatu token $t$ dihitung. 
+	Untuk Mengatasi kekurangan dari representasi \f{one-hot encoding}, reprentasi yang digunakan adalah vektor padat yang akan dipelajari ketika proses pelatihan. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start} hingga \equ~\ref{equ:token-embedding-end} menunjukkan bagaimana representasi vektor dari barisan suatu token $t$ dihitung. 
 
 	\begin{align}
 		\label{equ:token-embedding-start}
@@ -198,14 +211,14 @@
 	
 	Akibatnya, untuk nilai $d_{attn}$ yang cukup besar, akan terdapat satu elemen atensi acak $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i$ sehinnga $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i \gg (\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_j$ untuk sembarang nilai atensi lainnya. Jika faktor $d_{attn}$ tidak dihilangkan, \f{softmax} dari nilai atensi akan jenuh ke 1 untuk satu elemen acak tersebut dan 0 untuk elemen lainnya. Akibatnya, gradien pada fungsi \f{softmax} akan mendekati nol sehingga model tidak dapat belajar parameter dengan baik. 
 
-	Dengan \f{scaled dot product attention}, tidak ada faktor $d_{attn}$ pada variansi dari nilai atensi. faktor $\sigma^4$ pada \equ~\ref{equ:variance-scaled-dot-product-attention} tidak menjadi masalah karena dengan inisialisasi bobot Kaiming dan \f{layer normalisasi} yang dijelaskan pada \sect~\ref{sec:kaiminginit} dan \sect~\ref{sec:layer-normalization}, nilai $\sigma^2 \approx 1$ sehingga $\sigma^4 \approx \sigma^2 \approx 1$.
+	Dengan \f{scaled dot product attention}, tidak ada faktor $d_{attn}$ pada variansi dari nilai atensi. faktor $\sigma^4$ pada \equ~\ref{equ:variance-scaled-dot-product-attention} tidak menjadi masalah karena inisialisasi bobot Kaiming dan \f{layer normalisasi} yang dijelaskan pada \sect~\ref{sec:kaiminginit} dan \sect~\ref{sec:layer-normalization} mengakibatkan $\sigma^2 \approx 1$ sehingga $\sigma^4 \approx \sigma^2 \approx 1$.
 
 	\begin{align}
 		\label{equ:variance-scaled-dot-product-attention}
 		\text{(scaled dot product attention) }\text{Var}\left(\frac{\mathbf{qW}^q (\mathbf{kW}^k)^{\top}}{\sqrt{d_{attn}}}\right) = \frac{\sigma^4 d_{attn}}{d_{attn}} = \sigma^4
 	\end{align}
 
-	Terakhir, untuk kumpulan vektor kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, dan kumpulan vektor kunci dan nilai $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, \f{scaled dot product attention} dapat dihitung secara bersamaan dengan menggunakan operasi matriks. \equ~\ref{equ:scaled-dot-product-attention-matrix-start} hingga \equ~\ref{equ:scaled-dot-product-attention-matrix-end} menunjukkan bagaimana \f{scaled dot product attention} dihitung.
+	Terakhir, untuk kumpulan vektor kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, dan kumpulan vektor kunci dan nilai $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, \f{scaled dot product attention} dapat dihitung secara bersamaan seperti pada \equ~\ref{equ:scaled-dot-product-attention-matrix-start} hingga \equ~\ref{equ:scaled-dot-product-attention-matrix-end}.
 
 	\begin{align}
 	\label{equ:scaled-dot-product-attention-matrix-start}
@@ -237,14 +250,14 @@
 
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.5\textwidth]{assets/pics/rnn-compare-selfattention.png}
+		\includegraphics[width=1\textwidth]{assets/pics/rnn-compare-selfattention.png}
 		\caption{Perbandingan RNN dan \f{self-attention} dalam menghasilkan representasi vektor kontekstual. Pada RNN, representasi vektor kontekstual setiap token bergantung pada perhitungan token sebelumnya. Pada \f{self-attention}, representasi vektor kontekstual setiap token dihitung secara independen dan paralel.}
 		\label{fig:self-attention-rnn}
 	\end{figure}
 
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.5\textwidth]{assets/pics/self-attn-example.png}
+		\includegraphics[width=1\textwidth]{assets/pics/self-attn-example.png}
 		\caption{Ilustrasi \f{self-attention} dalam menghasilkan representasi vektor kontekstual dari barisan token. Representasi vektor dari token \f{it} akan bergantung terhadap barisan token \f{input}.}
 		\label{fig:self-attention-example}
 	\end{figure}
@@ -275,6 +288,7 @@
 	\label{sec:layer-normalization}
 
 	\subsection{Transformer Encoder}
+	\label{sec:encoder}
 
 \section{Bidirectional Encoder Representations from Transformers (BERT)}
 	\subsection{Representasi Input}

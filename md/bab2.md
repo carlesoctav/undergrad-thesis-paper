@@ -134,7 +134,25 @@ f_L(\mathbf{x}) &= \mathbf{x} \mathbf{W}_L + \mathbf{b}_L \in \mathbb{R} \\
 \end{align}
 $$
 
+# Fungsi Aktivasi
+
+| extbf{Fungsi Aktivasi} | \textbf{Persamaan}                             | \textbf{Turunan}                        |
+|------------------------|------------------------------------------------|-----------------------------------------|
+| \f{Sigmoid}            | $\sigma(x) = \frac{1}{1 + e^{-x}}$             | $\sigma'(x) = \sigma(x)(1 - \sigma(x))$ |
+| \f{Tanh}               | $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ | $\tanh'(x) = 1 - \tanh^2(x)$            |
+| \f{ReLU}               | $\text{ReLU}(x) = \max(0, x)$                  | $\text{ReLU}'(x) = \begin{cases}        |
+| 1                      | \text{jika } x > 0                             |
+| 0                      | \text{jika } x \leq 0                          |
+| \f{Leaky ReLU}         | $\text{LeakyReLU}(x) = \max(0.01x, x)$         | $\text{LeakyReLU}'(x) = \begin{cases}   |
+| 1                      | \text{jika } x > 0                             |
+| 0.01                   | \text{jika } x \leq 0                          |
+
+
+
 # loss function
+
+
+
 
 $$
 \{(\mathbf{x}_i, y_i)\}_{i=1}^N
