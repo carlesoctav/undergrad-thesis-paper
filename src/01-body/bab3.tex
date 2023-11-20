@@ -166,6 +166,13 @@
 	\subsection{\f{Token Embedding (Input Embedding)}}
 	\label{sec:token-embedding}
 
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/token-embedding.png}
+		\caption{Ilustrasi dari representasi token. Gambar kiri menunjukkan representasi token dengan \f{one-hot encoding}, sedangkan gambar kanan menunjukkan representasi token dengan \f{token embedding} \citep{geiger2022deeplearning}}
+		\label{fig:token-embedding}
+	\end{figure}
+
 	Perlu diingat kembali bahwa \f{input} dari \f{Attention} (dan tentunya \f{transformer}) adalah barisan vektor. Jika \f{Attention} ingin dapat digunakan pada permasalahan bahasa, barisan kata atau subkata (selanjutnya disebut token) harus terlebih dahulu diubah menjadi barisan vektor.
 
 	Representasi vektor dari token yang paling sederhana adalah dengan \f{one-hot encoding}. Andaikan $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ adalah semua kemungkinan token yang mungkin muncul dalam permasalahan bahasa yang ingin diselesaikan. Untuk sembarang barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$, representasi vektor dari token $t_{i_j}$ adalah vektor $\mathbf{oh}_{i_j} = [0, \dots, 0, 1, 0, \dots, 0] \in \mathbb{R}^{|\mathcal{T}|}$, dengan nilai 1 pada indeks ke $j$ dan nilai 0 pada indeks lainnya. \f{One-hot encoding} tentunya memiliki kelemahan:
@@ -246,8 +253,6 @@
 	\end{align}
 
 	\subsection{\f{Self-Attention}}
-
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/rnn-compare-selfattention.png}
@@ -262,27 +267,52 @@
 		\label{fig:self-attention-example}
 	\end{figure}
 
-	\f{self-Attention layer} pada gambarxx adalah layer yang digunakan \f{transformer} untuk menghasilkan representasi vektor yang kontekstual dari barisan token input. Berbeda dengan RNN dalam menghasilkan representasi vektor kontekstual, \f{self-attention} tidak memerlukan ketergantungan sekuensial. Artinya representasi vektor kontekstual setiap tokennya dapat dihitung secara independen dan paralel.\pic~\ref{fig:self-attention-rnn} mengambarkan perbedaan kedua arsitektur dalam menghasilkan representasi vektor kontekstual. Kemampuan Paralelisme dari \f{self-attention} membuat proses komputasi menjadi lebih cepat pada \f{hardware} yang mendukung paralelisme. 
+	\f{self-Attention layer} adalah layer yang digunakan \f{transformer} untuk menghasilkan representasi vektor yang kontekstual dari barisan token input. Berbeda dengan RNN dalam menghasilkan representasi vektor kontekstual, \f{self-attention} tidak memerlukan ketergantungan sekuensial. Artinya representasi vektor kontekstual setiap tokennya dapat dihitung secara independen dan paralel. \pic~\ref{fig:self-attention-rnn} mengambarkan perbedaan kedua arsitektur dalam menghasilkan representasi vektor kontekstual. Kemampuan Paralelisme dari \f{self-attention} membuat proses komputasi menjadi lebih cepat pada \f{hardware} yang mendukung paralelisme. 
 
-	Perhitungan \f{self-attention} pada \f{transformer} yang digunakan adalah \f{scaled dot product attention} yang telah dijelaskan pada \sect~\ref{sec:scaled-dot-product-attention}. Pada \f{self-attention}, vektor kueri $\mathbf{q}$, vektor kunci $\mathbf{k}$, dan vektor nilai $\mathbf{v}$ adalah vektor yang sama, yaitu \f{embedding} token $\mathbf{E}$ yang dijelaskan pada \sect~\ref{sec:token-embedding}. \equ~\ref{equ:self-attention-start} hingga \equ~\ref{equ:self-attention-end} menunjukkan bagaimana \f{self-attention} dihitung.
-
+	Perhitungan \f{self-attention} pada \f{transformer} yang digunakan adalah \f{scaled dot product attention} yang telah dijelaskan pada \sect~\ref{sec:scaled-dot-product-attention}. Pada \f{self-attention}, vektor kueri $\mathbf{q}$, vektor kunci $\mathbf{k}$, dan vektor nilai $\mathbf{v}$ adalah vektor yang sama, yaitu \f{embedding} token $\mathbf{E}$ yang dijelaskan pada \sect~\ref{sec:token-embedding}. Selain itu, Dimensi dari \f{learned embedding space} $d_{\text{attn}}$ yang digunakan untuk perhitungan nilai atensi adalah $d_{\text{token}}$ yaitu dimensi dari \f{token embedding}. \equ~\ref{equ:self-attention-start} hingga \equ~\ref{equ:self-attention-end} menunjukkan bagaimana \f{self-attention} dihitung.
+	
+	
 	\begin{align}
 		\label{equ:self-attention-start}
+		\mathbf{E} &= \text{Embedding dari barisan token} \in \mathbb{R}^{L \times d_{\text{token}}} \\
 		\text{Self-Attention}(\mathbf{E}) &= \text{Attention}(\mathbf{EW}^q, \mathbf{EW}^k, \mathbf{EW}^v) \\
 		\label{equ:self-attention-end}
-		&= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q (\mathbf{E} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}}) (\mathbf{E} \mathbf{W}^v) \in \mathbb{R}^{L \times d_{\text{attn}}}
+		&= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q (\mathbf{E} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}}) (\mathbf{E} \mathbf{W}^v) \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\text{ dengan } \mathbf{W}^q, \mathbf{W}^k, &\in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}, \mathbf{W}^v \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}
 	\end{align}
 
 	\f{self-attention} dapat dikonsepsikan sebagai proses pembentukan represenatsi token yang kontekstual. untuk setiap tokennya, \f{self-attention} menghitung keserupaan antara token tersebut ($\mathbf{e}_{t_i} \mathbf{W}^q$) dengan seluruh token lainnya ($\mathbf{E} \mathbf{W}^k$) dengan \f{scaled dot product attention}. Hasil dari \f{scaled dot product attention} adalah vektor yang menunjukkan bobot atensi dari token tersebut terhadap token lainnya. Bobot atensi tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari seluruh token lainnya ($\mathbf{E} \mathbf{W}^v$). Hasil dari rata-rata terbobot tersebut adalah representasi vektor kontekstual dari token tersebut. \pic~\ref{fig:self-attention-example} adalah contoh dari \f{self-attention} yang menghasilkan representasi vektor kontekstual pada token \f{it}. Pada \pic~\ref{fig:self-attention-example} kiri token \f{it} memiliki bobot atensi yang tinggi terhadap token dan \f{animal} sehingga representasi vektor kontekstual dari token \f{it} akan memiliki nilai yang serupa dengan representasi token \f{animal}. Di lain sisi, token \f{it} pada \pic~\ref{fig:self-attention-example} memiliki bobot atensi yang tinggi terhadap token \f{street}.
 	
 	\subsection{\f{Multi-Head Self-Attention}}
-	
-	\f{Multi-Head Attention} adalah arsiktetur \f{deep learning} yang melakukan mekanisme \f{attention} sebanyak
-	
-	
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/MHSA.png}
+		\caption{Ilustrasi \f{multi-head self-attention} pada \f{transformer}. \f{Multi-head self-attention} menghitung \f{self-attention} sebanyak $h$ kali pada subruang yang berbeda.}
+		\label{fig:multi-head-self-attention}
+	\end{figure}
+
+	\f{Multi-Head Self-Attention} adalah arsiktetur pada \f{transformer} untuk melakukan mekanisme \f{self-attention} beberapa kali pada subruang (\f{learned embedded space}) yang berbeda. dengan melakukan hal tersebut, diharapkan bahwa model dapat menangkap relasi atau keserupaan antar token dari sudut pandang yang berbeda. 
+
+	Secara teknis, \f{embedding} dari barisan token $\mathbf{E}$ akan dipetakan sebanyak $h$ kali dengan \f{linear layer} yang kemudian hasil \f{attention} dari setiap \f{head} akan digabungkan dan dilakukan transformasi sekali lagi dengan\f{linear layer}. \equ~\ref{equ:multi-head-self-attention-start} hingga \equ~\ref{equ:multi-head-self-attention-end} menunjukkan bagaimana \f{multi-head self-attention} dihitung.
+
+	\begin{align}
+		\label{equ:multi-head-self-attention-start}
+		\text{MHSA}(\mathbf{E}) &= \text{Concat}(\text{head}_i, \dots, \text{head}_h)\mathbf{W}^O \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\text{head}_i = \text{Self-Attention}_i(\mathbf{E}) &= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q_i (\mathbf{E} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{\text{token}}/h}}) \mathbf{E} \mathbf{W}^v_i  \in  \mathbb{R}^{L \times \frac{d_{\text{token}}}{h}} \\
+		\text{Concat}(\text{head}_1, \dots, \text{head}_h) &= [\text{head}_1 | \dots | \text{head}_h] \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\label{equ:multi-head-self-attention-end}
+		\text{dengan } \mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,&\in \mathbb{R}^{\frac{d_{\text{token}}}{h} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}} \\	
+	\end{align}
+
+	perhatikan bahwa dimensi dari \f{learned embedding space} menjadi $\frac{d_{\text{token}}}{h}$ untuk setiap \f{head}-nya. Hal ini dilakukan untuk menjaga dimensi dari \f{output} terakhir tetap sama dengan dimensi dari \f{input}, yaitu $d_{\text{token}}$. Selain itu, argumen lainnya yang dapat dibuat adalah setiap \f{head} hanya perlu menggunakan dimensi yang lebih kecil dari $d_{\text{token}}$ untuk menangkap ketergantungan antar-token \citep{pi-tau2023transformer}.
+
 	\subsection{\f{Positional Encoding}}
 
+
+
 	\subsection{\f{Position-wise Feed-Forward Network}}
+	\f{Position-wise Feed-Foward Network} adalah 
 
 	\subsection{Koneksi Residual dan \f{Layer Normalization}}
 	\label{sec:layer-normalization}
@@ -292,7 +322,7 @@
 
 \section{Bidirectional Encoder Representations from Transformers (BERT)}
 	\subsection{Representasi Input}
-
+	
 	\subsection{Model Pralatih BERT}
 
 		\subsubsection{\f{Masked Language Model}}

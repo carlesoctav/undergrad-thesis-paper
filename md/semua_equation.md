@@ -241,7 +241,23 @@ $$
 \text{dengan} \quad \text{head}_i &= \text{Attention}_i(\mathbf{Q}, \mathbf{K}, \mathbf{V}) \\
 \end{align} \\
 
-\text{dimana} \quad \text{Attention}_i(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Softmax}(\frac{\mathbf{X} \mathbf{W}^q_i (\mathbf{X} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{attn}/h}}) \mathbf{X} \mathbf{W}^v_i
+\text{dimana} \quad \text{Attention}_i(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Softmax}(\frac{\mathbf{X} \mathbf{W}^q_i (\mathbf{X} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{attn}/h}}) \mathbf{X} \mathbf{W}^v_i \\
+
+$$
+
+
+
+## real multihead
+
+$$
+\begin{align}
+\text{MHSA}(\mathbf{E}) = \text{Concat}(\text{head}_i, \dots, \text{head}_h)\mathbf{W}^O \in \mathbb{R}^{L \times d_{\text{token}}} \\
+\text{head}_i = \text{Self-Attention}_i(\mathbf{E}) = \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q_i (\mathbf{E} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{\text{token}}/h}}) \mathbf{E} \mathbf{W}^v_i  \in  \mathbb{R}^{L \times \frac{d_{\text{token}}}{h}} \\
+\text{Concat}(\text{head}_1, \dots, \text{head}_h) = [\text{head}_1 | \dots | \text{head}_h] \in \mathbb{R}^{L \times d_{\text{token}}} \\
+\text{dengan } \mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,\in \mathbb{R}^{\frac{d_{\text{token}}}{h} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}} \\
+
+
+\end{align}
 $$
 
 

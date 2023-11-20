@@ -18,7 +18,7 @@
 
 ![](rnn-compare-selfattention.png)
 
-![](self-attn-example.png)
+![](self-attention-example.png)
 
 
 ![](tf-idf-matriks.png)
@@ -41,3 +41,7 @@
 ![](dl-different-hidden-func.png)
 
 ![](lilianweng-transformer.png)
+
+![](token-embedding.png)
+
+![](MHSA.png)
