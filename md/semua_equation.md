@@ -405,7 +405,35 @@ $$
 \end{align}
 $$
 
+## Layer Normalization
+
+$$
+\begin{align}
+\text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}} \in \mathbb{R}^{ L\times d_{\text{token}}}, \\
+\bm{\mu} &= \begin{bmatrix}
+\mu_1 &\dots & \mu_1 \\
+\vdots & \ddots &\vdots \\
+\mu_L & \dots & \mu_L
+\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
+\frac{1}{\bm{\sigma}} &= \begin{bmatrix}
+\frac{1}{\sigma_1} &\dots & \frac{1}{\sigma_1} \\
+\vdots & \ddots &\vdots \\
+\frac{1}{\sigma_L} &\dots & \frac{1}{\sigma_L} \\
+\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
+\mu_i &= \frac{1}{d_\text{token}}\sum_{j=1}^{d_{\text{token}}} x_{ij},\quad i=1,\dots,L, \\
+\sigma_i &= \sqrt{\frac{1}{d_{\text{token}}} \sum_{j=1}^{d_{\text{token}}} (x_{ij}-\mu_i)^2}, \quad i = 1,\dots, L, \\
+\odot &= \text{element-wise product.} 
+
+\end{align}
+
+$$
+
+
+
+
 ## Putting it all together
+
+
 
 $$
 \begin{align}

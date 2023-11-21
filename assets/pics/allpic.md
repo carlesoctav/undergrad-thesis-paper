@@ -43,5 +43,4 @@
 ![](lilianweng-transformer.png)
 
 ![](token-embedding.png)
-
 ![](MHSA.png)

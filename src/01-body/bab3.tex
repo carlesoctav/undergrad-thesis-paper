@@ -305,17 +305,52 @@
 		\text{dengan } \mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,&\in \mathbb{R}^{\frac{d_{\text{token}}}{h} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}} \\	
 	\end{align}
 
-	perhatikan bahwa dimensi dari \f{learned embedding space} menjadi $\frac{d_{\text{token}}}{h}$ untuk setiap \f{head}-nya. Hal ini dilakukan untuk menjaga dimensi dari \f{output} terakhir tetap sama dengan dimensi dari \f{input}, yaitu $d_{\text{token}}$. Selain itu, argumen lainnya yang dapat dibuat adalah setiap \f{head} hanya perlu menggunakan dimensi yang lebih kecil dari $d_{\text{token}}$ untuk menangkap ketergantungan antar-token \citep{pi-tau2023transformer}.
+	perhatikan bahwa dimensi dari \f{learned embedding space} menjadi $\frac{d_{\text{token}}}{h}$ untuk setiap \f{head}-nya. Hal ini dilakukan untuk menjaga dimensi dari \f{output} terakhir tetap sama dengan dimensi dari \f{input}, yaitu $d_{\text{token}}$. Selain itu, argumen lainnya yang dapat dibuat adalah setiap \f{head} hanya perlu menggunakan dimensi yang lebih kecil dari $d_{\text{token}}$ untuk menangkap ketergantungan antar-token \citep{pi-tau2023transformer}. \cite{transformerori} menggunakan $h=8$ \f{head} pada \f{transformer} yang digunakan untuk mesin translasi neural, dengan $d_{\text{token}} = 512$, sehingga dimensi dari \f{learned embedding space} untuk setiap \f{head} adalah $\frac{512}{8} = 64$.
 
 	\subsection{\f{Positional Encoding}}
 
-
-
 	\subsection{\f{Position-wise Feed-Forward Network}}
-	\f{Position-wise Feed-Foward Network} adalah 
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/ffn_transformer.png}
+		\caption{Ilustrasi \f{position-wise feed-forward network} pada \f{transformer}.}
+		\label{fig:position-wise-feed-forward-network}
+	\end{figure}
+
+	\f{Position-wise Feed-Foward Network} adalah \f{feed foward network} dengan dua kali transformasi linear dan sebuah fungsi aktivasi ReLU di antaranya. \pic~\ref{fig:position-wise-feed-forward-network} menunjukkan ilustrasi dari \f{position-wise feed-forward network} dan \equ~\ref{equ:position-wise-feed-forward-network-start} hingga \equ~\ref{equ:position-wise-feed-forward-network-end} menunjukkan Transformasi yang dilakukan oleh \f{position-wise feed-forward network}.
+
+	\begin{align}
+		\label{equ:position-wise-feed-forward-network-start}
+		\text{FFN}(\mathbf{X}) &= \max(0, \mathbf{X}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\label{equ:position-wise-feed-forward-network-end}j
+		\mathbf{W}_1 &\in \mathbb{R}^{d_{\text{token}} \times d_{\text{ffn}}}, \mathbf{W}_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{token}}}, \mathbf{b}_1 \in \mathbb{R}^{d_{\text{ffn}}}, \mathbf{b}_2 \in \mathbb{R}^{d_{\text{token}}}.
+	\end{align}
+
+	$d_{\text{ffn}}$ adalah dimensi dari \f{feed forward network} yang digunakan. \cite{transformerori} menggunakan $d_{\text{ffn}} = 2048$.
 
 	\subsection{Koneksi Residual dan \f{Layer Normalization}}
 	\label{sec:layer-normalization}
+
+
+	Koneksi residual yang diperkenalkan pada model Resenet merupakan pemeteaan yang menghubungkan \f{input} pada suatu \f{layer} dengan \f{output} pada \f{layer} tersebut. Pada \f{transformer}, 
+
+	\begin{align}
+	\text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}} \in \mathbb{R}^{ L\times d_{\text{token}}}, \\
+	\bm{\mu} &= \begin{bmatrix}
+	\mu_1 &\dots & \mu_1 \\
+	\vdots & \ddots &\vdots \\
+	\mu_L & \dots & \mu_L
+	\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
+	\frac{1}{\bm{\sigma}} &= \begin{bmatrix}
+	\frac{1}{\sigma_1} &\dots & \frac{1}{\sigma_1} \\
+	\vdots & \ddots &\vdots \\
+	\frac{1}{\sigma_L} &\dots & \frac{1}{\sigma_L} \\
+	\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
+	\mu_i &= \frac{1}{d_\text{token}}\sum_{j=1}^{d_{\text{token}}} x_{ij},\quad i=1,\dots,L, \\
+	\sigma_i &= \sqrt{\frac{1}{d_{\text{token}}} \sum_{j=1}^{d_{\text{token}}} (x_{ij}-\mu_i)^2}, \quad i = 1,\dots, L, \\
+	\odot &= \text{element-wise product.} 
+	\end{align}
 
 	\subsection{Transformer Encoder}
 	\label{sec:encoder}
