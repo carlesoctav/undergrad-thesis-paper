@@ -332,28 +332,52 @@
 	\subsection{Koneksi Residual dan \f{Layer Normalization}}
 	\label{sec:layer-normalization}
 
+	Pada tahap pelatihan, pembaruan parameter model dilakukan pada semua \f{layer} secara serentak setiap iterasi pelatihan. Ketika parameter suatu \f{layer} mengalami pembaharuan, distribusi dari \f{output} yang dihasilkan \f{layer} tersebut juga akan berubah pada iterasi selanjutnya. \f{Layer-layer} selanjutnya harus beradaptasi karena distribusi \f{input}-nya dari \f{layer} tersebut berubah. Fenomena ini disebut \f{internal covariate shift} yang mengakibatkan proses pencarian parameter menjadi lebih lambat.
 
-	Koneksi residual yang diperkenalkan pada model Resenet merupakan pemeteaan yang menghubungkan \f{input} pada suatu \f{layer} dengan \f{output} pada \f{layer} tersebut. Pada \f{transformer}, 
+	\f{Layer Normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} yang nantinya menjadi \f{input} pada \f{layer} selanjutnya. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} dari \f{self-attention layer} haruslah 1, sehingga variansi dari bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga.
+
+	\equ~\ref{equ:layer-normalization-start} hingga \equ~\ref{equ:layer-normalization-end} menunjukkan proses kerja dari \f{layer normalization}.
 
 	\begin{align}
-	\text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}} \in \mathbb{R}^{ L\times d_{\text{token}}}, \\
-	\bm{\mu} &= \begin{bmatrix}
-	\mu_1 &\dots & \mu_1 \\
-	\vdots & \ddots &\vdots \\
-	\mu_L & \dots & \mu_L
-	\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
-	\frac{1}{\bm{\sigma}} &= \begin{bmatrix}
-	\frac{1}{\sigma_1} &\dots & \frac{1}{\sigma_1} \\
-	\vdots & \ddots &\vdots \\
-	\frac{1}{\sigma_L} &\dots & \frac{1}{\sigma_L} \\
-	\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
-	\mu_i &= \frac{1}{d_\text{token}}\sum_{j=1}^{d_{\text{token}}} x_{ij},\quad i=1,\dots,L, \\
-	\sigma_i &= \sqrt{\frac{1}{d_{\text{token}}} \sum_{j=1}^{d_{\text{token}}} (x_{ij}-\mu_i)^2}, \quad i = 1,\dots, L, \\
-	\odot &= \text{element-wise product.} 
-	\end{align}
+		\label{equ:layer-normalization-start}
+		\mathbf{X} &= \begin{bmatrix}
+		x_{11} & x_{12} & \dots & x_{1,d_{\text{token}}} \\
+		x_{21} & x_{22} & \dots & x_{2,d_{\text{token}}} \\
+		\vdots & \vdots & \ddots & \vdots \\
+		x_{L1} & x_{L2} & \dots & x_{L,d_{\text{token}}} \\
+		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}}\\
+		&= \begin{bmatrix}
+		\frac{x_{11}-\mu_1}{\sigma_1} & \frac{x_{12}-\mu_1}{\sigma_1} & \dots & \frac{x_{1,d_{\text{token}}}-\mu_1}{\sigma_1} \\
+		\frac{x_{21}-\mu_2}{\sigma_2} & \frac{x_{22}-\mu_2}{\sigma_2} & \dots & \frac{x_{2,d_{\text{token}}}-\mu_2}{\sigma_2} \\
+		\vdots & \vdots & \ddots & \vdots \\
+		\frac{x_{L1}-\mu_L}{\sigma_L} & \frac{x_{L2}-\mu_L}{\sigma_L} & \dots & \frac{x_{L,d_{\text{token}}}-\mu_L}{\sigma_L} \\
+		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\bm{\mu} &= \begin{bmatrix}
+		\mu_1 &\dots & \mu_1 \\
+		\vdots & \ddots &\vdots \\
+		\mu_L & \dots & \mu_L
+		\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
+		\frac{1}{\bm{\sigma}} &= \begin{bmatrix}
+		\frac{1}{\sigma_1} &\dots & \frac{1}{\sigma_1} \\
+		\vdots & \ddots &\vdots \\
+		\frac{1}{\sigma_L} &\dots & \frac{1}{\sigma_L} \\
+		\end{bmatrix} \in \mathbb{R}^{L\times d_{\text{token}}}, \\
+		\mu_i &= \frac{1}{d_\text{token}}\sum_{j=1}^{d_{\text{token}}} x_{ij},\quad i=1,\dots,L, \\
+		\sigma_i &= \sqrt{\frac{1}{d_{\text{token}}} \sum_{j=1}^{d_{\text{token}}} (x_{ij}-\mu_i)^2}, \quad i = 1,\dots, L, \\
+		\label{equ:layer-normalization-end}
+		\odot &= \text{element-wise product.} 
+		\end{align}
 
 	\subsection{Transformer Encoder}
 	\label{sec:encoder}
+
+	Dengan menggunakan \f{multi-head self-attention layer}, \f{position-wise feed-forward network layer}, dan \f{layer normalization} dan \f{residual connection} yang sudah dijelaskan sebelumnya, blok enkoder pada \f{transformer} enkoder dapat ditulis seperti pada \equ~\ref{equ:transformer-encoder-start} hingga \equ~\ref{equ:transformer-encoder-end}.
+
+	\begin{align}
+		
+	\end{align}
+
 
 \section{Bidirectional Encoder Representations from Transformers (BERT)}
 	\subsection{Representasi Input}

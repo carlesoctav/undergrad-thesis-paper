@@ -409,7 +409,20 @@ $$
 
 $$
 \begin{align}
-\text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}} \in \mathbb{R}^{ L\times d_{\text{token}}}, \\
+\mathbf{X} &= \begin{bmatrix}
+x_{11} & x_{12} & \dots & x_{1,d_{\text{token}}} \\
+x_{21} & x_{22} & \dots & x_{2,d_{\text{token}}} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{L1} & x_{L2} & \dots & x_{L,d_{\text{token}}} \\
+\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}} \\
+
+\text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}}\\
+&= \begin{bmatrix}
+\frac{x_{11}-\mu_1}{\sigma_1} & \frac{x_{12}-\mu_1}{\sigma_1} & \dots & \frac{x_{1,d_{\text{token}}}-\mu_1}{\sigma_1} \\
+\frac{x_{21}-\mu_2}{\sigma_2} & \frac{x_{22}-\mu_2}{\sigma_2} & \dots & \frac{x_{2,d_{\text{token}}}-\mu_2}{\sigma_2} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{x_{L1}-\mu_L}{\sigma_L} & \frac{x_{L2}-\mu_L}{\sigma_L} & \dots & \frac{x_{L,d_{\text{token}}}-\mu_L}{\sigma_L} \\
+\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}} \\
 \bm{\mu} &= \begin{bmatrix}
 \mu_1 &\dots & \mu_1 \\
 \vdots & \ddots &\vdots \\
@@ -435,14 +448,6 @@ $$
 
 
 
-$$
-\begin{align}
-\text{EncoderBlock}(\mathbf{t}) &= \mathbf{Y} \\
-\mathbf{Y} &= \text{FFN}(\text{LayerNorm}(\mathbf{Z})+\mathbf{Z}) \\
-\mathbf{Z} &= \text{LayerNorm}(\text{MultiHead}_h(\mathbf{X}, \mathbf{X}, \mathbf{X}) + \mathbf{X}) \\
-\mathbf{X}  &= \text{Embed}(\mathbf{t}) + \text{Pos}(\mathbf{t}) \times \gamma \\
-\end{align}
-$$
 
 dan kita punya transformers encoder adalah sekumpulan encoder block yang di stack. dengan begitu jika kita punya $n$ transformer block, maka:
 
@@ -531,3 +536,25 @@ $$
 $$
 
 
+
+
+
+## Encoder Block
+
+$$
+\begin{align}
+\mathbf{X} &\in \mathbb{R}^{L \times d_{\text{token}}} \\
+
+\text{EncoderBlock}(\mathbf{X}) &= \mathbf{Y} \\
+\mathbf{Y} &= \text{LayerNorm}(\overbrace{\text{FFN}(\mathbf{Z})+\mathbf{Z}}^{\text{Koneksi Residu}}) \\
+\mathbf{Z} &= \text{LayerNorm}(\overbrace{\text{MHSA}_h(\mathbf{X}), + \mathbf{X}}^{\text{Koneksi Residu}}) \\
+\end{align}
+$$
+
+$$
+\begin{align}
+t &= (t_1, t_2, \dots, t_L) \\
+\mathbf{E} &= \text{embed}(t)+ \text{pos}(t) \\
+\text{Encoder}(\mathbf{E}) &= \text{EncoderBlock}_n(\text{EncoderBlock}_{n-1}(\dots(\text{EncoderBlock}_1(\mathbf{E})))) \\
+\end{align}
+$$
