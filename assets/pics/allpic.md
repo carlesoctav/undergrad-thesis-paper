@@ -44,3 +44,6 @@
 
 ![](token-embedding.png)
 ![](MHSA.png)
+
+
+![](sbertquerydocument.png)

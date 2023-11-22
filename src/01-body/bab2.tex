@@ -110,7 +110,7 @@
 
         nilai dari nDCG pada \equ~\ref{eq:ndcg-start} adalah nilai DCG pada barisan dokumen $D_k$ yang dinormalisasi oleh nilai DCG pada barisan dokumen ideal $D_k^{\text{ideal}}$. Barisan dokumen ideal $D_k^{\text{ideal}}$ adalah barisan dokumen yang diurutkan berdasarkan relevansinya dengan kueri $q$.
 
-        Biasanya, metrik nDCG digunakan untuk \f{dataset} dengan \f{judgements} $r$ yang padat. Selain itu, jika pada \f{datasets} memiliki \f{judgements} biner, faktor $2^{\text{rel}(q, d)} - 1$ pada \equ~\ref{eq:dcg} dapat diubah menjadi $\text{rel}(q, d)$. \equ~\ref{eq:dcg} akan menjadi \equ~\ref{eq:dcg-binary}.
+        Selain itu, jika pada \f{datasets} memiliki \f{judgements} biner, faktor $2^{\text{rel}(q, d)} - 1$ pada \equ~\ref{eq:dcg} dapat diubah menjadi $\text{rel}(q, d)$. \equ~\ref{eq:dcg} akan menjadi \equ~\ref{eq:dcg-binary}.
         
         \begin{align}
         \label{eq:dcg-binary}
@@ -160,7 +160,7 @@
         \text{score}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{tf-idf}(t, d, \mathcal{D})
     \end{align}
 
-    skor untuk pasangan terurut $(q,d)$ dihitung dengan menjumlahkan skor TF-IDF dari setiap kata yang terdapat pada kueri $q$ dan dokumen $d$ ($T_q \cap T_d$). skor TF-IDF dari suatu kata $t$ adalah perkalian antar $\log$ dari \f{term frequency} ($\text{tf}(q,d)$) dan \f{inverse document frequency} ($\text{idf}(t,\mathcal{D})$). fungsi skor pada \equ~\ref{eq:tfidf-end} dapat dijelaskan sebagai dua bagian utama, yaitu:
+    skor untuk pasangan terurut $(q,d)$ dihitung dengan menjumlahkan skor TF-IDF dari setiap kata yang terdapat pada kueri $q$ dan dokumen $d$ ($T_q \cap T_d$). skor TF-IDF dari suatu kata $t$ adalah perkalian antar \f{term frequency} ($\text{tf}(q,d)$) dan \f{inverse document frequency} ($\text{idf}(t,\mathcal{D})$). fungsi skor pada \equ~\ref{eq:tfidf-end} dapat dijelaskan sebagai dua bagian utama, yaitu:
 
     \begin{enumerate}
         \item faktor $\text{tf}(t, d)$ menunjukkan bahwa nilai TF-IDF meningkat seiring dengan bertambahnya frekuensi kemunculan kata $t$ pada dokumen $d$.
@@ -221,7 +221,7 @@
     Perbedaan antar $\text{score}_{\text{BM25}}(t,d)$ dengan $\text{tf}(t, d)$ jauh lebih kompleks karena adanya parameter tambahan $k_1,$ dan $b$ serta faktor baru $\text{avgdl}$. Berikut adalah penjelasan dari masing-masing parameter dan efeknya terhadap skor yang dihasilkan:
 
     \begin{enumerate}
-        \item faktor $\frac{|\text{d}|}{\text{avgdl}}$ pada $\frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times \left(1 - b + b \times \textcolor{yellow}{\frac{|d|}{\text{avgdl}}}\right)}$ men-\f{penalize} skor pada dokumen yang panjangnya lebih besar dari rata-rata panjang dokumen pada himpunan dokumen $\mathcal{D}$. \pic~\ref{fig:effect-bm25-long-doc} Menjukkan efek dari perbedaan nilai $\text{avgdl}$ terhadap skor yang dihasilkan. Semakin besar rasio $\frac{|d|}{\text{avgdl}}$, semakin kecil skor yang dihasilkan.
+        \item faktor $\frac{|\text{d}|}{\text{avgdl}}$ pada $\frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times \left(1 - b + b \times \textcolor{yellow}{\frac{|d|}{\text{avgdl}}}\right)}$ men-\f{penalize} skor pada dokumen yang panjangnya lebih besar dari rata-rata panjang dokumen pada himpunan dokumen $\mathcal{D}$. \pic~\ref{fig:effect-bm25-long-doc} Menjukkan efek dari perbedaan nilai $\text{avgdl}$ terhadap skor yang dihasilkan. Semakin besar rasio $\frac{|d|}{\text{avgdl}}$ semakin kecil skor yang dihasilkan,.
         \item nilai $b$ menentukan seberapa besar efek dari faktor $\frac{|d|}{\text{avgdl}}$ terhadap skor yang dihasilkan. \pic~\ref{fig:effect-bm25-param-b} Menunjukkjan efek dari perbedaan nilai $b$ terhadap skor yang dihasilkan. Untuk $\frac{|d|}{\text{avgdl}}=1$, Faktor $b$ tidak memiliki pengaruh terhadap skor.
         \item  nilai $k_1$ men-\f{penalize} kemunculan kata $t$ pada dokumen $d$ yang sering. \pic~\ref{fig:effect-bm25-param-k} Menunjukkan efek dari perbedaan nilai $k_1$ terhadap skor yang dihasilkan. Perhatikan bahwa ketika kemunculan kata $t$ pada dokumen $d$ semakin sering, skor penigkatan skor yang dihasilkan semakin kecil.
     \end{enumerate}
