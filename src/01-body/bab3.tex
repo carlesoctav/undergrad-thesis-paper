@@ -8,7 +8,14 @@
 \section{Mekanisme \f{Attention}}
 	\subsection{Attention sebagai \f{Dictionary Lookup}}
 
-	Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untuk sebuah vektor kueri $\mathbf{q}$ dan sekumpulan pasangan terurut vektor $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, mekanisme \f{attention} akan mengembalikan vektor nilai $\mathbf{v}_i$ yang memiliki vektor kunci $\mathbf{k}_i$ yang serupa dengan vektor kueri $\mathbf{q}$. \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} menunjukkan bagaimana mekanisme \f{attention} dilakukan.
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/hard-soft-attention-diff.png}
+		\caption{Perbedaan mekanisme \f{hard attention} dan \f{soft attention} \citep{pi-tau2023transformer}}
+		\label{fig:hard-attention}
+	\end{figure}
+
+	Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untuk sebuah vektor kueri $\mathbf{q}$ dan sekumpulan pasangan terurut vektor $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, mekanisme \f{attention} akan mengembalikan vektor nilai $\mathbf{v}_i$ yang memiliki vektor kunci $\mathbf{k}_i$ yang cocok dengan vektor kueri $\mathbf{q}$. \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} menunjukkan bagaimana mekanisme \f{attention} dilakukan.
 
 \begin{align}
 	\label{equ:hard-attention-start}
@@ -35,11 +42,11 @@
 	\end{cases}.
 	\end{align}
 
-	$f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi yang menghitung nilai keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi.
+	$f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi atensi yang menghitung nilai atensi antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi.
 
 	Sebagai contoh, untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[1,0]), ([1,2],[0,1])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$, nilai dari $\text{Attention}( \mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $[0,1]$, karena nilai maksimal $f_\text{attn}$ terjadi ketika $\mathbf{k} = [1,2]$. 
 
-	Mekansime \f{attention} pada \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention} yang tidak terturunkan, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi \f{softmax}. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} dan \pic~\ref{fig:soft-attention} menunjukkan bagaimana \f{soft attention} dilakukan.
+	Mekansime \f{attention} pada \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention} yang tidak terturunkan, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi \f{softmax}. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} hingga \equ~\ref{equ:soft-attention-end} menunjukkan bagaimana mekanisme \f{soft attention} dilakukan.
 
 	\begin{figure}
 		\centering
@@ -60,9 +67,9 @@
 
 	Dengan rata-rata terbobot dari $\mathbf{V}$, \f{soft attention} dapat dicari turunannya dengan \f{backpropagation} yang merupakan syarat \f{fundamental} yang harus dimiliki oleh sebuah model \f{deep learning}.
 
-	Untuk contoh yang serupa dengan \f{hard attention},hasil dari $\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $0.268 [1,0] + 0.732 [0,1] = [0.732, 0.268]$ dengan $\alpha_1 = \frac{\exp(4)}{\exp(4) + \exp(5)} \approx 0.268$ dan $\alpha_2 = \frac{\exp(5)}{\exp(4) + \exp(5)} \approx 0.732$.
+	Sebagai contoh, hasil dari $\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V})$ untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[0,1]), ([1,2],[1,0])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$ adalah $0.268 [0,1] + 0.732 [1,0] = [0.732, 0.268]$ dengan $\alpha_1 = \frac{\exp(4)}{\exp(4) + \exp(5)} \approx 0.268$ dan $\alpha_2 = \frac{\exp(5)}{\exp(4) + \exp(5)} \approx 0.732$.
 
-	Pada kasus kumpulan kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, Perhitungan atensi untuk setiap triplet $(\mathbf{q}_i, \mathbf{K}, \mathbf{V})$ dapat dihitung secara bersamaan dengan menggunakan operasi matriks. \equ~\ref{equ:soft-attention-start} hingga \equ~\ref{equ:soft-attention-end} yang digunakan untuk kasus 1 kueri dapat ditulis ulang seperti pada \equ~\ref{equ:soft-attention-matrix-start} hingga \equ~\ref{equ:soft-attention-matrix-end}.
+	Pada kasus kumpulan kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, mekanisme \f{attention} untuk setiap triplet $(\mathbf{q}_i, \mathbf{K}, \mathbf{V})$ dapat dihitung secara bersamaan seperti yang ditunjukkan pada \equ~\ref{equ:soft-attention-matrix-start} hingga \equ~\ref{equ:soft-attention-matrix-end}.
 
 	\begin{align}
 		\label{equ:soft-attention-matrix-start}
@@ -90,49 +97,16 @@
 
 	dengan $\alpha_{ij}$ adalah bobot yang menunjukkan bobot atensi antara vektor kueri $\mathbf{q}_i$ dengan vektor kunci $\mathbf{k_j}$. 
 
-	\subsection{Regresi Kernel Sebagai \f{Attention} non-parametrik}
-	\label{sec:regresi-kernel}
-
-	Salah satu pengunaan mekanisme \f{attention} terdapat pada regresi kernel, yang merupakan model statistik non-parametrik. \f{Attention} berubah menjadi regresi kernel dengan memilih fungsi keserupaan $f_{attn}(\mathbf{q}, \mathbf{k})$ menjadi fungsi non-parametrik $\mathcal{K}(\mathbf{q}, \mathbf{k})$, dan mengganti fungsi softmax menjadi fungsi normalisasi standar, seperti pada \equ~\ref{equ:regresi-kernel-end}.
-	
-	Pada model non-parametrik, model yang dibangun tidak memiliki parameter yang harus diestimasi atau dipelajari, melainkan model non-parametrik menggunakan seluruh atau sebagian dari \f{datasets} latih $\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_2), \dots, (\mathbf{x}_n, y_n)\}$ untuk memberikan prediksi $y_*$ untuk sebuah data uji $\mathbf{x}_*$. \equ~\ref{equ:regresi-kernel-start} hingga \equ~\ref{equ:regresi-kernel-end} menunjukkan bagaimana model regresi kernel melakukan prediksi $y_*$ untuk sebuah data uji $\mathbf{x}_*$.
-
-	\begin{align}
-		\label{equ:regresi-kernel-start}
-		y_{*} = f(\mathbf{x}_{*}) &= \sum_{i=1}^{n} \alpha_{i}(\mathbf{x}_{*},\mathbf{x}_i) y_i, \\
-		\label{equ:regresi-kernel-end}
-		\text{dengan } \alpha_{i}(\mathbf{x}_{*},\mathbf{x}_i) &= \frac{\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i)}{\sum_{j=1}^{n} \mathcal{K}(\mathbf{x}_{*},\mathbf{x}_j)} \in [0, 1].
-	\end{align}
-
-	$\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i)$ adalah fungsi kernel (non-parametrik) yang menghitung keserupaan antara data uji $\mathbf{x}_{*}$ dengan data latih $\mathbf{x}_i$. \equ~\ref{equ:regresi-kernel-end} merupakan bentuk khusus dari mekansime \f{soft attention} \equ~\ref{equ:soft-attention-start}, dengan kueri $\mathbf{q}$ adalah data uji $\mathbf{x}_{*}$, kunci $\mathbf{k}_i$ adalah data latih $\mathbf{x}_i$, nilai $\mathbf{v}_i$ adalah $y_i$. \equ~\ref{equ:regresi-kernel-gaussian-start} menujukkan contoh kernel regresi dengan pemilihan kernel Gaussian $\mathcal{K}(\mathbf{x}_{*},\mathbf{x}_i) = \exp(-\frac{||\mathbf{x}_{*} - \mathbf{x}_i||^2 \beta}{2})$.
-
-	\begin{align}
-		\label{equ:regresi-kernel-gaussian-start}
-		y_{*} = f(\mathbf{x}_{*}) &= \sum_{i=1}^{n} \alpha_{i}(\mathbf{x}_{*},\mathbf{x}_i) y_i	\\
-		&= \sum_{i=1}^{n} \frac{\exp\left(-\frac{||\mathbf{x}_{*}-\mathbf{x}_i||^2 \beta^2}{2}\right)}{\sum_{j=1}^{n} \exp\left(-\frac{||\mathbf{x}_{*}-\mathbf{x}_j||^2 \beta^2}{2}\right)} y_i
-	\end{align}
-
 	\subsection{\f{Attention} Parametrik}
 
-	Mekanisme \f{attention} yang dilakukan oleh \cite{transformerori} merupakan mekanisme \f{attention} parametrik. Salah satu alasan penggunaan $f_{attn}$ yang parametrik adalah pemilihan fungsi $f_{attn}$ yang non-parametrik seperti pada \sect~\ref{sec:regresi-kernel} memiliki kelemahan:
-
-
-	\begin{enumerate}
-		\item Relasi antar vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$ harus diketahui sebelumnya untuk memilih fungsi $f_{attn}$ yang tepat.
-		\item Prediksi $y_*$ memerlukan seluruh data latih $\mathcal{D}$, $O(|\mathcal{D}|)$ komputasi diperlukan untuk melakukan satu prediksi.
-	\end{enumerate}
-
-	
-
-	Pada mekanisme \f{attention} parametrik, nilai vektor kueri $\mathbf{q}$ dan $\mathbf{v}$ dibandingkan pada ruang vektor yang akan dipelajari (\f{learned embedding space}) daripada ruang vektor aslinya. Sebagai contoh, untuk suatu kueri $\mathbf{q}\in \mathbb{R}^{d_q}$, dan vektor kunci $\mathbf{k} \in \mathbb{R}^{d_k}$, \f{additive attention} yang diperkenalkan oleh \cite{bahdanau2016neural} menghitung nilai keserupaan antara $\mathbf{q}$ dan $\mathbf{k}$ seperti pada \equ~\ref{equ:additive-attention}
-
+	Mekanisme \f{attention} yang dilakukan oleh \cite{transformerori} merupakan mekanisme \f{attention} parametrik. Pada mekanisme \f{attention} parametrik, nilai vektor kueri $\mathbf{q}$ dan $\mathbf{v}$ dibandingkan pada ruang vektor yang akan dipelajari (\f{learned embedding space}) daripada ruang vektor aslinya. Sebagai contoh, untuk suatu kueri $\mathbf{q}\in \mathbb{R}^{d_q}$, dan vektor kunci $\mathbf{k} \in \mathbb{R}^{d_k}$, \f{additive attention} yang diperkenalkan oleh \cite{bahdanau2016neural} menghitung nilai keserupaan antara $\mathbf{q}$ dan $\mathbf{k}$ seperti pada \equ~\ref{equ:additive-attention}
 	\begin{align}
 	\label{equ:additive-attention}
 	f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) &= (\mathbf{q} \mathbf{W}^q  + \mathbf{k} \mathbf{W}^k)  \mathbf{W}^{\text{out}} \in \mathbb{R}, \\
 	\text{dengan } &\mathbf{W}^q \in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}, \mathbf{W}_{\text{out}} \in \mathbb{R}^{d_{\text{attn}} \times 1},
 	\end{align}
 
-	Dengan $\mathbf{W}^q$, $\mathbf{W}^k$, dan $\mathbf{W}^{\text{out}}$ adalah matriks parameter bobot yang akan diestimasi atau dipelajari selama proses pelatihan. Contoh parametrik \f{attention} yang lebih sederhana adalah \f{dot-product attention}. Fungsi $f_{attn}$ yang digunakan adalah perkalian titik antara $\mathbf{q}$ dan $\mathbf{k}$ di ruang vektor yang dipelajari (\f{learned embedding space}). \equ~\ref{equ:dot-product-attention} menunjukkan bagaimana \f{dot-product attention} dihitung.
+	Dengan $\mathbf{W}^q$, $\mathbf{W}^k$, dan $\mathbf{W}^{\text{out}}$ adalah matriks parameter bobot yang akan diestimasi selama proses pelatihan. Contoh \f{attention} parametrik yang lebih sederhana adalah \f{dot-product attention}. Fungsi $f_{attn}$ yang digunakan adalah perkalian titik antara $\mathbf{q}$ dan $\mathbf{k}$ di ruang vektor yang dipelajari (\f{learned embedding space}). \equ~\ref{equ:dot-product-attention} menunjukkan bagaimana \f{dot-product attention} dihitung.
 
 	\begin{align}
 		\label{equ:dot-product-attention}
@@ -141,8 +115,6 @@
 	\end{align}
 
 \section{Transformer}
-
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/lilianweng-transformer.png}
@@ -323,7 +295,7 @@
 	\begin{align}
 		\label{equ:position-wise-feed-forward-network-start}
 		\text{FFN}(\mathbf{X}) &= \max(0, \mathbf{X}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \in \mathbb{R}^{L \times d_{\text{token}}} \\
-		\label{equ:position-wise-feed-forward-network-end}j
+		\label{equ:position-wise-feed-forward-network-end}
 		\mathbf{W}_1 &\in \mathbb{R}^{d_{\text{token}} \times d_{\text{ffn}}}, \mathbf{W}_2 \in \mathbb{R}^{d_{\text{ffn}} \times d_{\text{token}}}, \mathbf{b}_1 \in \mathbb{R}^{d_{\text{ffn}}}, \mathbf{b}_2 \in \mathbb{R}^{d_{\text{token}}}.
 	\end{align}
 
@@ -332,16 +304,15 @@
 	\subsection{Koneksi Residual dan \f{Layer Normalization}}
 	\label{sec:layer-normalization}
 
-	Pada tahap pelatihan, pembaruan parameter model dilakukan pada semua \f{layer} secara serentak setiap iterasi pelatihan. Ketika parameter suatu \f{layer} mengalami pembaharuan, distribusi dari \f{output} yang dihasilkan \f{layer} tersebut juga akan berubah pada iterasi selanjutnya. \f{Layer-layer} selanjutnya harus beradaptasi karena distribusi \f{input}-nya dari \f{layer} tersebut berubah. Fenomena ini disebut \f{internal covariate shift} yang mengakibatkan proses pencarian parameter menjadi lebih lambat.
-
-	\f{Layer Normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} yang nantinya menjadi \f{input} pada \f{layer} selanjutnya. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} dari \f{self-attention layer} haruslah 1, sehingga variansi dari bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga.
-
-	\equ~\ref{equ:layer-normalization-start} hingga \equ~\ref{equ:layer-normalization-end} menunjukkan proses kerja dari \f{layer normalization}.
+	
+	Pada tahap pelatihan, pembaruan parameter model dilakukan pada semua \f{layer} secara serentak setiap iterasi \f{gradient descent}. Ketika parameter suatu \f{layer} mengalami pembaruan, distribusi dari \f{output} yang dihasilkan \f{layer} tersebut juga akan berubah pada iterasi selanjutnya. \f{Layer-layer} selanjutnya harus beradaptasi karena distribusi \f{input} dari \f{layer} tersebut berubah. Fenomena ini disebut \f{internal covariate shift} yang mengakibatkan proses pencarian parameter menjadi lebih lambat.
+	
+	\f{Layer Normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} --yang nantinya menjadi \f{input} pada \f{layer} selanjutnya-- sehingga memiliki variansi 1 dan mean 0. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} dari \f{self-attention layer} haruslah 1 (lihat \sect~\ref{sec:scaled-dot-product-attention}), sehingga variansi dari bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga. \equ~\ref{equ:layer-normalization-start} hingga \equ~\ref{equ:layer-normalization-end} menunjukkan proses kerja dari \f{layer normalization}.
 
 	\begin{align}
 		\label{equ:layer-normalization-start}
 		\mathbf{X} &= \begin{bmatrix}
-		x_{11} & x_{12} & \dots & x_{1,d_{\text{token}}} \\
+			x_{11} & x_{12} & \dots & x_{1,d_{\text{token}}} \\
 		x_{21} & x_{22} & \dots & x_{2,d_{\text{token}}} \\
 		\vdots & \vdots & \ddots & \vdots \\
 		x_{L1} & x_{L2} & \dots & x_{L,d_{\text{token}}} \\
@@ -369,14 +340,30 @@
 		\odot &= \text{element-wise product.} 
 		\end{align}
 
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\textwidth]{assets/pics/residual-connection.png}
+			\caption{Ilustrasi \f{layer normalization} pada \f{transformer}.}
+			\label{fig:residual-connection}
+		\end{figure}
+	
+
+	Koneksi Residu adalah koneksi yang menghubungkan \f{output} dari suatu \f{layer} dengan \f{input} dari \f{layer} selanjutnya. Koneksi residu digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{deep neural network} dengan memperbaiki \f{flow gradient} 
+	\begin{align}
+		\label{equ:residual-connection-start}
+		f_l'(\mathbf{x}) &= f_l(\mathbf{x}) + \mathbf{x} \\
+		\text{dengan } f_l(\mathbf{x}) &\text{ adalah suatu layer pada \f{deep neural network}.}
+	\end{align}
+
+	Pada \f{transformer}, \f{residual connection} digunakan sebelum \f{layer normalization} seperti pada \pic~\ref{fig:residual-connection}. \f{Residual connection} digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{transformer} yang memiliki banyak \f{layer} \citep{transformerori}. \f{Residual connection} juga digunakan pada \f{transformer decoder} untuk mengatasi masalah \f{exposure bias} yang terjadi pada \f{transformer decoder} \citep{exposurebias}.
+
+
+
 	\subsection{Transformer Encoder}
 	\label{sec:encoder}
 
 	Dengan menggunakan \f{multi-head self-attention layer}, \f{position-wise feed-forward network layer}, dan \f{layer normalization} dan \f{residual connection} yang sudah dijelaskan sebelumnya, blok enkoder pada \f{transformer} enkoder dapat ditulis seperti pada \equ~\ref{equ:transformer-encoder-start} hingga \equ~\ref{equ:transformer-encoder-end}.
-
-	\begin{align}
-		
-	\end{align}
+	
 
 
 \section{Bidirectional Encoder Representations from Transformers (BERT)}

@@ -47,3 +47,6 @@
 
 
 ![](sbertquerydocument.png)
+![](residual-connection.png)
+
+
