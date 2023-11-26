@@ -99,7 +99,7 @@
 
 	\subsection{\f{Attention} Parametrik}
 
-	Mekanisme \f{attention} yang dilakukan oleh \cite{transformerori} merupakan mekanisme \f{attention} parametrik. Pada mekanisme \f{attention} parametrik, nilai vektor kueri $\mathbf{q}$ dan $\mathbf{v}$ dibandingkan pada ruang vektor yang akan dipelajari (\f{learned embedding space}) daripada ruang vektor aslinya. Sebagai contoh, untuk suatu kueri $\mathbf{q}\in \mathbb{R}^{d_q}$, dan vektor kunci $\mathbf{k} \in \mathbb{R}^{d_k}$, \f{additive attention} yang diperkenalkan oleh \cite{bahdanau2016neural} menghitung nilai keserupaan antara $\mathbf{q}$ dan $\mathbf{k}$ seperti pada \equ~\ref{equ:additive-attention}
+	Mekanisme \f{attention} yang dilakukan oleh \cite{transformerori} merupakan mekanisme \f{attention} parametrik. Pada mekanisme \f{attention} parametrik, nilai $f_{\text{attn}}$ antar vektor kueri $\mathbf{q}$ dan $\mathbf{v}$ dibandingkan pada ruang vektor yang akan dipelajari (\f{learned embedding space}) daripada ruang vektor aslinya. Sebagai contoh, untuk suatu kueri $\mathbf{q}\in \mathbb{R}^{d_q}$, dan vektor kunci $\mathbf{k} \in \mathbb{R}^{d_k}$, \f{additive attention} yang diperkenalkan oleh \cite{bahdanau2016neural} menghitung nilai keserupaan antara $\mathbf{q}$ dan $\mathbf{k}$ seperti pada \equ~\ref{equ:additive-attention}
 	\begin{align}
 	\label{equ:additive-attention}
 	f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) &= (\mathbf{q} \mathbf{W}^q  + \mathbf{k} \mathbf{W}^k)  \mathbf{W}^{\text{out}} \in \mathbb{R}, \\
@@ -171,6 +171,14 @@
 
 	\subsection{\f{Scaled Dot-Product Attention}}
 	\label{sec:scaled-dot-product-attention}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/scaled-dot-product-attention.png}
+		\caption{Ilustrasi dari \f{scaled dot-product attention} \citep{pi-tau2023transformer}}
+		\label{fig:scaled-dot-product-attention}
+	\end{figure}
+
 	\f{Scaled dot-product attention} adalah mekanisme \f{Attention} parametrik yang digunakan dalam \f{transformers}. \f{Scaled dot-product attention} menghitung keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$ pada ruang vektor yang dipelajari (\f{learned embedding space}) dengan fungsi keserupaan $f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k}\mathbf{W}^k) $ adalah perkalian titik antara $\mathbf{qW}^q$ dan $\mathbf{kW}^k$ yang kemudian dibagi dengan $\sqrt{d_{attn}}$, seperti pada \equ~\ref{equ:scaled-dot-product-attention}.
 
 	\begin{align}
@@ -270,11 +278,11 @@
 
 	\begin{align}
 		\label{equ:multi-head-self-attention-start}
-		\text{MHSA}(\mathbf{E}) &= \text{Concat}(\text{head}_i, \dots, \text{head}_h)\mathbf{W}^O \in \mathbb{R}^{L \times d_{\text{token}}} \\
-		\text{head}_i = \text{Self-Attention}_i(\mathbf{E}) &= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q_i (\mathbf{E} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{\text{token}}/h}}) \mathbf{E} \mathbf{W}^v_i  \in  \mathbb{R}^{L \times \frac{d_{\text{token}}}{h}} \\
-		\text{Concat}(\text{head}_1, \dots, \text{head}_h) &= [\text{head}_1 | \dots | \text{head}_h] \in \mathbb{R}^{L \times d_{\text{token}}} \\
+		\text{MHSA}(\mathbf{E}) &= \text{Concat}(\text{head}_i, \dots, \text{head}_h)\mathbf{W}^O \in \mathbb{R}^{L \times d_{\text{token}}}, \\
+		\text{head}_i = \text{Self-Attention}_i(\mathbf{E}) &= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q_i (\mathbf{E} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{\text{token}}/h}}) \mathbf{E} \mathbf{W}^v_i  \in  \mathbb{R}^{L \times \frac{d_{\text{token}}}{h}}, \\
+		\text{Concat}(\text{head}_1, \dots, \text{head}_h) &= [\text{head}_1 | \dots | \text{head}_h] \in \mathbb{R}^{L \times d_{\text{token}}}, \\
 		\label{equ:multi-head-self-attention-end}
-		\text{dengan } \mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,&\in \mathbb{R}^{\frac{d_{\text{token}}}{h} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}} \\	
+		\text{dengan } \mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,&\in \mathbb{R}^{\frac{d_{\text{token}}}{h} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}.
 	\end{align}
 
 	perhatikan bahwa dimensi dari \f{learned embedding space} menjadi $\frac{d_{\text{token}}}{h}$ untuk setiap \f{head}-nya. Hal ini dilakukan untuk menjaga dimensi dari \f{output} terakhir tetap sama dengan dimensi dari \f{input}, yaitu $d_{\text{token}}$. Selain itu, argumen lainnya yang dapat dibuat adalah setiap \f{head} hanya perlu menggunakan dimensi yang lebih kecil dari $d_{\text{token}}$ untuk menangkap ketergantungan antar-token \citep{pi-tau2023transformer}. \cite{transformerori} menggunakan $h=8$ \f{head} pada \f{transformer} yang digunakan untuk mesin translasi neural, dengan $d_{\text{token}} = 512$, sehingga dimensi dari \f{learned embedding space} untuk setiap \f{head} adalah $\frac{512}{8} = 64$.
@@ -301,13 +309,12 @@
 
 	$d_{\text{ffn}}$ adalah dimensi dari \f{feed forward network} yang digunakan. \cite{transformerori} menggunakan $d_{\text{ffn}} = 2048$.
 
-	\subsection{Koneksi Residual dan \f{Layer Normalization}}
+	\subsection{Koneksi Residu dan \f{Layer Normalization}}
 	\label{sec:layer-normalization}
 
+	Pembaruan parameter model dilakukan pada semua \f{layer} secara serentak setiap iterasi \f{gradient descent}. Ketika parameter suatu \f{layer} mengalami pembaruan, distribusi dari \f{output} yang dihasilkan \f{layer} tersebut juga akan berubah pada iterasi selanjutnya. \f{Layer-layer} selanjutnya harus beradaptasi karena distribusi \f{input} dari \f{layer} tersebut berubah. Fenomena ini disebut \f{internal covariate shift} yang mengakibatkan proses pencarian parameter menjadi lebih lambat.
 	
-	Pada tahap pelatihan, pembaruan parameter model dilakukan pada semua \f{layer} secara serentak setiap iterasi \f{gradient descent}. Ketika parameter suatu \f{layer} mengalami pembaruan, distribusi dari \f{output} yang dihasilkan \f{layer} tersebut juga akan berubah pada iterasi selanjutnya. \f{Layer-layer} selanjutnya harus beradaptasi karena distribusi \f{input} dari \f{layer} tersebut berubah. Fenomena ini disebut \f{internal covariate shift} yang mengakibatkan proses pencarian parameter menjadi lebih lambat.
-	
-	\f{Layer Normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} --yang nantinya menjadi \f{input} pada \f{layer} selanjutnya-- sehingga memiliki variansi 1 dan mean 0. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} dari \f{self-attention layer} haruslah 1 (lihat \sect~\ref{sec:scaled-dot-product-attention}), sehingga variansi dari bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga. \equ~\ref{equ:layer-normalization-start} hingga \equ~\ref{equ:layer-normalization-end} menunjukkan proses kerja dari \f{layer normalization}.
+	\f{Layer Normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} -- yang nantinya menjadi \f{input} pada \f{layer} selanjutnya -- sehingga memiliki variansi 1 dan mean 0. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} untuk \f{self-attention layer} haruslah 1 (lihat \sect~\ref{sec:scaled-dot-product-attention}), sehingga variansi dari bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga. \equ~\ref{equ:layer-normalization-start} hingga \equ~\ref{equ:layer-normalization-end} menunjukkan proses kerja dari \f{layer normalization}.
 
 	\begin{align}
 		\label{equ:layer-normalization-start}
@@ -348,23 +355,51 @@
 		\end{figure}
 	
 
-	Koneksi Residu adalah koneksi yang menghubungkan \f{output} dari suatu \f{layer} dengan \f{input} dari \f{layer} selanjutnya. Koneksi residu digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{deep neural network} dengan memperbaiki \f{flow gradient} 
+	Koneksi Residu adalah koneksi yang menghubungkan \f{output} dari suatu \f{layer} dengan \f{input} dari \f{layer} selanjutnya. Koneksi residu digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{deep neural network} dengan memperbaiki \f{flow gradient} dari model. Persamaan matematis dari koneksi residu dijelaskan seperti pada \equ~\ref{equ:residual-connection-start}.
+
 	\begin{align}
 		\label{equ:residual-connection-start}
-		f_l'(\mathbf{x}) &= f_l(\mathbf{x}) + \mathbf{x} \\
-		\text{dengan } f_l(\mathbf{x}) &\text{ adalah suatu layer pada \f{deep neural network}.}
+		f_l'(\mathbf{x}) &= f_l(\mathbf{x}) + \mathbf{x}, \\
+		\text{dengan } f_l(\mathbf{x}) &\text{ adalah suatu \f{layer} atau kumpulan \f{layer} pada \f{deep neural network}.}
 	\end{align}
 
-	Pada \f{transformer}, \f{residual connection} digunakan sebelum \f{layer normalization} seperti pada \pic~\ref{fig:residual-connection}. \f{Residual connection} digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{transformer} yang memiliki banyak \f{layer} \citep{transformerori}. \f{Residual connection} juga digunakan pada \f{transformer decoder} untuk mengatasi masalah \f{exposure bias} yang terjadi pada \f{transformer decoder} \citep{exposurebias}.
+	Pada \f{transformer}, \f{residual connection} digunakan sebelum \f{layer normalization} seperti pada \pic~\ref{fig:residual-connection-transformers}.
 
-
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/residual-connection-transformer.png}
+		\caption{Ilustrasi koneksi residu.}
+		\label{fig:residual-connection-transformers}
+	\end{figure}
 
 	\subsection{Transformer Encoder}
 	\label{sec:encoder}
 
 	Dengan menggunakan \f{multi-head self-attention layer}, \f{position-wise feed-forward network layer}, dan \f{layer normalization} dan \f{residual connection} yang sudah dijelaskan sebelumnya, blok enkoder pada \f{transformer} enkoder dapat ditulis seperti pada \equ~\ref{equ:transformer-encoder-start} hingga \equ~\ref{equ:transformer-encoder-end}.
-	
+			
+	\begin{align}
+	\mathbf{X} &\in \mathbb{R}^{L \times d_{\text{token}}}, \\
+	\text{EncoderBlock}(\mathbf{X}) &= \mathbf{Y}, \\
+	\mathbf{Y} &= \text{LayerNorm}(\overbrace{\text{FFN}(\mathbf{Z})+\mathbf{Z}}^{\text{Koneksi Residu}}), \\
+	\mathbf{Z} &= \text{LayerNorm}(\overbrace{\text{MHSA}_h(\mathbf{X}), + \mathbf{X}}^{\text{Koneksi Residu}}). \\
+	\end{align}
 
+	Terakhir, \f{transformer encoder} adalah komposisi dari beberapa \f{encoder block}. Untuk \f{input} token $t=(t_1, t_2, \dots, t_L)$, \f{transformer encoder} menghasilkan representasi vektor kontekstual dari setiap tokennya ditunjukkan pada \equ~\ref{equ:transformer-encoder-start} hingga \equ~\ref{equ:transformer-encoder-end}.
+
+	\begin{align}
+		\label{equ:transformer-encoder-start} 
+		t &= (t_1, t_2, \dots, t_L), \\
+		\mathbf{E} &= \text{embed}(t)+ \text{pos}(t), \\
+		\label{equ:transformer-encoder-end}
+		\text{Encoder}(\mathbf{E}) &= \text{EncoderBlock}_n(\text{EncoderBlock}_{n-1}(\dots(\text{EncoderBlock}_1(\mathbf{E})))). \\
+	\end{align}
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/final-transformers-encoder.png}
+		\caption{Ilustrasi \f{transformer encoder}.}
+		\label{fig:transformer-encoder}
+	\end{figure}
 
 \section{Bidirectional Encoder Representations from Transformers (BERT)}
 	\subsection{Representasi Input}

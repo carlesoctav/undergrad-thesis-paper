@@ -49,4 +49,8 @@
 ![](sbertquerydocument.png)
 ![](residual-connection.png)
 
+![](residual-connection-transformer.png) 
 
+![](blok-enkoder.png)
+
+![](final-transformers-encoder.png)
