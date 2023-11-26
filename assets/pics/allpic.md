@@ -54,3 +54,14 @@
 ![](blok-enkoder.png)
 
 ![](final-transformers-encoder.png)
+
+
+![](dl-training-graph.png)
+
+![](learning-rate-bad.png)
+
+![](learning-rate-good.png)
+
+![](sgd-momentum.png)
+
+![](adam.png)
