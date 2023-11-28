@@ -3,10 +3,7 @@
 
 
 \section{Mekanisme \f{Attention}}
-
-
 Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untuk sebuah vektor kueri $\mathbf{q}$ dan sekumpulan pasangan terurut vektor $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, mekanisme \f{attention} akan mengembalikan vektor nilai $\mathbf{v}_i$ yang memiliki vektor kunci $\mathbf{k}_i$ yang cocok dengan vektor kueri $\mathbf{q}$. \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} menunjukkan bagaimana mekanisme \f{attention} dilakukan.
-
 \begin{align}
 	\label{equ:hard-attention-start}
 	\mathcal{KV} &= \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}, \\
@@ -31,27 +28,22 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	0, & \text{lainnya}
 	\end{cases}.
 	\end{align}
-
 	$f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi atensi yang menghitung nilai atensi antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi.
 	
 	Sebagai contoh, untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[1,0]), ([1,2],[0,1])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$, nilai dari $\text{Attention}( \mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $[0,1]$, karena nilai maksimal $f_\text{attn}$ terjadi ketika $\mathbf{k} = [1,2]$. 
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/hard-soft-attention-diff.png}
 		\caption{Perbedaan mekanisme \f{hard attention} dan \f{soft attention} \citep{pi-tau2023transformer}}
 		\label{fig:hard-attention}
 	\end{figure}
-	
 	Mekansime \f{attention} pada \equ~\ref{equ:hard-attention-start} hingga \equ~\ref{equ:hard-attention-end} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention} yang tidak terturunkan, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi \f{softmax}. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} hingga \equ~\ref{equ:soft-attention-end} menunjukkan bagaimana mekanisme \f{soft attention} dilakukan.
-	
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/softattention.png}
 		\caption{Ilustrasi dari mekanisme \f{soft attention} \citep{zhang2023dive}}
 		\label{fig:soft-attention}
 	\end{figure}
-
 	\begin{align}
 		\label{equ:soft-attention-start}
 		\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) &= \mathbf{\alpha}\mathbf{V} \in \mathbb{R}^{d_v},\\
@@ -61,13 +53,11 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\label{equ:soft-attention-end}
 		0 \leq \alpha_{i} &\leq 1.
 	\end{align}
-
 	Dengan rata-rata terbobot dari $\mathbf{V}$, transformasi \f{soft attention} dapat dicari turunannya dengan \f{backpropagation} yang merupakan syarat \f{fundamental} yang harus dimiliki oleh sebuah model \f{deep learning}.
 
 	Sebagai contoh, hasil dari $\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V})$ untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[0,1]), ([1,2],[1,0])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$ adalah $0.268 [0,1] + 0.732 [1,0] = [0.732, 0.268]$ dengan $\alpha_1 = \frac{\exp(4)}{\exp(4) + \exp(5)} \approx 0.268$ dan $\alpha_2 = \frac{\exp(5)}{\exp(4) + \exp(5)} \approx 0.732$.
 
 	Pada kasus kumpulan kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, mekanisme \f{attention} untuk setiap triplet $(\mathbf{q}_i, \mathbf{K}, \mathbf{V})$ dapat dihitung secara bersamaan seperti yang ditunjukkan pada \equ~\ref{equ:soft-attention-matrix-start} hingga \equ~\ref{equ:soft-attention-matrix-end}.
-
 	\begin{align}
 		\label{equ:soft-attention-matrix-start}
 		\text{tulis }\mathbf{Q} &= \begin{bmatrix}
@@ -91,20 +81,16 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\label{equ:soft-attention-matrix-end}
 		\alpha_{ij}(\mathbf{q}_i, \mathbf{k}_j) &= \text{Softmax}_j(\mathbf{\alpha}_i) = \frac{\exp(f_{attn}(\mathbf{q}_i, \mathbf{k}_j))}{\sum_{k=1}^{n} \exp(f_{attn}(\mathbf{q}_i, \mathbf{k}_k))}.
 	\end{align}
-
 	$\alpha_{ij}$ adalah bobot yang menunjukkan bobot atensi antara vektor kueri $\mathbf{q}_i$ dengan vektor kunci $\mathbf{k_j}$. 
 
 	\subsection{\f{Attention} Parametrik}
-
 	Mekanisme \f{attention} yang dilakukan oleh \cite{transformerori} merupakan mekanisme \f{attention} parametrik. Pada mekanisme \f{attention} parametrik, nilai $f_{\text{attn}}$ antar vektor kueri $\mathbf{q}$ dan $\mathbf{v}$ dibandingkan pada ruang vektor yang akan dipelajari (\f{learned embedding space}) daripada ruang vektor aslinya. Sebagai contoh, untuk suatu kueri $\mathbf{q}\in \mathbb{R}^{d_q}$, dan vektor kunci $\mathbf{k} \in \mathbb{R}^{d_k}$, \f{additive attention} yang diperkenalkan oleh \cite{bahdanau2016neural} menghitung nilai keserupaan antara $\mathbf{q}$ dan $\mathbf{k}$ seperti pada \equ~\ref{equ:additive-attention}
 	\begin{align}
 	\label{equ:additive-attention}
 	f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) &= (\mathbf{q} \mathbf{W}^q  + \mathbf{k} \mathbf{W}^k)  \mathbf{W}^{\text{out}} \in \mathbb{R}, \\
 	\text{dengan } &\mathbf{W}^q \in \mathbb{R}^{d_q \times d_{\text{attn}}}, \mathbf{W}^k \in \mathbb{R}^{d_k \times d_{\text{attn}}}, \mathbf{W}_{\text{out}} \in \mathbb{R}^{d_{\text{attn}} \times 1}.
 	\end{align}
-
 	Matriks $\mathbf{W}^q$, $\mathbf{W}^k$, dan $\mathbf{W}^{\text{out}}$ adalah matriks paramter yang akan diestimasi selama proses pelatihan. Contoh \f{attention} parametrik yang lebih sederhana adalah \f{dot-product attention}. Fungsi $f_{attn}$ yang digunakan adalah perkalian titik antara $\mathbf{q}$ dan $\mathbf{k}$ di ruang vektor yang dipelajari (\f{learned embedding space}). \equ~\ref{equ:dot-product-attention} menunjukkan bagaimana \f{dot-product attention} dihitung.
-
 	\begin{align}
 		\label{equ:dot-product-attention}
 		f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) = (\mathbf{q} \mathbf{W}^q) (\mathbf{k} \mathbf{W}^k)^{\top}\\
@@ -118,7 +104,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\caption{Arsitektur \f{transformer} \citep{weng2018attention}.}
 		\label{fig:transformer}
 	\end{figure}
-
 	\f{Transformers} merupakan Arsitektur \f{deep learning} yang pertama kali diperkenalkan oleh \cite{transformerori}. Awalnya Transformers merupakan model \f{sequance to sequance} yang diperuntukkan untuk permasalahan mesin translasi neural (\f{neural machine translation}). Namun, sekarang \f{transformer} juga digunakan untuk permasalahan pemrosesan bahasa alami lainnya. model-model yang berarsitektur \f{transformer} menjadi model \f{state-of-the-art} untuk permasalahan pemrosesan bahasa alami lainnya, seperti \f{question answering}, \f{sentiment analysis}, dan \f{named entity recognition}.
  
 	Berbeda dengan arsitektur mesin translasi terdahulu, transformer tidak mengunakan \f{recurrent neural network} (RNN) atau \f{convolutional neural network} (CNN), melainkan transformer adalah model \f{feed foward network} yang dapat memproses seluruh \f{input} pada barisan secara paralel. Untuk menggantikan kemampuan RNN dalam mempelajari ketergantungan antar \f{input} yang berurutan dan kemampuan CNN dalam mempelajari fitur lokal, transformer bergantung pada mekanisme \f{attention}.
@@ -129,31 +114,25 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\item \f{Decoder self-attention}: menggunakan barisan \f{target} yang berupa kalimat terjemahan parsial, barisan token, sebagai masukan untuk menghasilkan barisan representasi kontekstual (vektor) dari \f{target}. Setiap representasi token tersebut memiliki ketergantungan dengan token sebelumnya dalam urutan masukan.
 		\item \f{Decoder-encoder attention}: menggunakan barisan representasi kontekstual dari \f{input}, dan barisan representasi kontekstual dari \f{target} untuk menghasilkan token berikutnya yang merupakan hasil prediksi dari model. Barisan \f{target} yang digabung dengan token hasil prediksi tersebut akan menjadi barisan \f{target} untuk prediksi selanjutnya.
 	\end{enumerate}
-
 	Arsitektur dari \f{transformer} mengimplementasikan struktur pasangan encoder-decoder. Aristektur dari \f{transformer} dapat dilihat pada \pic~\ref{fig:transformer}. Lapisan \f{encoder} berfungsi untuk memahami konteks suatu kata dalam dokumen atau kalimat, sementara lapisan \f{decoder} digunakan untuk menyelesaikan masalah translasi menuju bahasa berbeda. Pada permasalahan klasifikasi seperti analisis sentimen dan pemeringkatan dokumen, lapisan \f{decoder} tidak digunakan. Permasalahan tersebut \f{output} dari lapisan \f{encoder} yang digunakan sebagai masukan untuk lapisan \f{classifier}. \sect~\ref{sec:token-embedding} hingga \sect~\ref{sec:encoder} menjelaskan arsitektur model \f{transformer} dan berbagai mekanisme yang menyusun model \f{transformer}, khususnya \f{transformer encoder} yang menjadi \f{building block} dari \f{Biderectional Encoder Representations from Transformers} (BERT).
 
 	\subsection{\f{Token Embedding (Input Embedding)}}
 	\label{sec:token-embedding}
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/token-embedding.png}
 		\caption{Ilustrasi dari representasi token. Gambar kiri menunjukkan representasi token dengan \f{one-hot encoding}, sedangkan gambar kanan menunjukkan representasi token dengan \f{token embedding} \citep{geiger2022deeplearning}}
 		\label{fig:token-embedding}
 	\end{figure}
-
 	Perlu diingat kembali bahwa \f{input} dari \f{Attention} (dan tentunya \f{transformer}) adalah barisan vektor. Jika \f{Attention} ingin dapat digunakan pada permasalahan bahasa, barisan kata atau subkata (selanjutnya disebut token) harus terlebih dahulu diubah menjadi barisan vektor.
 
 	Representasi vektor dari token yang paling sederhana adalah dengan \f{one-hot encoding}. Andaikan $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ adalah semua kemungkinan token yang mungkin muncul dalam permasalahan bahasa yang ingin diselesaikan. Untuk sembarang barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$, representasi vektor dari token $t_{i_j}$ adalah vektor $\mathbf{oh}_{i_j} = [0, \dots, 0, 1, 0, \dots, 0] \in \mathbb{R}^{|\mathcal{T}|}$, dengan nilai 1 pada indeks ke $j$ dan nilai 0 pada indeks lainnya. \f{One-hot encoding} tentunya memiliki kelemahan:
-
 	\begin{enumerate}
 		\item Vektor yang dihasilkan adalah \f{sparse vector}, dan ukuran vektor yang dihasilkan cukup besar, yaitu $|\mathcal{T}|$.
 		\item Representasi token yang buruk. Operasi vektor yang dilakukan pada \f{one-hot encoding} tidaklah bermakna. Misalnya, Jarak antar token akan selalu sama pada \f{one-hot encoding}, yaitu $\sqrt{2}$.
 	\end{enumerate}
 
 	Untuk Mengatasi kekurangan dari representasi \f{one-hot encoding}, reprentasi yang digunakan adalah vektor padat yang akan dipelajari ketika proses pelatihan. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start} hingga \equ~\ref{equ:token-embedding-end} menunjukkan bagaimana representasi vektor dari barisan suatu token $t$ dihitung. 
-
-	
 	\begin{align}
 		\label{equ:token-embedding-start}
 		t &= (t_{i_1}, t_{i_2}, \dots, t_{i_L}), \\
@@ -166,21 +145,13 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 			\mathbf{e}_{i_L}
 		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}}.
 	\end{align}
-	
+
 	\pic~\ref{fig:token-embedding} mengilustrasikan perbedaan antara \f{one-hot encoding} dan \f{token embedding}. Pada representasi token dengan vektor padat vektor yang secara semantik atau sintaksis mirip akan memiliki jarak yang lebih dekat. Selain itu, representasi token dengan vektor padat memiliki dimensi $d_{\text{token}}$ yang lebih kecil daripada \f{one-hot encoding} yang memiliki dimensi $|\mathcal{T}|$.
 
 	\subsection{\f{Scaled Dot-Product Attention}}
 	\label{sec:scaled-dot-product-attention}
 
-	\begin{figure}
-		\centering
-		\includegraphics[width=1\textwidth]{assets/pics/scaleddotattention.png}
-		\caption{Ilustrasi dari \f{scaled dot-product attention} \citep{transformerori}}
-		\label{fig:scaled-dot-product-attention}
-	\end{figure}
-
 	\f{Scaled dot-product attention} adalah mekanisme \f{Attention} parametrik yang digunakan dalam \f{transformers}. \f{Scaled dot-product attention} menghitung keserupaan antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$ pada ruang vektor yang dipelajari (\f{learned embedding space}) dengan fungsi keserupaan $f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k}\mathbf{W}^k) $ adalah perkalian titik antara $\mathbf{qW}^q$ dan $\mathbf{kW}^k$ yang kemudian dibagi dengan $\sqrt{d_{attn}}$, seperti pada \equ~\ref{equ:scaled-dot-product-attention}.
-
 	\begin{align}
 		\label{equ:scaled-dot-product-attention}
 		f_{attn}(\mathbf{q} \mathbf{W}^q, \mathbf{k} \mathbf{W}^k) &= \frac{\mathbf{q} \mathbf{W}^q (\mathbf{k} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}} \in \mathbb{R}, \\
@@ -188,7 +159,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\end{align}
 
 	pembagian dengan $\sqrt{d_{attn}}$ dilakukan untuk menjaga variansi dari nilai atensi $\mathbf{q} \mathbf{W}^q (\mathbf{k} \mathbf{W}^k)^{\top}$ tetap serupa dengan variansi $\mathbf{qW}^q$ dan $\mathbf{kW}^k$. Tanpa pembagian $\sqrt{d_{attn}}$, variansi dari nilai atensi akan memiliki faktor tambahan $\sigma^2 d_{attn}$, seperti yang ditunjukkan pada \equ~\ref{equ:initialize-dot-product-attention} hingga \equ~\ref{equ:variance-dot-product-attention}.
-
 	\begin{align}
 		\label{equ:initialize-dot-product-attention}
 		\mathbf{qW}^q \sim \mathcal{N}(0, \sigma^2) \text{ dan } \mathbf{kW}^k \sim \mathcal{N}(0, \sigma^2). \\
@@ -199,14 +169,12 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	Akibatnya, untuk nilai $d_{attn}$ yang cukup besar, akan terdapat satu elemen atensi acak $(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i$ sehinnga $\mid (\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_i\mid \gg \mid(\mathbf{qW}^q (\mathbf{kW}^k)^{\top})_j\mid$ untuk sembarang nilai atensi lainnya. Jika faktor $d_{attn}$ tidak dihilangkan, \f{softmax} dari nilai atensi akan jenuh ke 1 untuk satu elemen acak tersebut dan 0 untuk elemen lainnya -- atau sebaliknya. Akibatnya, gradien pada fungsi \f{softmax} akan mendekati nol sehingga model tidak dapat belajar parameter dengan baik. 
 
 	Dengan \f{scaled dot product attention}, tidak ada faktor $d_{attn}$ pada variansi nilai atensi. faktor $\sigma^4$ pada \equ~\ref{equ:variance-scaled-dot-product-attention} tidak menjadi masalah karena dengan \f{normalization layer} yang dijelaskan pada \sect~\ref{sec:layer-normalization} mengakibatkan $\sigma^2 \approx 1$ sehingga $\sigma^4 \approx \sigma^2 \approx 1$.
-
 	\begin{align}
 		\label{equ:variance-scaled-dot-product-attention}
 		\text{(scaled dot product attention) }\text{Var}\left(\frac{\mathbf{qW}^q (\mathbf{kW}^k)^{\top}}{\sqrt{d_{attn}}}\right) = \frac{\sigma^4 d_{attn}}{d_{attn}} = \sigma^4
 	\end{align}
 
 	Terakhir, untuk kumpulan vektor kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, dan kumpulan vektor kunci dan nilai $\mathcal{KV} = \{(\mathbf{k}_1, \mathbf{v}_2), (\mathbf{k}_2, \mathbf{v}_2), \dots, (\mathbf{k}_n, \mathbf{v}_n)\}$, \f{scaled dot product attention} dapat dihitung secara bersamaan seperti pada \equ~\ref{equ:scaled-dot-product-attention-matrix-start} hingga \equ~\ref{equ:scaled-dot-product-attention-matrix-end}.
-
 	\begin{align}
 	\label{equ:scaled-dot-product-attention-matrix-start}
 	\text{Tulis Kembali } \mathbf{Q} &= \begin{bmatrix}
@@ -239,23 +207,19 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\caption{Perbandingan RNN dan \f{self-attention} dalam menghasilkan representasi vektor kontekstual. Pada RNN, representasi vektor kontekstual setiap token bergantung pada perhitungan token sebelumnya. Pada \f{self-attention}, representasi vektor kontekstual setiap token dihitung secara independen dan paralel.}
 		\label{fig:self-attention-rnn}
 	\end{figure}
-
 	\f{Self-Attention layer} adalah \f{layer} yang digunakan \f{transformer} untuk menghasilkan representasi vektor yang kontekstual dari barisan token \f{input}. Berbeda dengan RNN dalam menghasilkan representasi vektor kontekstual, \f{self-attention} tidak memerlukan ketergantungan sekuensial, yang berarti representasi vektor kontekstual setiap tokennya dapat dihitung secara independen dan paralel. \pic~\ref{fig:self-attention-rnn} mengambarkan perbedaan kedua arsitektur dalam menghasilkan representasi vektor kontekstual. Kemampuan Paralelisme dari \f{self-attention} membuat proses komputasi menjadi lebih cepat pada \f{hardware} yang mendukung paralelisme. 
 
 	Perhitungan \f{self-attention} pada \f{transformer} yang digunakan adalah \f{scaled dot product attention} yang telah dijelaskan pada \sect~\ref{sec:scaled-dot-product-attention}. Pada \f{self-attention}, vektor kueri $\mathbf{q}$, vektor kunci $\mathbf{k}$, dan vektor nilai $\mathbf{v}$ adalah vektor yang sama, yaitu \f{embedding} dari token $\mathbf{E}$ yang dijelaskan pada \sect~\ref{sec:token-embedding}. Selain itu, Dimensi dari \f{learned embedding space} $d_{\text{attn}}$ yang digunakan untuk perhitungan nilai atensi adalah $d_{\text{token}}$ yaitu dimensi dari \f{token embedding}. \equ~\ref{equ:self-attention-start} hingga \equ~\ref{equ:self-attention-end} menunjukkan bagaimana \f{self-attention} dihitung.
-	
-	
 	\begin{align}
 		\label{equ:self-attention-start}
-		\mathbf{E} &= \text{Embedding dari barisan token} \in \mathbb{R}^{L \times d_{\text{token}}} \\
-		\text{Self-Attention}(\mathbf{E}) &= \text{Attention}(\mathbf{EW}^q, \mathbf{EW}^k, \mathbf{EW}^v) \\
+		\mathbf{E} &= \text{Embedding dari barisan token} \in \mathbb{R}^{L \times d_{\text{token}}}, \\
+		\text{Self-Attention}(\mathbf{E}) &= \text{Attention}(\mathbf{EW}^q, \mathbf{EW}^k, \mathbf{EW}^v), \\
 		\label{equ:self-attention-end}
-		&= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q (\mathbf{E} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}}) (\mathbf{E} \mathbf{W}^v) \in \mathbb{R}^{L \times d_{\text{token}}} \\
-		\text{ dengan } \mathbf{W}^q, \mathbf{W}^k, &\in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}, \mathbf{W}^v \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}
+		&= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q (\mathbf{E} \mathbf{W}^k)^{\top}}{\sqrt{d_{attn}}}) (\mathbf{E} \mathbf{W}^v) \in \mathbb{R}^{L \times d_{\text{token}}}, \\
+		\text{ dengan } \mathbf{W}^q, \mathbf{W}^k, &\in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}, \mathbf{W}^v \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}.
 	\end{align}
 
 	\f{self-attention} dapat dikonsepsikan sebagai proses pembentukan representasi token yang kontekstual. untuk setiap tokennya, \f{self-attention} menghitung keserupaan antara token $\mathbf{e}_{t_i} \mathbf{W}^q$ dengan seluruh token lainnya $\mathbf{E} \mathbf{W}^k$ dengan \f{scaled dot product attention}. Hasil dari \f{scaled dot product attention} adalah vektor yang menunjukkan bobot atensi dari token tersebut terhadap token lainnya. Bobot atensi tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari seluruh token lainnya ($\mathbf{E} \mathbf{W}^v$). Hasil dari rata-rata terbobot tersebut adalah representasi vektor kontekstual dari token tersebut. \pic~\ref{fig:self-attention-example} adalah contoh dari \f{self-attention} yang menghasilkan representasi vektor kontekstual pada token \f{it}. Pada \pic~\ref{fig:self-attention-example} kiri token \f{it} memiliki bobot atensi yang tinggi terhadap token dan \f{animal} sehingga representasi vektor kontekstual dari token \f{it} akan memiliki nilai yang serupa dengan representasi token \f{animal}. Di lain sisi, token \f{it} pada \pic~\ref{fig:self-attention-example} memiliki bobot atensi yang tinggi terhadap token \f{street}.
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/self-attn-example.png}
@@ -264,7 +228,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\end{figure}
 	
 	\subsection{\f{Multi-Head Self-Attention}}
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/MHSA.png}
@@ -275,7 +238,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\f{Multi-Head Self-Attention} adalah arsiktetur pada \f{transformer} untuk melakukan mekanisme \f{self-attention} beberapa kali pada subruang (\f{learned embedded space}) yang berbeda. dengan melakukan hal tersebut, diharapkan bahwa model dapat menangkap relasi atau keserupaan antar token dari sudut pandang yang berbeda. 
 
 	Secara teknis, \f{embedding} dari barisan token $\mathbf{E}$ akan dipetakan sebanyak $h$ kali dengan \f{linear layer} yang kemudian hasil \f{attention} dari setiap \f{head} akan digabungkan dan dilakukan transformasi sekali lagi dengan \f{linear layer}. \equ~\ref{equ:multi-head-self-attention-start} hingga \equ~\ref{equ:multi-head-self-attention-end} menunjukkan bagaimana \f{multi-head self-attention} dihitung.
-
 	\begin{align}
 		\label{equ:multi-head-self-attention-start}
 		\text{MHSA}(\mathbf{E}) &= \text{Concat}(\text{head}_i, \dots, \text{head}_h)\mathbf{W}^O \in \mathbb{R}^{L \times d_{\text{token}}}, \\
@@ -301,6 +263,7 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\label{equ:positional-encoding-start}
 		\text{PE}_{ \text {pos }, i}= \begin{cases}\sin \left(\frac{p o s}{10000^{i / d_{\text {token}}}}\right) & \text {jika } i \bmod 2=0 ,\\ \cos \left(\frac{p o s}{10000^{(i-1) / d_{\text {token}}}}\right) & \text { lainnya. }\end{cases}
 	\end{align}
+
 	berbeda dengan \cite{transformerori}, \cite{bertori} menggunakan matriks parameter $\mathbf{W}^{pe} \in \mathbb{R}^{L_{\max} \times d_{\text{token}}}$ untuk menghitung matriks \f{positional encoding} $\mathbf{PE} \in \mathbb{R}^{L \times d_{\text{token}}}$ seperti yang ditunjukkan pada \equ~\ref{equ:positional-encoding-learnable-start} hingga \equ~\ref{equ:positional-encoding-learnable-end}. Kekurangan dari pendekatan ini adalah model tidak dapat melakukan inferensi pada barisan token yang lebih panjang dari $L_{\max}$. \pic~\ref{fig:positional-encoding} mengilustrasikan \f{positional encoding} pada \f{transformer}.
 	\begin{align}
 		\label{equ:positional-encoding-learnable-start}
@@ -313,25 +276,20 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 			\mathbf{pe}_L
 		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}}.
 	\end{align}
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=1\textwidth]{assets/pics/positional_encoding.png}
-	\caption{Ilustrasi dari \f{positional encoding} pada \f{transformer}. \f{Positional encoding} ditambahkan pada \f{token embedding} sebelum dijadikan masukan untuk \f{transformer}.}
-	\label{fig:positional-encoding}
-\end{figure}
-
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/positional_encoding.png}
+		\caption{Ilustrasi dari \f{positional encoding} pada \f{transformer}. \f{Positional encoding} ditambahkan pada \f{token embedding} sebelum dijadikan masukan untuk \f{transformer}.}
+		\label{fig:positional-encoding}
+	\end{figure}
 
 \subsection{\f{Position-wise Feed-Forward Network}}
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/ffn_transformer.png}
 		\caption{Ilustrasi \f{position-wise feed-forward network} pada \f{transformer}.}
 		\label{fig:position-wise-feed-forward-network}
 	\end{figure}
-
 	\f{Position-wise Feed-Foward Network} adalah \f{feed foward network} dengan dua kali transformasi linear dan sebuah fungsi aktivasi ReLU di antaranya. \pic~\ref{fig:position-wise-feed-forward-network} menunjukkan ilustrasi dari \f{position-wise feed-forward network} dan \equ~\ref{equ:position-wise-feed-forward-network-start} hingga \equ~\ref{equ:position-wise-feed-forward-network-end} menunjukkan Transformasi yang dilakukan oleh \f{position-wise feed-forward network}.
 	\begin{align}
 		\label{equ:position-wise-feed-forward-network-start}
@@ -393,7 +351,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\end{align}
 
 	Pada \f{transformer}, \f{residual connection} digunakan sebelum \f{layer normalization} seperti pada \pic~\ref{fig:residual-connection-transformers}.
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/residual-connection-transformer.png}
@@ -405,7 +362,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\label{sec:encoder}
 
 	Dengan menggunakan \f{multi-head self-attention layer}, \f{position-wise feed-forward network layer}, dan \f{layer normalization} dan \f{residual connection} yang sudah dijelaskan sebelumnya, blok \f{encoder} pada \f{transformer encoder} dapat ditulis seperti pada \equ~\ref{equ:transformer-encoder-start} hingga \equ~\ref{equ:transformer-encoder-end}.
-			
 	\begin{align}
 	\mathbf{X} &\in \mathbb{R}^{L \times d_{\text{token}}}, \\
 	\text{EncoderBlock}(\mathbf{X}) &= \mathbf{Z}_2, \\
@@ -414,7 +370,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\end{align}
 
 	Terakhir, \f{transformer encoder} adalah komposisi dari beberapa blok \f{encoder}. Untuk \f{input} token $t=(t_1, t_2, \dots, t_L)$, \f{transformer encoder} menghasilkan representasi vektor kontekstual dari setiap tokennya ditunjukkan pada \equ~\ref{equ:transformer-encoder-start} hingga \equ~\ref{equ:transformer-encoder-end}.
-
 	\begin{align}
 		\label{equ:transformer-encoder-start} 
 		t &= (t_1, t_2, \dots, t_L), \\
@@ -422,7 +377,6 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\label{equ:transformer-encoder-end}
 		\text{Encoder}(\mathbf{x}) &= \text{EncoderBlock}_n(\text{EncoderBlock}_{n-1}(\dots(\text{EncoderBlock}_1(\mathbf{X})))). \\
 	\end{align}
-
 	\begin{figure}
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/final-transformers-encoder.png}
@@ -437,7 +391,7 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\subsection{Model Pralatih BERT}
 
 		\subsubsection{\f{Masked Language Model}}
-		
+
 
 		\subsubsection{\f{Next Sentence Prediction}}
 
@@ -446,7 +400,17 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 	\subsection{Penggunaan BERT untuk Pemeringkatan Teks}
 		\subsubsection{$\text{BERT}_{\text{CAT}}$}
 
-		\subsubsection{$\text{BERT}_{\text{DOT}}$}
+		Salah satu cara pengunaan BERT untuk pemeringkatan Teks adalah dengan menggunakan BERT pada
+		model untuk melakukan \f{soft classification} nilai relevansi dari pasangan (kueri, teks). Dengan kata lain, $\text{score}(q,d) = \text{Classifier}(q,d)$, dengan fungsi $\text{Classifier}$
+		ditujukkan pada \equ~\ref{equ:bert-cat-start}
+
+		\begin{align}
+			\label{equ:bert-cat-start}
+			\text{Classifier}(q,d) &= \sigma\left(\mathbf{W}^{\text{CLS}} \mathbf{h}\right) \in \mathbb{R}, \\
+			\mathbf{h} &= \text{BERT}((\text{[CLS]},\mathbf{q},\text{[SEP]},\mathbf{d}\text{[SEP]})_{\text{token}}) \in \mathbb{R}^{d_{\text{token}}}, \\
+		\end{align}
+
+
 
 
 
