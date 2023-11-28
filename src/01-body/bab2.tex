@@ -277,7 +277,7 @@
         \label{fig:deep-learning-FFN-dag}
     \end{figure}
 
-    Arsitektur \f{Deep learning} merujuk pada model \f{machine learning} yang tersusun dari fungsi-fungsi terturunkan ( yang biasa disebut sebagai \f{layer}), dimana komposisi antara fungsi-fungsi tersebut dapat digambarkan sebagai \f{directed acyclic graph} (DAG) yang memetakan suatu \f{input} ke suatu \f{output}. Biasanya, setiap fungsi tersebut dalam Arsitektur \f{Deep learning} memiliki parameter yang ingin diestimasi atau dicari dengan data.
+    Arsitektur \f{Deep learning} merujuk pada model \f{machine learning} yang tersusun dari fungsi-fungsi terturunkan ( yang biasa disebut sebagai \f{layer}), dimana komposisi antara fungsi-fungsi tersebut dapat digambarkan sebagai \f{directed acyclic graph} (DAG) yang memetakan suatu \f{input} ke suatu \f{output}. Biasanya, setiap fungsi dalam Arsitektur \f{Deep learning} memiliki parameter yang ingin diestimasi atau dicari dengan data.
     
     \pic~\ref{fig:deep-learning-FFN-dag} menunjukkan arsitektur deep learning yang sederhana, yaitu \f{feed-forward neural network} (FFN). Pada \pic~\ref{fig:deep-learning-FFN-dag}, \f{input} $\mathbf{x}$ akan dipetakan ke \f{output} $\hat y$ melalui serangkaian fungsi $f_1, f_2, f_3$ yang disebut sebagai \f{layer}. Setiap \f{layer} $f_i$ memiliki parameter $\theta_i$ yang akan diestimasi dengan data. Selain itu, \f{Output} dari \f{layer} $f_i$ akan menjadi \f{input} dari \f{layer} $f_{i+1}$. \f{Output} dari \f{layer} $f_3$ adalah \f{output} dari model. Model pada \pic~\ref{fig:deep-learning-FFN-dag} dapat ditulis sebagai \equ~\ref{eq:deep-learning-FFN-dag}.
 
@@ -288,12 +288,11 @@
         \text{dengan } \bm{\theta} &= \{\bm{\theta}_1, \bm{\theta}_2, \bm{\theta}_3\}
     \end{align}
 
-    \subsection{\f{Feed-Forward Neural Network} (FFN)}
+    \subsection{\f{Multilayer Perceptron} (MLP)}
 
-    \f{Feed-Forward Neural Network} (FFN) adalah salah satu arsitektur \f{deep learning} yang paling sederhana. Pada \f{feed-forward neural network}, setiap fungsi $f_i$ adalah fungsi linear yang diikuti oleh fungsi aktivasi non-linear $\phi$  yang diterapkan \f{element-wise} pada setiap \f{output}-nya. \f{hyperparameter} lainnya selain fungsi aktivasi adalah kedalamaan model $L$, dan dimensi \f{output} dari setiap \f{layer} $d_1, d_2, \dots, d_L$.
+    \f{Multi-layer perceptron} (MLP) adalah \f{feed-forward neural network} dengan setiap fungsi $f_i$ adalah fungsi linear yang diikuti oleh fungsi aktivasi non-linear $\phi$  yang diterapkan \f{element-wise} pada setiap \f{output}-nya. \f{hyperparameter} lainnya selain fungsi aktivasi adalah kedalamaan model $L$, dan dimensi \f{output} dari setiap \f{layer} $d_1, d_2, \dots, d_L$.
 
-    Untuk permasalahan regresi dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \mathbb{R}^{d_L}$, \equ~\ref{eq:FFN-regesi-start} hingga \equ~\ref{eq:FFN-regesi-end} menunjukkan arsitektur \f{feed-forward neural network} untuk permasalahan regresi dengan kedalaman $L$.
-
+    Untuk permasalahan regresi dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \mathbb{R}^{d_L}$, \equ~\ref{eq:FFN-regesi-start} hingga \equ~\ref{eq:FFN-regesi-end} menunjukkan arsitektur MLP untuk permasalahan regresi dengan $L$ \f{layer} dan fungsi aktivasi $\phi$.
 
     \begin{align}
         \label{eq:FFN-regesi-start}
@@ -307,7 +306,7 @@
         \mathbf{b}_l &= \text{vektor bias} \in \mathbb{R}^{d_l}
     \end{align} 
 
-    Untuk Permasalahan Klasifikasi Biner dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \{0, 1\}$, \equ~\ref{eq:FFN-klasifikasi-biner-start} hingga \equ~\ref{eq:FFN-klasifikasi-biner-end} menunjukkan arsitektur \f{feed-forward neural network} untuk permasalahan klasifikasi.
+    Untuk Permasalahan Klasifikasi Biner dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \{0, 1\}$, \equ~\ref{eq:FFN-klasifikasi-biner-start} hingga \equ~\ref{eq:FFN-klasifikasi-biner-end} menunjukkan arsitektur MLP untuk permasalahan klasifikasi biner.
 
     \begin{align}
         \label{eq:FFN-klasifikasi-biner-start}
@@ -322,44 +321,44 @@
         \text{threshold}&\in [0, 1].
     \end{align}
 
-    Perbedaan utama antara \f{feed-forward neural network} untuk permasalahan regresi dan klasifikasi adalah fungsi aktivasi pada \f{output layer}. Pada permasalahan regresi, fungsi aktivasi pada \f{output layer} adalah fungsi identitas, sedangkan pada permasalahan klasifikasi, fungsi aktivasi pada \f{output layer} adalah fungsi \f{sigmoid}. Tujuan digunakan fungsi \f{sigmoid} pada permasalahan klasifikasi adalah untuk memastikan bahwa \f{output} dari model berada pada rentang $[0, 1]$, dimana nilai tersebut dapat diinterpretasikan sebagai probabilitas $\mathbf{x}$ termasuk pada kelas positif. Selain itu, \f{threshold} pada \equ~\ref{eq:FFN-klasifikasi-biner-end} digunakan untuk menentukan apakah $\mathbf{x}$ termasuk pada kelas positif atau negatif.
+    Perbedaan utama antara MLP untuk permasalahan regresi dan klasifikasi adalah fungsi aktivasi pada \f{output layer}. Pada permasalahan regresi, fungsi aktivasi pada \f{output layer} adalah fungsi identitas, sedangkan pada permasalahan klasifikasi, fungsi aktivasi pada \f{output layer} adalah fungsi \f{sigmoid}. Tujuan pengunaan fungsi \f{sigmoid} pada permasalahan klasifikasi adalah untuk memastikan bahwa \f{output} dari model berada pada rentang $[0, 1]$, nilai tersebut dapat diinterpretasikan sebagai probabilitas $\mathbf{x}$ termasuk pada kelas positif. Selain itu, \f{threshold} pada \equ~\ref{eq:FFN-klasifikasi-biner-end} digunakan untuk menentukan kelas dari $\mathbf{x}$.
 
     \subsection{Fungsi Aktivasi}
 
-    Fungsi Aktivasi pada setiap \f{layer} $f_i$ pada \f{feed-forward neural network} digunakan untuk menambahkan non-linearitas pada model. Sebab, tanpa adanya fungsi aktivasi non-linear, model \f{feed-forward neural network} akan menjadi model linear. Selain itu, fungsi aktivasi juga biasanya adalah fungsi yang terturunkan, meskipun tidak perlu terturunkan disetiap titik. \tab~\ref{tab:activation-function} menunjukkan beberapa fungsi aktivasi yang sering digunakan pada \f{feed-forward neural network}. \pic~\ref{fig:activation-function} menunjukkan grafik dari fungsi aktivasi pada \tab~\ref{tab:activation-function} dan turunannya.
+    Fungsi Aktivasi pada setiap fungsi $f_i$ pada \f{multilayer perceptron} digunakan untuk menambahkan non-linearitas pada model. Sebab, tanpa adanya fungsi aktivasi non-linear, model \f{multilayer perceptron} akan menjadi model linear. Selain itu, fungsi aktivasi juga biasanya adalah fungsi yang terturunkan, meskipun tidak perlu terturunkan disetiap titik. \tab~\ref{tab:activation-function} menunjukkan beberapa fungsi aktivasi yang sering digunakan pada \f{multilayer perceptron}. \pic~\ref{fig:activation-function} menunjukkan grafik dari fungsi aktivasi pada \tab~\ref{tab:activation-function} dan turunannya.
 
     \begin{table}
         \centering
-        \caption{Beberapa fungsi aktivasi yang sering digunakan pada \f{feed-forward neural network}.}
+        \caption{Beberapa fungsi aktivasi yang sering digunakan pada \f{multilayer perceptron}.}
         \label{tab:activation-function}
         \begin{tabular}{|c|c|}
             \hline
             \textbf{Fungsi Aktivasi} & \textbf{Persamaan} \\
             \hline
             \hline
-            \f{Sigmoid} & $\sigma(x) = \frac{1}{1 + e^{-x}}$ \\
+            Sigmoid & $\sigma(x) = \frac{1}{1 + e^{-x}}$ \\
             \hline
-            \f{Tanh} & $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ \\
+            Tanh & $\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}$ \\
             \hline
-            \f{ReLU} & $\text{ReLU}(x) = \max(0, x)$ \\
+            ReLU & $\text{ReLU}(x) = \max(0, x)$ \\
             \hline
-            \f{Leaky ReLU} & $\text{LeakyReLU}(x) = \max(\alpha x, x), \alpha \in [0, 1]$ \\
+            Leaky ReLU & $\text{LeakyReLU}(x) = \max(\alpha x, x), \alpha \in [0, 1]$ \\
             \hline
         \end{tabular}
     \end{table}
     
     \begin{figure}
         \centering
-        \includegraphics[width=0.50\textwidth]{assets/pics/act_function.png}
+        \includegraphics[width=1\textwidth]{assets/pics/act_function.png}
         \caption{\license.}
         \label{fig:activation-function}
     \end{figure}
 
 
     \subsection{Fungsi \f{Loss}}
-    Misalkan $\mathcal{D} = \{(\mathbf{x}_1, \mathbf{y}_1), (\mathbf{x}_2, \mathbf{y}_2), \dots, (\mathbf{x}_n, \mathbf{y}_n)\}$ adalah \f{dataset} yang terdiri dari $n$ pasangan \f{input} dan \f{output}. Parameter $\bm{\theta}$ pada $f_{\text{model}}$ diestimasi dengan melakukan \f{fitting} pada \f{dataset} $\mathcal{D}$. Untuk melakukan \f{fitting} pada \f{dataset} $\mathcal{D}$, diperlukan suatu fungsi \f{loss} yang mengukur seberapa baik hasil pemetaan $f_{\text{model}}$ dengan \f{input} $\mathbf{x}_i$ terhadap \f{output} $\mathbf{y}_i$. Meskipun sembarang fungsi yang terturunkan dapat digunakan sebagai fungsi \f{loss}, namun pemilihan fungsi \f{loss} berdasarkan \f{maximum likelihood estimation} (MLE) lebih disarankan. 
+    Misalkan $\mathcal{D} = \{(\mathbf{x}_1, \mathbf{y}_1), (\mathbf{x}_2, \mathbf{y}_2), \dots, (\mathbf{x}_n, \mathbf{y}_n)\}$ adalah \f{dataset} yang terdiri dari $n$ pasangan \f{input} dan \f{output}. Parameter $\bm{\theta}$ pada $f_{\text{model}}$ diestimasi dengan melakukan \f{fitting} pada \f{dataset} $\mathcal{D}$. Untuk melakukan \f{fitting} pada \f{dataset} $\mathcal{D}$, diperlukan suatu fungsi \f{loss} yang mengukur seberapa baik hasil pemetaan $f_{\text{model}}$ pada \f{input} $\mathbf{x}_i$ terhadap \f{output} $\mathbf{y}_i$. Meskipun sembarang fungsi yang terturunkan dapat digunakan sebagai fungsi \f{loss}, namun pemilihan fungsi \f{loss} berdasarkan \f{maximum likelihood estimation} (MLE) lebih disarankan. 
     
-    Untuk permasalahan klasifikasi biner, fungsi \f{loss} yang sering digunakan adalah \f{binary cross entropy} (BCE) seperti yang ditinjukkan pada \equ~\ref{eq:bce}. Penurunan fungsi \f{loss} BCE dengan mengikuti prinsip MLE yang akan dijelaskan pada bagian selanjutnya.
+    Untuk permasalahan klasifikasi biner, fungsi \f{loss} yang sering digunakan adalah \f{binary cross entropy} (BCE) seperti yang ditinjukkan pada \equ~\ref{eq:bce}. Penurunan fungsi \f{loss} BCE dengan mengikuti prinsip MLE yang akan dijelaskan pada bagian berikut.
     
     Misalkan $y_i \mid \mathbf{x}$ mengikuti distribusi bernouli dengan parameter $\text{p} = f_{\text{model}}(\mathbf{x};\bm{\theta})$ yang saling independen antara satu sama lainnya. \equ~\ref{eq:definisi-random-variable} menunjukkan definisi dari $y_i \mid \mathbf{x}$.
 
@@ -381,15 +380,17 @@
         \bm{\theta}_{\text{MLE}} &= \arg\max_{\bm{\theta}} \mathcal{L}(\bm{\theta}).
     \end{align}
 
-    Untuk mempermudah perhitungan, fungsi \f{likelihood} diubah menjadi negatif \f{log-likelihood} $\mathcal{\ell}(\bm{\theta})$, sehingga permasalahan optimasi menjadi:
+    Untuk mempermudah perhitungan, fungsi \f{likelihood} diubah menjadi negatif \f{log-likelihood} $\mathcal{\ell}(\bm{\theta})$, sehingga permasalahan optimasi dapat ditulis seperti \equ~\ref{eq:log-likelihood} hingga \equ~\ref{eq:log-likelihood-end}.
 
     \begin{align}
+        \label{eq:log-likelihood}
         \ell{(\bm{\theta})} &= -\log\mathcal{L}(\bm{\theta}), \\
         &= -\sum_{i=1}^N \log\left(p(y_i \mid \mathbf{x}_i; \bm{\theta})\right), \\
+        \label{eq:log-likelihood-end}
         \bm{\theta}_{\text{MLE}} &= \arg\min_{\bm{\theta}} \ell(\bm{\theta}).
     \end{align} 
 
-    Dengan mengganti $p(y_i \mid \mathbf{x}_i; \bm{\theta})$ dengan fungsi distribusi-nya, maka fungsi \f{loss} yang digunakan untuk permasalahan klasifikasi biner adalah \f{binary cross entropy} (BCE) seperti pada \equ~\ref{eq:bce}.
+    Dengan mengganti $p(y_i \mid \mathbf{x}_i; \bm{\theta})$ dengan fungsi distribusi-nya, maka fungsi \f{loss} yang digunakan untuk permasalahan klasifikasi biner adalah \f{binary cross entropy} (BCE) seperti pada \equ~\ref{eq:bce}. \pic~\ref{fig:dl-training-graph-dag} mengilustrasikan \f{directed acyclic graph} (DAG) dari model ketika proses pelatihan dilakukan.
 
     \begin{align}
         \bm{\theta}_{\text{MLE}} &= \arg\min_{\bm{\theta}}\sum_{i=1}^{N}\underbrace{-y_i \log\left(f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right) - (1 - y_i) \log\left(1 - f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right)}_{\text{Binary Cross Entropy Loss } L(y_i, f_{\text{model}}(\mathbf{x}_i; \bm{\theta}))}, \\
@@ -397,11 +398,18 @@
         L(y_i, f_{\text{model}}(\mathbf{x}_i; \bm{\theta})) &= -y_i \log\left(f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right) - (1 - y_i) \log\left(1 - f_{\text{model}}(\mathbf{x}_i; \bm{\theta})\right).
     \end{align}
 
+    \begin{figure}
+        \centering
+        \includegraphics[width=1\textwidth]{assets/pics/dl-training-graph.png}
+        \caption{\license.}
+        \label{fig:dl-training-graph-dag}
+    \end{figure}
+
     Untuk mendapatkan $f_\text{model}$ dengan performa yang baik, dibutuhkan model dengan nilai $\ell(\bm{\theta})$ seminimum mungkin. Namun, pencarian $\bm{\theta}$ sehingga $ \ell (\bm{\theta})$ minumum secara analitik tidak dapat dilakukan karena non-linearitas yang ada pada model, dengan kata lain solusi dari $\nabla_{\bm{\theta}} \ell(\bm{\theta}) = 0$ tidak dapat dicari secara analitik. Sebagai gantinya, pencarian $\bm{\theta}$ dilakukan secara numerik dengan menggunakan metode \f{gradient descent} yang akan dijelaskan pada bagian selanjutnya.
     
     \subsection{\f{Backpropagation}}
 
-    \subsection{\f{Optimisasi}}
+    \subsection{\f{Optimasi} Parameter}
 
     \f{Gradient Descent} adalah metode numerik yang digunakan untuk mencari nilai $\bm{\theta}$ yang meminimalkan fungsi \f{loss} $\ell(\bm{\theta})$. Pada metode \f{gradient descent}, nilai $\bm{\theta}$ diupdate secara iteratif dengan mengikuti arah negatif dari \f{gradient} $\nabla_{\bm{\theta}} \mathcal{L}(\bm{\theta})$ yang menunjukkan arah dari penurunan fungsi \f{loss} $\mathcal{L}(\bm{\theta})$. \equ~\ref{eq:gradient-descent} menunjukkan algoritma \f{gradient descent}.
 

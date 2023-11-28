@@ -409,7 +409,7 @@ Misalkan $f_{\text{sim}}(d_1, d_2)$ adalah fungsi mengukur jarak antara dokumen 
 
 ---
 
+# Backpropagation
 
-
-
-
+$$
+$$
