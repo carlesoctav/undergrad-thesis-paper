@@ -65,3 +65,14 @@
 ![](sgd-momentum.png)
 
 ![](adam.png)
+
+![](MLM.png)
+
+![](neural-ir.png)
+
+![](bertdot.png)
+
+![](dense-retrieval.png)
+
+
+![](bertcat.png)

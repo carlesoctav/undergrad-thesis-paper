@@ -114,7 +114,7 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\item \f{Decoder self-attention}: menggunakan barisan \f{target} yang berupa kalimat terjemahan parsial, barisan token, sebagai masukan untuk menghasilkan barisan representasi kontekstual (vektor) dari \f{target}. Setiap representasi token tersebut memiliki ketergantungan dengan token sebelumnya dalam urutan masukan.
 		\item \f{Decoder-encoder attention}: menggunakan barisan representasi kontekstual dari \f{input}, dan barisan representasi kontekstual dari \f{target} untuk menghasilkan token berikutnya yang merupakan hasil prediksi dari model. Barisan \f{target} yang digabung dengan token hasil prediksi tersebut akan menjadi barisan \f{target} untuk prediksi selanjutnya.
 	\end{enumerate}
-	Arsitektur dari \f{transformer} mengimplementasikan struktur pasangan encoder-decoder. Aristektur dari \f{transformer} dapat dilihat pada \pic~\ref{fig:transformer}. Lapisan \f{encoder} berfungsi untuk memahami konteks suatu kata dalam dokumen atau kalimat, sementara lapisan \f{decoder} digunakan untuk menyelesaikan masalah translasi menuju bahasa berbeda. Pada permasalahan klasifikasi seperti analisis sentimen dan pemeringkatan dokumen, lapisan \f{decoder} tidak digunakan. Permasalahan tersebut \f{output} dari lapisan \f{encoder} yang digunakan sebagai masukan untuk lapisan \f{classifier}. \sect~\ref{sec:token-embedding} hingga \sect~\ref{sec:encoder} menjelaskan arsitektur model \f{transformer} dan berbagai mekanisme yang menyusun model \f{transformer}, khususnya \f{transformer encoder} yang menjadi \f{building block} dari \f{Biderectional Encoder Representations from Transformers} (BERT).
+	Arsitektur dari \f{transformer} mengimplementasikan struktur pasangan encoder-decoder. Aristektur dari \f{transformer} dapat dilihat pada \pic~\ref{fig:transformer}. Lapisan \f{encoder} berfungsi untuk memahami konteks suatu kata dalam teks atau kalimat, sementara lapisan \f{decoder} digunakan untuk menyelesaikan masalah translasi menuju bahasa berbeda. Pada permasalahan klasifikasi seperti analisis sentimen dan pemeringkatan teks, lapisan \f{decoder} tidak digunakan. Permasalahan tersebut \f{output} dari lapisan \f{encoder} yang digunakan sebagai masukan untuk lapisan \f{classifier}. \sect~\ref{sec:token-embedding} hingga \sect~\ref{sec:encoder} menjelaskan arsitektur model \f{transformer} dan berbagai mekanisme yang menyusun model \f{transformer}, khususnya \f{transformer encoder} yang menjadi \f{building block} dari \f{Biderectional Encoder Representations from Transformers} (BERT).
 
 	\subsection{\f{Token Embedding (Input Embedding)}}
 	\label{sec:token-embedding}
@@ -264,7 +264,7 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 		\text{PE}_{ \text {pos }, i}= \begin{cases}\sin \left(\frac{p o s}{10000^{i / d_{\text {token}}}}\right) & \text {jika } i \bmod 2=0 ,\\ \cos \left(\frac{p o s}{10000^{(i-1) / d_{\text {token}}}}\right) & \text { lainnya. }\end{cases}
 	\end{align}
 
-	berbeda dengan \cite{transformerori}, \cite{bertori} menggunakan matriks parameter $\mathbf{W}^{pe} \in \mathbb{R}^{L_{\max} \times d_{\text{token}}}$ untuk menghitung matriks \f{positional encoding} $\mathbf{PE} \in \mathbb{R}^{L \times d_{\text{token}}}$ seperti yang ditunjukkan pada \equ~\ref{equ:positional-encoding-learnable-start} hingga \equ~\ref{equ:positional-encoding-learnable-end}. Kekurangan dari pendekatan ini adalah model tidak dapat melakukan inferensi pada barisan token yang lebih panjang dari $L_{\max}$. \pic~\ref{fig:positional-encoding} mengilustrasikan \f{positional encoding} pada \f{transformer}.
+	berbeda dengan \cite{transformerori}, \cite{bertori} menggunakan matriks parameter $\mathbf{W}^{pe} \in \mathbb{R}^{L_{\max} \times d_{\text{token}}}$ untuk menghitung matriks \f{positional encoding}$\mathbf{PE} \in \mathbb{R}^{L \times d_{\text{token}}}$ seperti yang ditunjukkan pada \equ~\ref{equ:positional-encoding-learnable-start} hingga \equ~\ref{equ:positional-encoding-learnable-end}.Kekurangan dari pendekatan ini adalah model tidak dapat melakukan inferensi pada barisan token yang lebih panjang dari $L_{\max}$. \pic~\ref{fig:positional-encoding} mengilustrasikan \f{positional encoding} pada \f{transformer}.
 	\begin{align}
 		\label{equ:positional-encoding-learnable-start}
 		\mathbf{pe}_{i} &= [0, 0,\dots, \underbrace{1}_{\text{indeks ke-}i},0, \dots, 0] \mathbf{W}^{pe} \in \mathbb{R}^{d_{\text{token}}}, \\
@@ -388,18 +388,27 @@ Mekanisme \f{Attention} dapat ditinjau sebagai \f{Dictinoary Lookup}, yaitu untu
 \f{Bidirectional Encoder Representations from Transformers} (BERT) adalah \f{transformers encoder} yang telah dilatih sebelumnya (\f{pre-trained}) pada tugas \f{Masked Language Model} dan \f{Next Sentence Prediction} \citep{bertori}. \f{Pre-training} BERT dilakukan dengan menggunakan korpus teks yang besar dan dilakukan secara \f{self-supervised} untuk mempelajari informasi umum tentang statistik bahasa.
 pengunaan BERT mengikuti prinsip \f{transfer learning}, yaitu model yang sudah dilatih sebelumnya pada tugas tertentu -- dengan jumlah data yang besar -- dapat digunakan untuk tugas lainnya dengan hanya menggunakan sedikit data latih. Model BERT tersusun atas 12 blok \f{encoder} dengan dimensi \f{token embedding} sebesar 768 dan 12 \f{attention heads} pada setiap blok \f{encoder}-nya.
 
-	\subsection{Representasi Input}
+\subsection{Representasi Input}
+Representasi \f{input} dari model BERT tidak hanya terdiri dari \f{token embedding} dan \f{positional encoding} seperti pada \f{transformer encoder} yang dijelaskan pada \sect~\ref{sec:encoder}
 	
 	\subsection{\f{pre-traning} BERT}
 
 	Pada tahap \f{pre-traning}, BERT dilatih pada dua tugas \f{self-supervised} dengan jumlah data yang besar, yaitu \f{Masked Language Model} dan \f{Next Sentence Prediction} yang masing-masing akan dijelaskan pada \sect~\ref{sec:masked-language-model} dan \sect~\ref{sec:next-sentence-prediction}. proses \f{pre-training} menggunakan paragraf-paragraf pada korpus teks yang besar, yaitu Wikipedia dengan 2.5 Miliar kata dan BookCorpus dengan 800 Juta kata.
 
+
 	\subsubsection{\f{Masked Language Model} (MLM)}
 	\label{sec:masked-language-model}
 
+	\begin{figure}
+		\centering
+		\includegraphics[width=1\textwidth]{assets/pics/MLM.png}
+		\caption{Ilustrasi \f{Masked Language Modeling} (MLM) pada BERT. sebuah kata (token) secara acak di-hilangkan (\f{mask}) dan model diminta untuk menebak kata yang dihilangkan tersebut.}
+		\label{fig:masked-language-model}
+	\end{figure}
+
 	Tugas \f{Masked Language Model}(MLM) adalah tugas untuk memprediksi token yang dihilangkan (\f{masking}) pada suatu kalimat. Sebagai contoh pada kalimat \code{Let's make [MASK] chicken! [SEP] It [MASK] great with orange sauce}, model harus memprediksi token \code{fried} dan \code{tastes} pada token yang dihilangkan tersebut. 
 
-	memprediksi kata yang dihilangkan memaksa \f{transformer} untuk memahami sintaks dan konteks dari kalimat tersebut. Sebagai contoh, model harus memahami bahwa kata sifat \code{red} sering terletak sebelum kata benda seperti \code{house} atau \code{car}, tetapi tidak sebelum kata kerja seperti \code{shout} \cite{under}. Selain itu, tugas ini membuat model untuk memperoleh pemahaman umum tentang bahasa alami. Misalnya, setelah dilatih, model akan memberikan probabilitas yang lebih tinggi untuk kata \code{train} yang hilang dalam kalimat \code{[MASK] pulled into the station} daripada kata \code{chicken}.
+	memprediksi kata yang dihilangkan memaksa \f{transformer} untuk memahami sintaks dan konteks dari kalimat tersebut. Sebagai contoh, model harus memahami bahwa kata sifat \code{red} sering terletak sebelum kata benda seperti \code{house} atau \code{car}, tetapi tidak sebelum kata kerja seperti \code{shout}. Selain itu, tugas ini membuat model untuk memperoleh pemahaman umum tentang bahasa alami. Misalnya, setelah dilatih, model akan memberikan probabilitas yang lebih tinggi untuk kata \code{train} yang hilang dalam kalimat \code{[MASK] pulled into the station} daripada kata \code{chicken}.
 
 	selama proses pelatiahan MLM, sebanyak 15\% dari semua token dipilih untuk dilakukan \f{masking}. 80\% dari token yang terpilih akan diubah menjadi token \code{[MASK]}, 10\% menjadi token acak, dan 10\% lainnya adalah token yang sama.
 
@@ -410,29 +419,67 @@ pengunaan BERT mengikuti prinsip \f{transfer learning}, yaitu model yang sudah d
 	
 	Selama proses pelatihan, setengah dari \f{input} tersebut adalah pasangan kalimat di mana kalimat kedua adalah kalimat berikutnya, dan setengah lainnya adalah kalimat yang diambil secara acak dari korpus sebagai kalimat kedua. \pic~\ref{fig:next-sentence-prediction} mengilustrasikan contoh dari tugas \f{next sentence prediction}.
 
-
-	\begin{figure}
-		
-	\end{figure}
 	
 	\subsection{BERT untuk Bahasa Indonesia (IndoBERT)}
-	Pada penelitian ini, BERT yang digunakan adalah IndoBERT, yaitu BERT yang dilatih pada korpus teks bahasa Indonesia. 
+
+	Pada penelitian ini, BERT yang digunakan adalah BERT untuk bahasa Indonesia yang sudah dilakukan \f{pre-training} sebelumnya oleh \cite{indobert}. \f{Pre-training} BERT untuk bahasa Indonesia dilakukan dengan menggunakan korpus Wikipedia bahasa Indonesia dengan 74 Juta kata, artikel berita dari Kompas, Tempo, dan Liputan6 dengan 55 Juta kata, dan korpus web bahasa Indonesia dengan 90 Juta kata. model IndoBERT dilatih selama 2.4 Juta iterasi (180 epoch).
 
 	\subsection{Penggunaan BERT untuk Pemeringkatan Teks}
-		\subsubsection{$\text{BERT}_{\text{CAT}}$}
+	Bagian berikut akan mejelaskan penggunaan BERT untuk pemeringkatan teks. terdapat dua arsitektur yang digunakan, yaitu $\text{BERT}_{\text{CAT}}$ dan $\text{BERT}_{\text{DOT}}$ yang masing-masing akan dijelaskan pada \sect~\ref{sec:bert-cat} dan \sect~\ref{sec:bert-dot}.
+
+	Model peringkat BERTCAT 
+
+	\subsubsection{$\text{BERT}_{\text{CAT}}$}
+		\label{sec:bert-cat}
+
+		\begin{figure}[!htbp]
+			\centering
+			\includegraphics[width=1\textwidth]{assets/pics/bertcat.png}
+			\caption{$\text{BERT}_{\text{CAT}}$ mengambil kueri dan kandidat teks yang akan diberi skor sebagai \f{input} dan menggunakan BERT untuk klasifikasi relevansi. Penjumlahan elemen-wise dari token,\f{segment}, dan \f{positional embeddings} membentuk representasi vektor \f{input}. Setiap token input memiliki vektor kontekstual sebagai \f{output} model BERT. \f{Linear layer} menerima representasi akhir token [CLS] dan menghasilkan skor relevansi teks terkait dengan kueri \citep{textrankingsurvey}.}
+			\label{fig:bert-cat}
+		\end{figure}
 
 		Salah satu cara pengunaan BERT untuk pemeringkatan Teks adalah dengan menggunakan BERT pada
-		model untuk melakukan \f{soft classification} nilai relevansi dari pasangan (kueri, teks). Dengan kata lain, $\text{score}(q,d) = \text{Classifier}(q,d)$, dengan fungsi $\text{Classifier}$
-		ditujukkan pada \equ~\ref{equ:bert-cat-start}
-
+		model untuk melakukan \f{soft classification} nilai relevansi dari pasangan (kueri, teks). Dengan kata lain, skor relevansi dari pasangan (kueri, teks) adalah probabilitas bahwa teks tersebut relevan dengan kueri seperti yang ditunjukkan pada \equ~\ref{equ:bert-cat-start} hingga \equ~\ref{equ:bert-cat-end}.
 		\begin{align}
 			\label{equ:bert-cat-start}
-			\text{Classifier}(q,d) &= \sigma\left(\mathbf{W}^{\text{CLS}} \mathbf{h}\right) \in \mathbb{R}, \\
-			\mathbf{h} &= \text{BERT}((\text{[CLS]},\mathbf{q},\text{[SEP]},\mathbf{d}\text{[SEP]})_{\text{token}}) \in \mathbb{R}^{d_{\text{token}}}, \\
+			\text{score}(q,d) &= P(\text{relevance} = 1 | q, d) = \sigma\left(  \mathbf{h}_{\text{[CLS]}} \mathbf{W}^{\text{CLS}}+\mathbf{b}^{\text{CLS}} \right), \\
+			\label{equ:bert-cat-end}
+			\mathbf{h}_{\text{[CLS]}} &= \text{BERT}((\text{[CLS]}, q, \text{[SEP]}, d, \text{[SEP]}))_{\text{[CLS]}} \in \mathbb{R}^{d_{\text{token}}},
+		\end{align}
+		dengan $\mathbf{W}^{\text{CLS}} \in \mathbb{R}^{d_{\text{token} \times 1}}$ dan $\mathbf{b}^{\text{CLS}} \in \mathbb{R}$ adalah matriks bobot dan bias yang digunakan untuk melakukan \f{classification}, dan $\sigma$ adalah fungsi sigmoid.
+
+		Untuk suatu kueri $q$ dan kumpulan teks $D = \{d_1, d_2, \dots, d_n\}$, perlu dilakukan perhitungan skor relevansi untuk setiap pasangan $(q, d_i)$ dengan $i=1,\dots,n$ sebelum dilakukan pemeringkatan. hal ini menjadi masalah untuk jumlah dokumen yang besar karena setiap perhitungan skor relevansi dengan $\text{BERT}_{\text{CAT}}$ membutuhkan waktu yang lama. Oleh karena itu, $\text{BERT}_{\text{CAT}}$ biasanya digunakan sebagai \f{reranker} dari sistem pemeringkatan teks. teks yang akan diberikan skor relevansinya oleh $\text{BERT}_{\text{CAT}}$ adalah teks yang sudah dipilih oleh sistem pemeringkatan teks yang lebih efisien seperti {BM25} -- biasanya $k = 100, 1000$ teks teratas dipilih oleh {BM25}. \pic~\ref{fig:bert-cat-withbm25} mengilustrasikan arsitektur \f{retrieve} dan \f{rerank}.
+
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\textwidth]{assets/pics/neural-ir.png}
+			\caption{Arsitektur \f{retrieve and rerank}. \f{First-stage retrieval} dilakukan oleh {BM25} dan \f{reranking} dilakukan oleh model \f{scoring} yang lebih kompleks seperti $\text{BERT}_{\text{CAT}}$ \citep{irlecture}.}
+			\label{fig:bert-cat-withbm25}
+		\end{figure}
+
+		\subsubsection{$\text{BERT}_{\text{DOT}}$}
+		\label{sec:bert-dot}
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\textwidth]{assets/pics/bertdot.png}
+			\caption{$\text{BERT}_{\text{DOT}}$ memetakan kueri dan kandidat teks ke dalam ruang vektor yang sama dan menghitung skor relevansi dengan melakukan \f{dot product} antara vektor representasi kontekstual dari kueri dan teks \citep{irlecture}.}
+			\label{fig:bert-dot}
+		\end{figure}
+
+		Berbeda dengan $\text{BERT}_{\text{CAT}}$, $\text{BERT}_{\text{DOT}}$ tidak melakukan \f{soft classification} untuk setiap pasangan (kueri, teks). $\text{BERT}_{\text{DOT}}$ menghitung skor relevansi dari pasangan (kueri, teks) dengan melakukan \f{dot product} antara vektor representasi kontekstual dari kueri dan teks seperti yang ditunjukkan pada \equ~\ref{equ:bert-dot-start} hingga \equ~\ref{equ:bert-dot-end}.
+		\begin{align}
+			\label{equ:bert-dot-start}
+			\mathbf{q}_{\text{[CLS]}} &= \text{BERT}((\text{[CLS]}, q, \text{[SEP]}))_{\text{[CLS]}} \in \mathbb{R}^{d_{\text{token}}}, \\
+			\mathbf{d}_{\text{[CLS]}} &= \text{BERT}((\text{[CLS]}, d, \text{[SEP]}))_{\text{[CLS]}} \in \mathbb{R}^{d_{\text{token}}}, \\
+			\label{equ:bert-dot-end}
+			\text{score}(q,d) &= \mathbf{q}_{\text{[CLS]}} \mathbf{d}_{\text{[CLS]}}^{\top} \in \mathbb{R}.
 		\end{align}
 
-
-
-
-
-
+		Salah satu kelebihan dari $\text{BERT}_{\text{DOT}}$ adalah vektor representasi dari setiap teks dapat dihitung terlebih dahulu dan disimpan dalam memori. Akibatnya, kita hanya perlu menghitung vektor dari kueri dan nilai \f{dot product} untuk setiap teksnya ketika akan dilakukan pemeringkatan -- yang tentunya lebih efisien secara komputasi. Hal ini membuat $\text{BERT}_{\text{DOT}}$ lebih cepat daripada $\text{BERT}_{\text{CAT}}$ untuk melakukan pemeringkatan. \pic~\ref{fig:dense-retrieval} mengilustrasikan arsitektur pemeringkatan dengan $\text{BERT}_{\text{DOT}}$.
+		\begin{figure}
+			\centering
+			\includegraphics[width=1\textwidth]{assets/pics/dense-retrieval.png}
+			\caption{Arsitektur pemeringkatan dengan $\text{BERT}_{\text{DOT}}$. Vektor representasi dari setiap teks dapat diindeks terlebih dahulu dan disimpan dalam memori \citep{irlecture}.}
+			\label{fig:dense-retrieval}
+		\end{figure}
