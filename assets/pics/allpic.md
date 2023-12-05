@@ -73,6 +73,6 @@
 ![](bertdot.png)
 
 ![](dense-retrieval.png)
-
-
 ![](bertcat.png)
+
+![](20231205153945.png)
