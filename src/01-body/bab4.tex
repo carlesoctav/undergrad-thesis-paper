@@ -1,8 +1,8 @@
 \chapter{\babEmpat}
 \label{bab:4}
 
-Bab ini membahas mengenai proses \f{fine tuning} model \f{Bidirectional Encoder Representations from Transformers} (BERT) untuk mendapatkan model yang dapat digunakan untuk masalah pemeringkatan teks.
-\sect\ref{sec:spesifikasi} menjelaskan mengenai spesifikasi perangkat keras dan perangkat lunak yang digunakan dalam penelitian. Selanjutnya, \sect~\ref{sec:simulasi} menjelaskan mengenai tahapan simulasi yang dilakukan dalam penelitian. Informasi mengenai \f{dataset} latih dan uji  dijelaskan pada \sect~\ref{sec:dataset}. \sect~\ref{sec:finetuning} menjelaskan lebih detail mengenai arsitektur model BERT, fungsi loss, serta konfigurasi \f{hyperparameter} yang digunakan dalam proses \f{fine tuning} model BERT. Terakhir, \sect~\ref{sec:hasil} menjelaskan mengenai evaluasi hasil \f{fine tuning} model BERT untuk pemeringkatan teks.
+Bab ini membahas mengenai proses \f{fine tuning} model \f{Bidirectional Encoder Representations from Transformers} (BERT) untuk mendapatkan model yang dapat digunakan pada masalah pemeringkatan teks.
+\sect~\ref{sec:spesifikasi} menjelaskan mengenai spesifikasi perangkat keras dan perangkat lunak yang digunakan dalam penelitian. Selanjutnya, \sect~\ref{sec:simulasi} menjelaskan mengenai tahapan simulasi yang dilakukan dalam penelitian. Informasi mengenai \f{dataset} latih dan uji  dijelaskan pada \sect~\ref{sec:dataset}. \sect~\ref{sec:finetuning} menjelaskan lebih detail mengenai arsitektur model BERT, fungsi loss, serta konfigurasi \f{hyperparameter} yang digunakan dalam proses \f{fine tuning} model BERT. Terakhir, \sect~\ref{sec:hasil} menjelaskan mengenai evaluasi hasil \f{fine tuning} model BERT untuk pemeringkatan teks.
 
 \section{Spesifikasi Mesin dan Perangkat Lunak}
 \label{sec:spesifikasi}
@@ -10,7 +10,7 @@ Bab ini membahas mengenai proses \f{fine tuning} model \f{Bidirectional Encoder 
 Proses \f{fine tuning} model BERT untuk pemeringkatan teks dilakukan menggunakan mesin dan perangkat lunak yang tertera pada \tab~\ref{tab:spesifikasi}.
 \begin{table}[!ht]
     \centering
-    \caption{Spesifikasi Perangkat Lunak}
+    \caption{Spesifikasi perangkat lunak yang digunakan pada penelitian ini.}
     \label{tab:spesifikasi}
     \begin{tabular}{|l|l|} \hline
         \textbf{CPU}                         & AMD Ryzen 9 5950X 32-Core Processor                                                                                                      \\ \hline
@@ -35,17 +35,15 @@ Proses \f{fine tuning} model BERT untuk pemeringkatan teks dilakukan menggunakan
 
 \end{figure}
 
-Simulasi diawali dengan pengambilan data. Data yang digunakan adalah data pada penelitian \cite{mmarco}, sebagai \f{dataset} latih, dan data pada penelitian \cite{mrtydi}, \cite{miracl} sebagai \f{dataset} ujinya. \f{Dataset} latih tidak dapat digunakan langsung untuk melatih model-model tersebut. Untuk setiap modelnya, diperlukan transformasi untuk mengubah bentuk dari \f{dataset} latih sehingga sesuai dengan formatnya. Transformasi \f{dataset} latih dan \f{hyperparameter} dari model akan dibahas lebih lanjut pada bagian \sect~\ref{sec:finetuning}. Selanjutnya, proses implementasi dan pelatihan model dilakukan. Setelah itu, Evaluasi dari setiap model pada \f{dataset} uji dilakukan. Terdapat satu model BM25 sebagai \f{baseline} untuk setiap modelnya. Terakhir, terdapat diskusi mengenai hasil evaluasi tersebut.
+Simulasi diawali dengan pengambilan data. Data yang digunakan adalah data pada penelitian \cite{mmarco}, sebagai \f{dataset} latih, dan data pada penelitian \cite{mrtydi}, \cite{miracl} sebagai \f{dataset} uji. \f{Dataset} latih tidak dapat digunakan langsung untuk melatih model-model tersebut. Untuk setiap modelnya, diperlukan transformasi untuk mengubah bentuk dari \f{dataset} latih sehingga sesuai dengan format \f{dataset} latih yang sesuai. Transformasi \f{dataset} latih dan \f{hyperparameter} dari model akan dibahas lebih lanjut pada bagian \sect~\ref{sec:finetuning}. Selanjutnya, proses implementasi dan pelatihan model dilakukan. Setelah itu, akan dilakukan evaluasi setiap model pada \f{dataset} uji. Terdapat satu model BM25 sebagai \f{baseline} untuk membandingkan hasil evaluasi dari model-model yang dilatih. Terakhir, terdapat diskusi mengenai hasil evaluasi tersebut.
 
 \section{Data}
 \label{sec:dataset}
 
-Penelitian ini menggunakan satu \f{dataset} latih Mmarco train set Indonesia \citep{mmarco} dan tiga \f{dataset} uji, yaitu Mmarco Dev set Indonesia, MrTyDi Test set Indonesia \citep{mrtydi}, dan Miracl Dev set Indonesia \citep{miracl}. \f{Dataset} Miracl dan MrTyDi dipilih sebagai uji kemampuan \f{out-of-distibution} dari model yang dihasilkan. \f{Dataset} tersebut terdiri dari 3 file, yaitu \f{file} kueri, \f{file korpus} dan \f{file jugdements} yang telah dijelaskan pada \sect~\ref{sec:dataset-umum}. \tab~\ref{tab:dataset-info} menunjukkan informasi mengenai jumlah entri dari \f{file} kueri, \f{file korpus}, dan \f{file jugdements} dari setiap \f{dataset} yang digunakan dalam penelitian ini. Setiap \f{judgements} pada \f{dataset} adalah \f{jugdments} biner, yaitu bernilai 1 jika dokumen tersebut relevan dengan kueri dan 0 jika tidak relevan dengan kueri. \pic~\ref{fig:dataset-mircal-judgments} menunjukkan contoh \f{file jugdements} dari \f{dataset} Miracl Dev set Indonesia.
-
-
-\begin{table}[!ht]
+Penelitian ini menggunakan satu \f{dataset} latih Mmarco train set Indonesia \citep{mmarco} dan tiga \f{dataset} uji, yaitu Mmarco Dev set Indonesia, MrTyDi Test set Indonesia \citep{mrtydi}, dan Miracl Dev set Indonesia \citep{miracl}. \f{Dataset} Miracl dan MrTyDi dipilih sebagai uji kemampuan \f{out-of-distibution} dari model yang dihasilkan. Setiap\f{Dataset} tersebut terdiri dari 3 \f{file}, yaitu \f{file} kueri, \f{file} korpus dan \f{file jugdements} yang telah dijelaskan pada \sect~\ref{sec:dataset-umum}. \tab~\ref{tab:dataset-info} menunjukkan informasi mengenai jumlah entri dari \f{file} kueri, \f{file korpus}, dan \f{file jugdements} dari setiap \f{dataset} yang digunakan dalam penelitian ini.
+\begin{table}
     \centering
-    \caption{Dataset Information}
+    \captionsource{Tabel Informasi untuk Setiap \f{Dataset}. Kolom \f{Korpus} menunjukkan jumlah entri pada \f{file korpus}, kolom \f{Kueri} menunjukkan jumlah entri pada \f{file kueri}, dan kolom \f{Jugdements} menunjukkan jumlah entri pada \f{file jugdements} (pasangan kueri dan dokumen dengan nilai relevansi).}{\citep{attentionkernel}}
     \label{tab:dataset-info}
     \begin{tabular}{|l|c|c|c|} \hline
         \textbf{Dataset} & \textbf{Korpus} & \textbf{Kueri} & \textbf{Jugdements} \\ \hline
@@ -56,34 +54,75 @@ Penelitian ini menggunakan satu \f{dataset} latih Mmarco train set Indonesia \ci
     \end{tabular}
 \end{table}
 
-\section{Fine Tuning Model BERT}
+Setiap \f{judgements} pada \f{dataset} adalah \f{jugdments} biner, yaitu bernilai 1 jika dokumen tersebut relevan dengan kueri dan 0 jika tidak relevan dengan kueri. \tab~\ref{tab:contoh-file-korpus-bab4} hingga \tab~\ref{tab:judgements-file-example-bab4} menunjukkan contoh dari \f{file} korpus, \f{file} kueri, dan \f{file jugdements} pada \f{dataset} Miracl dev set.
+\begin{table}
+    \centering
+    \caption{Potongan \f{file} korpus \f{dataset} MIRACL.}
+    \label{tab:contoh-file-korpus-bab4}
+    \begin{tabular}{|l|l|p{0.6\textwidth}|}
+        \hline
+        \textbf{\_id}    & \textbf{title}             & \textbf{text}                                                                                                 \\ \hline
+        1342516\#1  & Colobothea biguttata & Larva kumbang ini biasanya mengebor ke dalam kayu dan dapat menyebabkan kerusakan pada batang kayu hidup atau kayu yang telah ditebang. \\ \hline
+        1342517\#0  & Ichthyodes rufipes  & Ichthyodes rufipes adalah spesies kumbang tanduk panjang yang berasal dari famili Cerambycidae. Spesies ini juga merupakan bagian dari genus Ichthyodes, ordo Coleoptera, kelas Insecta, filum Arthropoda, dan kingdom Animalia. \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \centering
+    \caption{Potongan \f{file} kueri \f{dataset} MIRACL.}
+    \label{tab:query-file-example-bab4}
+    \begin{tabular}{|l|p{0.8\textwidth}|}
+        \hline
+        \textbf{\_id} & \textbf{text}                                                                 \\ \hline
+        3             & Dimana James Hepburn meninggal?                                              \\ \hline
+        4             & Dimana Jamie Richard Vardy lahir?                                            \\ \hline
+        11            & berapakah luas pulau Flores?                                                 \\ \hline
+        17            & Siapakah yang menulis Candy Candy?                                           \\ \hline
+        19            & Apakah karya tulis Irma Hardisurya yang pertama?                              \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}
+    \centering
+    \caption{Potongan \f{file} judgements \f{dataset} MIRACL.}
+    \label{tab:judgements-file-example-bab4}
+    \begin{tabular}{|l|l|l|}
+        \hline
+        \textbf{query-id} & \textbf{corpus-id} & \textbf{score} \\ \hline
+        3                 & 115796\#6          & 1              \\ \hline
+        3                 & 77689\#48          & 1              \\ \hline
+        4                 & 1852373\#0         & 1              \\ \hline
+    \end{tabular}
+\end{table}
+
+
+\section{\f{Fine Tuning} Model BERT}
 \label{sec:finetuning}
 
 
 \subsection{$\text{IndoBERT}_{\text{CAT}}$}
 
 
-Pada model $\text{IndoBERT}{\text{CAT}}$, arsitektur $\text{BERT}\text{CAT}$ (lihat \sect~\ref{sec:bert-cat}) digunakan untuk melakukan pemeringkatan teks. Selama proses pelatihan model, \f{dataset} yang digunakan berasal dari Mmarco train set dengan format $(q, d, r)$ dengan $q$ adalah kueri, $d$ adalah dokumen, dan $r$ adalah relevansi dokumen $d$ terhadap kueri $q$. Pelatihan yang dilakukan adalah pelatihan untuk klasifikasi relevansi dokumen terhadap kueri. Perlu dicatat bahwa tidak ada contoh $r=0$ dalam \f{dataset} Mmarco train set (lihat \sect~\ref{sec:dataset-umum}).
+Pada model $\text{IndoBERT}_{\text{CAT}}$, arsitektur $\text{BERT}_\text{CAT}$ (lihat \sect~\ref{sec:bert-cat}) digunakan untuk melakukan pemeringkatan teks. Proses pelatihan model menggunakan \f{dataset} yang digunakan berasal dari Mmarco \f{train set} dengan format $(q, d, r)$ dengan $q$ adalah kueri, $d$ adalah dokumen, dan $r$ adalah relevansi dokumen $d$ terhadap kueri $q$. Pelatihan yang dilakukan seperti melakukan klasifikasi relevansi dokumen terhadap kueri. Perlu dicatat bahwa tidak ada contoh $r=0$ dalam \f{dataset} Mmarco \f{train set} (lihat \sect~\ref{sec:dataset-umum}).
 
-Untuk membentuk data latih dengan penilaian $r=0$, pasangan $(q, d',0)$ ditambahkan dengan $d'$ sebagai dokumen acak yang tidak relevan dengan kueri $q$. \f{Dataset} yang telah dibuat terdiri dari 500 ribu pasangan $(q, d, r)$ dengan rasio 1:1 antara $r=1$ dan $r=0$. contoh dari \f{dataset} yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{CAT}}$ dapat ditemukan pada \tab~\ref{tab:converted-table}.
-
-\begin{table}[!ht]
+Untuk membentuk data latih dengan penilaian $r=0$, pasangan $(q, d',0)$ ditambahkan dengan $d'$ sebagai dokumen acak yang tidak relevan dengan kueri $q$. \f{Dataset} yang telah dibuat terdiri dari 500 ribu pasangan $(q, d, r)$ dengan rasio 1:1 antara $r=1$ dan $r=0$. Potongan \f{dataset} yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{CAT}}$ dapat ditemukan pada \tab~\ref{tab:contoh-indobert-cat-data}.
+\begin{table}
     \centering
-    \caption{Converted Table}
-    \label{tab:converted-table}
+    \caption{Potongan \f{dataset} yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{CAT}}$.}
+    \label{tab:contoh-indobert-cat-data}
     \begin{tabular}{|p{2cm}|p{7cm}|c|} \hline
-        \textbf{Kueri}                                         & \textbf{Teks}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             & \textbf{Relevansi} \\ \hline
+        \textbf{Kueri}                                         & \textbf{Teks}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          & \textbf{Relevansi} \\ \hline
         Berapa banyak kalori sehari yang hilang saat menyusui? & Tidak hanya menyusui lebih baik untuk bayi, namun penelitian juga mengatakan itu lebih baik bagi ibu. Menyusui membakar rata-rata 500 kalori sehari, dengan kisaran khas antara 200 hingga 600 kalori yang terbakar sehari. Diperkirakan produksi 1 oz. ASI membakar 20 kalori. Jumlah kalori yang terbakar tergantung pada seberapa banyak bayi makan. Menyusui kembar membakar dua kali lebih banyak daripada memberi makan hanya satu bayi. Dengan anak kembar, ibu mereka membakar 1000 kalori per hari. Membakar 500 kalori ekstra sehari akan menghasilkan satu pon penurunan berat badan mingguan. & 1                  \\ \hline
         Karakteristik iklim utama hutan hujan tropis           & Kacang kola adalah buah dari pohon kola, genus (Cola) pohon yang berasal dari hutan hujan tropis Afrika.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  & 0                  \\ \hline
         Berapa lama pemulihan dari humerus yang patah?         & Pemulihan Stroke. Stroke mempengaruhi setiap orang secara berbeda. Banyak penderita stroke yang terus membaik dalam waktu yang lama, kadang-kadang selama beberapa tahun. Pemulihan dari stroke melibatkan membuat perubahan dalam aspek fisik, sosial dan emosional hidup Anda. Anda akan membuat perubahan untuk mencegah stroke tambahan serta untuk memfasilitasi pemulihan seumur hidup Anda.                                                                                                                                                                                                        & 0                  \\ \hline
     \end{tabular}
 \end{table}
 
-konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{CAT}}$ dapat  dilihat pada \tab~\ref{tab:indobert-cat-hyperparameter}.
+Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{CAT}}$ dapat  dilihat pada \tab~\ref{tab:indobert-cat-hyperparameter}.
 
-\begin{table}[!ht]
+\begin{table}
     \centering
-    \caption{Hyperparameter $\text{IndoBERT}_{\text{CAT}}$}
+    \caption{\f{Hyperparameter} yang digunakan untuk \f{fine tuning }$\text{IndoBERT}_{\text{CAT}}$.}
     \label{tab:indobert-cat-hyperparameter}
     \begin{tabular}{|c|c|}
         \hline
@@ -100,35 +139,31 @@ konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{C
         \hline
         \f{Learning rate}        & 2e-5                                                                                              \\
         \hline
-        \f{Learning rate warmup} & Linear dengan 10\% dari total iterasi                                                             \\
+        \f{Learning rate warmup} & Linear selama 10\% dari total iterasi                                                             \\
         \hline
         Fungsi loss              & \f{Binary cross entropy}                                                                          \\
         \hline
     \end{tabular}
 \end{table}
 
-
-
 \subsection{$\text{IndoBERT}_{\text{DOT}}$}
-
-Pada model $\text{IndoBERT}_{\text{DOT}}$, arsitektur $\text{BERT}_\text{DOT}$ (lihat \sect~\ref{sec:bert-dot}) digunakan untuk melakukan pemeringkatan teks. fungsi loss yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{DOT}}$ adalah \f{N-pair loss}. Untuk kueri $q$, dokumen relevan $d^+$, dan kumpulan dokumen tidak relevan $\{d_i^-\}_{i=1}^{n-1}$ terhadap kueri $q$, \f{N-pair loss} didefinisikan sebagai berikut:
-
+Pada model $\text{IndoBERT}_{\text{DOT}}$, arsitektur $\text{BERT}_\text{DOT}$ (lihat \sect~\ref{sec:bert-dot}) digunakan untuk melakukan pemeringkatan teks. fungsi loss yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{DOT}}$ adalah \f{N-pair loss}. Untuk kueri $q$, dokumen relevan $d^+$, dan kumpulan dokumen tidak relevan $\{d_i^-\}_{i=1}^{n-1}$ terhadap kueri $q$, \f{N-pair loss} dihitung sebagai berikut:
 \begin{align}
     L(q, d^+,\{d_i^-\}_{i=1}^{N-1}) = -\log \frac{\exp(\mathbf{h}^{\top}_q \mathbf{h}^+_d)}{\exp(\mathbf{h}^{\top}_q \mathbf{h}^+_d) + \sum_{i=1}^{n-1} \exp(\mathbf{h}^{\top}_q \mathbf{h}^-_i)},
 \end{align}
 dengan keterangan sebagai berikut:
 \begin{flalign*}
-    \mathbf{h}_q   & = \text{IndoBERT}_{\text{DOT}}((\text{[CLS]}, q, \text{[SEP]}))_{\text{[CLS]}}   \\
-    \mathbf{h}^+_d & = \text{IndoBERT}_{\text{DOT}}(\text{[CLS]}, d^+, \text{[SEP]})_{\text{[CLS]}}   \\
-    \mathbf{h}^-_i & = \text{IndoBERT}_{\text{DOT}}(\text{[CLS]}, d^-_i, \text{[SEP]})_{\text{[CLS]}}
+    \mathbf{h}_q   &= \text{IndoBERT}_{\text{DOT}}((\text{[CLS]}, q, \text{[SEP]}))_{\text{[CLS]}} &&   \\
+    \mathbf{h}^+_d &= \text{IndoBERT}_{\text{DOT}}((\text{[CLS]}, d^+, \text{[SEP]}))_{\text{[CLS]}} && \\
+    \mathbf{h}^-_i &= \text{IndoBERT}_{\text{DOT}}((\text{[CLS]}, d^-_i, \text{[SEP]}))_{\text{[CLS]}} && \\
 \end{flalign*}
 
-\f{dataset} Mmarco train set langsung dapat digunakan karena \f{dataset} tersebut sudah dalam bentuk $(q, d^+)$. Kumpulan teks tak relevan $\{d_i^-\}_{i=1}^{n-1}$ dibentuk dengan menggunakan teks $d$ pada \f{data point} yang lain pada batch yang sama. dengan begitu, nilai $N$ pada \f{N-pair loss} adalah ukuran batch yang digunakan selama pelatihan model. Metode pemilihan dokumen negatif ini disebut dengan \f{in-batch negative sampling} \citep{dprmeta}. Pada penelitian ini, digunakan seluruh \f{datapoint} pada \f{file jugdements} Mmarco train set -- 532,761 \f{data point} -- untuk membentuk \f{dataset} latih model $\text{IndoBERT}_{\text{DOT}}$.
+Pasangan $(q,d^+)$ diambil langsung dari \f{file judgements} pada Mmarco \f{train set}. Kumpulan teks tak relevan $\{d_i^-\}_{i=1}^{n-1}$ dibentuk dengan menggunakan teks $d$ pada \f{data point} yang berbeda pada \f{batch} yang sama. Nilai $N$ pada \f{N-pair loss} adalah ukuran \f{batch} yang digunakan selama pelatihan model. Metode pemilihan dokumen negatif ini disebut dengan \f{in-batch negative sampling} \citep{dprmeta}. Pada penelitian ini, digunakan seluruh \f{datapoint} pada \f{file jugdements} Mmarco \f{train set} -- 532,761 \f{data point} -- untuk membentuk \f{dataset} latih model $\text{IndoBERT}_{\text{DOT}}$.
 
 Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{DOT}}$ dapat  dilihat pada \tab~\ref{tab:indobert-dot-hyperparameter}.
 \begin{table}[!ht]
     \centering
-    \caption{\f{Hyperparameter} $\text{IndoBERT}_{\text{DOT}}$}
+    \caption{\f{Hyperparameter} yang digunakan untuk \f{fine tuning }$\text{IndoBERT}_{\text{DOT}}$.}
     \label{tab:indobert-dot-hyperparameter}
     \begin{tabular}{|c|c|}
         \hline
@@ -144,7 +179,7 @@ Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{D
         \hline
         \f{Learning rate}        & 2e-5                                                                                              \\
         \hline
-        \f{Learning rate warmup} & Linear dengan 10\% dari total iterasi                                                             \\
+        \f{Learning rate warmup} & Linear selama 10\% dari total iterasi                                                             \\
         \hline
         Fungsi \f{loss}          & \f{N-pair loss}                                                                                   \\
         \hline
@@ -153,11 +188,10 @@ Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{D
 
 \subsection{$\text{IndoBERT}_{\text{DOThardnegs}}$}
 
-Pada $\text{IndoBERT}_\text{DOThardnegs}$, arsitektur $\text{BERT}_\text{DOT}$ digunakan untuk melakukan pemeringkatan teks. fungsi loss yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{DOThardnegs}}$ adalah \f{N-pair loss} seperti $\text{IndoBERT}_{\text{DOT}}$. Perbedaan utama antara $\text{IndoBERT}_{\text{DOT}}$ dan $\text{IndoBERT}_{\text{DOThardnegs}}$ adalah metode pemilihan dokumen negatif. Pada $\text{IndoBERT}_{\text{DOT}}$, dokumen negatif dipilih dari \f{data point} lain pada batch yang sama. Pada $\text{IndoBERT}_{\text{DOThardnegs}}$, dokumen negatif sudah terlebih dahulu dipilih dengan kriteria bahwa dokumen tersebut adalah dokumen yang tidak relevan dengan kueri $q$, tetapi pemeringkatan dengan BM25 berada di 100 teratas. Dengan kata lain, dokumen negatif adalah dokumen yang sulit dibedakan dengan dokumen positif menggunakan BM25. Dokumen \f{hard negative} ini diberikan oleh file \href{https://huggingface.co/datasets/sentence-transformers/msmarco-hard-negatives}{\code{sentence-transformers/msmarco-hard-negatives}} \citep{beir} dan \tab~\ref{tab:hardnegsbm25} menunjukkan contoh dari dokumen \f{file} tersebut. Nilai $N$ yang dipilih pada penelitian ini adalah $N=5$, dan jumlah data yang digunakan adalah 502.939 \f{data point}.
-
+Pada $\text{IndoBERT}_\text{DOThardnegs}$, arsitektur $\text{BERT}_\text{DOT}$ digunakan untuk melakukan pemeringkatan teks. fungsi loss yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{DOThardnegs}}$ adalah \f{N-pair loss} seperti $\text{IndoBERT}_{\text{DOT}}$. Perbedaan utama antara $\text{IndoBERT}_{\text{DOT}}$ dan $\text{IndoBERT}_{\text{DOThardnegs}}$ pada metode pemilihan dokumen negatif. Pada $\text{IndoBERT}_{\text{DOThardnegs}}$, dokumen negatif sudah terlebih dahulu dipilih dengan kriteria bahwa dokumen tersebut adalah dokumen yang tidak relevan dengan kueri $q$, tetapi pemeringkatan dengan BM25 berada di 100 teratas. Dengan kata lain, dokumen negatif adalah dokumen yang sulit dibedakan dengan dokumen positif ketika menggunakan BM25. Dokumen \f{hard negative} ini diberikan oleh \f{file} dan \tab~\ref{tab:hardnegsbm25} menunjukkan contoh dari dokumen \f{file} tersebut. Nilai $N$ yang dipilih pada penelitian ini adalah $N=5$, dan jumlah data yang digunakan adalah 502.939 \f{data point}.
 \begin{table}[!ht]
     \centering
-    \caption{Potongan dari \f{file} \code{sentence-transformers/msmarco-hard-negatives}. kolom qid berisikan id dari kueri, kolom \f{positive} adalah id dokumen positif, dan kolom \f{hard negative} adalah id dokumen yang sulit dibedakan dengan dokumen positif menggunakan BM25.}
+    \caption{Potongan \f{file} \code{sentence-transformers/msmarco-hard-negatives}. kolom qid berisikan id dari kueri, kolom \f{positive} adalah id dokumen positif, dan kolom \f{hard negative} adalah id dokumen yang sulit dibedakan dengan dokumen positif menggunakan BM25.}
     \label{tab:hardnegsbm25}
     \begin{tabular}{|c|c|p{8cm}|}
         \hline
@@ -174,7 +208,7 @@ Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{D
 
 \begin{table}[!ht]
     \centering
-    \caption{\f{Hyperparameter} $\text{IndoBERT}_{\text{DOThardnegs}}$}
+    \caption{\f{Hyperparameter} yang digunakan untuk \f{fine tuning }$\text{IndoBERT}_{\text{DOThardnegs}}$.}
     \label{tab:indobert-dothardnegs-hyperparameter}
     \begin{tabular}{|c|c|}
         \hline
@@ -192,101 +226,137 @@ Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{D
         \hline
         \f{Learning rate}        & 2e-5                                                                                              \\
         \hline
-        \f{Learning rate warmup} & Linear dengan 10\% dari total iterasi                                                             \\
+        \f{Learning rate warmup} & Linear selama 10\% dari total iterasi                                                             \\
         \hline
         Fungsi \f{loss}          & \f{N-pair loss}                                                                                   \\
         \hline
     \end{tabular}
 \end{table}
 
-\subsection{$\text{IndoBERT}_{\text{DOTMargin}}$}
-
 
 \subsection{$\text{IndoBERT}_{\text{DOTKD}}$}
-$\text{IndoBERT}_{\text{KD}}$ dilatih dengan menggunakan prinsip \f{knowledge distillation}, yaitu proses \f{transfer} pengetahuan dari model yang sudah dilatih dengan baik (guru) ke model yang belum dilatih (murid). Model yang digunakan sebagai guru adalah model bahasa Inggris yang sudah dilatih dengan baik untuk melakukan pemeringkatan teks. Model Murid harus dipilih adalah model pralatih BERT multibahasa -- model yang \f{pre-training}-nya dilakukan pada korpus multibahasa. Pemetaaan vektor dari model murid akan di-\f{align} dengan Pemetaan vektor dari model guru dengan fungsi \f{loss} berikut \citep{knowledgedistill}:
+$\text{IndoBERT}_{\text{DOTKD}}$ dilatih dengan menggunakan prinsip \f{knowledge distillation}, yaitu proses \f{transfer} pengetahuan dari model yang sudah dilatih dengan baik (guru) ke model yang belum dilatih (murid). Model yang digunakan sebagai guru adalah model bahasa Inggris yang sudah dilatih dengan baik untuk melakukan pemeringkatan teks. Model Murid yang dapat dipilih adalah model pralatih BERT multibahasa -- model yang \f{pre-training}-nya dilakukan pada korpus multibahasa seperti mBERT (\f{mulitingual} BERT). Pemetaaan vektor dari model murid akan di-\f{align} dengan Pemetaan vektor dari model guru dengan fungsi \f{loss} berikut:
 \begin{align}
-    L(s_i, t_i) = \left(\mid \mid M(s_i) - \hat{M}(s_i) \mid \mid + \mid\mid M(s_i) - \hat{M}(s_) \mid\mid \right),
+    L(s_i, t_i) = \left((\mid \mid M(s_i) - \hat{M}(s_i) \mid \mid)^2 + (\mid\mid M(s_i) - \hat{M}(t_i) \mid\mid)^2 \right),
 \end{align}
 dengan keterangan sebagai berikut:
 \begin{flalign*}
-    M        &= \text{model guru (bahasa Inggris)}&& \\
-    \hat{M}  &= \text{model pralatih BERT murid (multibahasa)}&& \\
-    s_i      &= \text{teks sumber (bahasa Inggris)}&& \\
-    t_i      &= \text{teks target (bahasa Indonesia)}&&
+    M        &= \text{pemeataan vektor oleh model guru},&& \\
+    \hat{M}  &= \text{peemetaan vektor oleh model murid},&& \\
+    s_i      &= \text{teks sumber (bahasa Inggris)},&& \\
+    t_i      &= \text{teks target (bahasa Indonesia)}.&&
 \end{flalign*}
+\pic~\ref{fig:kd} menunjukkan ilustrasi dari proses pelatihan dengan \f{knowledge distillation}. 500 ribu kueri dan 500 ribu korpus dari Mmarco \f{train set} Indonesia di-\f{align} dengan terjemahannya seperti yang ditunjukkan pada \tab~\ref{tab:sentence-parallel}.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\textwidth]{assets/pics/kd.png}
+    \captionsource{Ilustrasi dari pelatihan model $\text{IndoBERT}_{\text{DOTKD}}$ dengan \f{knowledge distillation}. Kalimat paralel diberikan sebagai \f{input}  pada model guru dan model murid. vektor yang dihasilkan oleh model guru dan model murid di-\f{align} menggunakan fungsi \f{loss mean squared error}.}{\citep{knowledgedistill}} 
+    \label{fig:kd}
+\end{figure}
+\begin{table}
+    \centering
+    \captionsource{Potongan dari \f{dataset} yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{KD}}$.}{\href{https://huggingface.co/datasets/carles-undergrad-thesis/en-id-parallel-sentences}{\code{carles-undergrad-thesis/en-id-parallel-sentences}}}
+    \label{tab:sentence-parallel}
+    \begin{tabular}{|p{5cm}|p{5cm}|}
+        \hline
+        \textbf{text\_en} & \textbf{txt\_id} \\
+        \hline
+        \f{Defining alcoholism as a disease is associated with Jellinek} & Mendefinisikan alkoholisme sebagai penyakit dikaitkan dengan Jellinek \\
+        \hline
+        \f{ECT is a treatment that is used for} & ECT adalah pengobatan yang digunakan untuk \\
+        \hline
+        \f{Ebolavirus is an enveloped virus, which means} & Ebolavirus adalah virus yang diselimuti, yang berarti \\
+        \hline
+        \f{How much does Cambridge Manor cost per month} & Berapa biaya Cambridge Manor per bulan? \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{KD}}$ dapat  dilihat pada \tab~\ref{tab:indobert-kd-hyperparameter}.
+
+\begin{table}[!ht]
+    \centering
+    \caption{ \f{Hyperparameter} yang digunakan untuk \f{fine tuning }$\text{IndoBERT}_{\text{DOTKD}}$.}
+    \label{tab:indobert-kd-hyperparameter}
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Parameter}       & \textbf{Nilai}                                                                                    \\
+        \hline
+        Model guru              & \href{https://huggingface.co/sentence-transformers/msmarco-bert-base-dot-v5}{\code{sentence-transformers/msmarco-bert-base-dot-v5}} \\
+        \hline
+        Model murid           & \href{https://huggingface.co/bert-base-multilingual-uncased}{\code{bert-base-multilingual-uncased}} \\
+        \hline
+        Total data               & 1,000,000                                                                                           \\
+        \hline
+        \f{Batch Size}           & 64                                                                                                \\
+        \hline
+        Total Iterasi            & 78125 (5 epochs)                                                                                  \\
+        \hline
+        \f{Optimizer}            & Adam dengan $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 1e-8$                                 \\
+        \hline
+        \f{Learning rate}        & 2e-5                                                                                              \\
+        \hline
+        \f{Learning rate warmup} & Linear selama 10\% dari total iterasi                                                             \\
+        \hline
+        Fungsi \f{loss}          & \f{Mean squared error}                                                                            \\
+        \hline
+    \end{tabular}
+\end{table}
 
 
 
-
-\section{Hasil Fine Tuning dan Evaluasi}
+\section{Evaluasi Model}
 \label{sec:hasil}
 
-\subsection{Evaluasi BM25}
-\label{sec:resultbm25}
+Subbab ini membahas perihal hasil dari \f{Fine tuning} dan evaluasi dari keempat model. BM25 digunakan sebagai \f{baseline} untuk membandingkan evaluasi setiap model. BM25 yang digunakan adalah \f{software} \f{Elastic search} (\url{https://www.elastic.co/elasticsearch/}) untuk bahasa Indonesia dengan konfigurasi parameter \f{default}. 
 
-\begin{table}[!ht]
-    \centering
-    \caption{Caption}
-    \label{tab:bm25-result}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                             & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test} & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                          & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)             & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-    \end{tabular}
-\end{table}
-
-\subsection{Evaluasi $\text{IndoBERT}_{\text{MEAN}}$}
-\label{sec:resultindobertmean}
-
-\begin{table}[!ht]
-    \centering
-    \caption{Caption}
-    \label{tab:indobertmean}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                             & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test} & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                          & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)             & \b{.114}                         & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{MEAN}}$   & .000                             & .000   & .000   & .000   & .000    & .000 \\ \hline
-    \end{tabular}
-\end{table}
-
+Metrik yang digunakan pada \f{datasets} Mmarco \f{dev set} dan MrTyDi \f{test set} adalah \f{Reciprocal Rank} pada 10 dokumen teratas (RR@10) dan \f{Recall} pada 1000 dokumen teratas (R@1000). Berbeda dengan mMarco dan MrTyDi,  Metrik yang digunakan pada \f{dataset} Miracl \f{dev set} adalah \f{Normalized Discounted Cumulative Gain} pada 10 dokumen teratas (NDCG@10) dan \f{Recall} pada 1000 dokumen teratas (R@1000). Perhitungan metrik lainnya untuk setiap model dapat dilihat pada bagian lampiran.
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{CAT}}$}
 \label{sec:resultindobertcat}
 
 \begin{table}
     \centering
-    \caption{Caption}
-    \label{tab:indobertcat}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                             & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test} & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                          & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)             & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{CAT}}$    & .181                             & .642   & .447   & .858   & .455    & .971 \\ \hline
+    \caption{Evaluasi model $\text{IndoBERT}_{\text{CAT}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
+    \label{tab:indobertcat-hasil}
+    \begin{tabular}{|c|c|c|c|c|c|c|} \hline
+        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
+                                          & RR@10 & R@1000 & RR@10 & R@1K & NDCG@10 & R@1K \\ \hline
+        BM25                              & .114  & \bo{.642}   & .279   & \bo{.858}   & .391    & \bo{.971} \\ \hline
+        $\text{IndoBERT}_{\text{CAT}}$    & \bo{.181}  & \bo{.642}   & \bo{.447}   & \bo{.858}   & .\bo{455}    & \bo{.971} \\ \hline
     \end{tabular}
-    \label{tab:my_label}
 \end{table}
+
+
+\tab~\ref{tab:indobertcat-hasil} Menujukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{CAT}}$ dan BM25. Perlu diingat kembali bahwa model $\text{IndoBERT}_{\text{CAT}}$ digunakan sebagai \f{reranker} (lihat \sect~\ref{sec:bert-cat})untuk memperbaiki hasil dari BM25. Efeknya nilai \f{Recall} dari model $\text{IndoBERT}_{\text{CAT}}$ sama dengan nilai \f{Recall} dari BM25. Namun, nilai \f{Reciprocal Rank} dari model $\text{IndoBERT}_{\text{CAT}}$ lebih tinggi dari BM25. Hal ini menunjukkan bahwa model $\text{IndoBERT}_{\text{CAT}}$ lebih baik dalam memberikan urutan dokumen yang direkomendasikan oleh BM25.
+
+nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev set} meningkat sebesar .67 poin (58\%) dibandingkan dengan BM25. Peningkatan yang sama juga terjadi pada nilai RR@10 MrTyDi \f{test set} dan nilai NDCG@10 Miracl \f{dev set} dengan peningkatan sebesar .168 poin (60\%) dan .064 poin (16\%) masing-masingnya.
 
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{DOT}}$}
 \label{sec:resultindobertdot}
 
+
 \begin{table}
     \centering
     \caption{Caption}
-    \label{tab:indobertdot}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                             & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test} & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                          & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)             & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{DOT}}$    & .192                             & .847   & .378   & .936   & .355    & .920 \\ \hline
+    \label{tab:indobertdot-hasil}
+    \begin{tabular}
+        {|c|c|c|c|c|c|c|} \hline
+        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
+                                          & RR@10 & R@1000 & RR@10 & R@1K & NCDG@10 & R@1K \\ \hline
+        BM25                              & .114  & .642   & .279   & .858   & \bo{.391}    & \bo{.971} \\ \hline
+        $\text{IndoBERT}_{\text{DOT}}$    & \bo{.192}  & \bo{.847}   & \bo{.378}   & \bo{.936}   & .355    & .920 \\ \hline
+        
+    
+
     \end{tabular}
 
 \end{table}
+
+\tab~\ref{tab:indobertdot-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOT}}$ dan BM25. Peningkatan terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} Mmarco \f{dev set} dan MrTyDi \f{test set}.Nilai RR@10 pada Mmarco \f{dev set} meningkat sebesar .078 poin (68\%) dan pada MrTyDi \f{test set} sebesar .099 poin (35\%). Nilai R@1000 pada Mmarco \f{dev set} meningkat sebesar .205 poin (32\%) dan pada MrTyDi \f{test set} sebesar .078 poin (9\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .036 poin (-9\%) dan nilai R@1K juga menurun sebesar .051 poin (-5\%).
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{DOThardnegs}}$}
 \label{sec:resultindobertdothardnegs}
@@ -295,30 +365,15 @@ dengan keterangan sebagai berikut:
     \centering
     \caption{Caption}
     \label{tab:indobertdothardnegs}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                                  & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test}      & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                               & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)                  & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{DOThardnegs}}$ & .232                             & .847   & .471   & .921   & .397    & .898 \\ \hline
+    \begin{tabular}{|c|c|c|c|c|c|c|} \hline
+        Model                                     & \multicolumn{2}{c|}{Mmarco Dev} &
+        \multicolumn{2}{c|}{MrTyDi Test}          & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
+                                                  & RR@10 & R@1000 & RR@10 & R@1K & NCDG@10 & R@1K \\ \hline
+        BM25                                      & .114  & .642   & .279   & .858   & .391    & .971 \\ \hline
+        $\text{IndoBERT}_{\text{DOThardnegs}}$    & .232  & .847   & .471   & .921   & .397    & .898 \\ \hline
     \end{tabular}
 \end{table}
 
-\subsection{Evaluasi $\text{IndoBERT}_{\text{DOTMargin}}$}
-\label{sec:resultindobertdotmargin}
-
-\begin{table}
-    \centering
-    \caption{Caption}
-    \label{tab:indobertdotmargin}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                                & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test}    & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                             & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)                & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{DOTMargin}}$ & .207                             & .799   & .446   & .929   & .387    & .899 \\ \hline
-    \end{tabular}
-\end{table}
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{KD}}$}
 \label{sec:resultindobertkd}
@@ -327,12 +382,12 @@ dengan keterangan sebagai berikut:
     \centering
     \caption{Caption}
     \label{tab:indobertkd}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                             & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test} & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                          & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)             & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{KD}}$     & -                                & .803   & .300   & .761   & -       & -    \\ \hline
+    \begin{tabular}{|c|c|c|c|c|c|c|} \hline
+        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
+                                          & RR@10 & R@1000 & RR@10 & R@1K & NCDG@10 & R@1K \\ \hline
+        BM25                              & .114  & .642   & .279   & .858   & \bo{.391}    & \bo{.971} \\ \hline
+        $\text{IndoBERT}_{\text{DOTKD}}$  & \bo{.235}  & \bo{.867}   & \bo{.393}   & \bo{.882}   & .374    & .871    \\ \hline
     \end{tabular}
 \end{table}
 
@@ -343,19 +398,16 @@ dengan keterangan sebagai berikut:
     \centering
     \caption{Caption}
     \label{tab:evaluasisemuamodel}
-    \begin{tabular}{|c|cc|cc|cc|} \hline
-        Model                                & \multicolumn{2}{|c|}{Mmarco Dev} &
-        \multicolumn{2}{|c|}{MrTyDi Test}    & \multicolumn{2}{|c|}{Miracl Dev}                                             \\ \hline
-                                             & MRR@10                           & R@1000 & MRR@10 & R@1000 & NCDG@10 & R@1K \\ \hline
-        BM25 (Elastic Search)                & .114                             & .642   & .279   & .858   & .391    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{MEAN}}$      & .000                             & .000   & .000   & .000   & .000    & .000 \\ \hline
-        $\text{IndoBERT}_{\text{CAT}}$       & .181                             & .642   & .447   & .858   & .455    & .971 \\ \hline
-        $\text{IndoBERT}_{\text{DOT}}$       & .192                             & .847   & .378   & .936   & .355    & .920 \\ \hline
-        $\text{IndoBERT}_{\text{DOTdnegs}}$  & .232                             & .847   & .471   & .921   & .397    & .898 \\ \hline
-        $\text{IndoBERT}_{\text{DOTMargin}}$ & .207                             & .799   & .446   & .929   & .387    & .899 \\ \hline
-        $\text{IndoBERT}_{\text{KD}}$        & -                                & .803   & .300   & .761   & -       & -    \\ \hline
+    \begin{tabular}{|c|c|c|c|c|c|c|} \hline
+        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
+                                          & RR@10 & R@1000 & RR@10 & R@1K & NCDG@10 & R@1K \\ \hline
+        BM25                              & .114  & .642   & .279   & .858   & .391    & .971 \\ \hline
+        $\text{IndoBERT}_{\text{CAT}}$    & .181  & .642   & .447   & .858   & .455    & .971 \\ \hline
+        $\text{IndoBERT}_{\text{DOT}}$    & .192  & .847   & .378   & .936   & .355    & .920 \\ \hline
+        $\text{IndoBERT}_{\text{DOThardnegs}}$    & .232  & .847   & .471   & .921   & .397    & .898 \\ \hline
+        $\text{IndoBERT}_{\text{DOTKD}}$     & .235  & .867   & .393   & .882   & .374    & .871    \\ \hline
     \end{tabular}
-
 \end{table}
 
 
