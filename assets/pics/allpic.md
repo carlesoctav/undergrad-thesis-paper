@@ -80,3 +80,7 @@
 ![](knowledge-distill.png)
 
 ![](IGBERTCAT.png)
+
+![](InfoNCE.png)
+
+![](Paste.png)
