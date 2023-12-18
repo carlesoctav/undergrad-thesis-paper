@@ -242,8 +242,7 @@
     \pic~\ref{fig:deep-learning-FFN-dag} menunjukkan arsitektur deep learning yang sederhana, yaitu \f{feed-forward neural network} (FFN). Pada \pic~\ref{fig:deep-learning-FFN-dag}, \f{input} $\mathbf{x}$ akan dipetakan ke \f{output} $\hat y$ melalui serangkaian fungsi $f_1, f_2, f_3,f_4$ yang disebut sebagai \f{layer}. Setiap \f{layer} $f_i$ memiliki parameter $\theta_i$ yang akan diestimasi dengan data. Selain itu, \f{Output} dari \f{layer} $f_i$ akan menjadi \f{input} dari \f{layer} $f_{i+1}$. \f{Output} dari \f{layer} $f_4$ adalah \f{output} dari model. Model pada \pic~\ref{fig:deep-learning-FFN-dag} dapat ditulis sebagai \equ~\ref{eq:deep-learning-FFN-dag}.
     \begin{align}
         \label{eq:deep-learning-FFN-dag}
-        \hat y = f_{\text{model}}(\mathbf{x}; \bm{\theta}) &= f_4(f_3(f_2(f_1(\mathbf{x}; \bm{\theta}_1); \bm{\theta}_2); \bm{\theta}_3); \bm{\theta}_4), \\
-        \label{eq:deep-learning-FFN-dag-end}
+        \hat y = f_{\text{model}}(\mathbf{x}; \bm{\theta}) &= f_4(f_3(f_2(f_1(\mathbf{x}; \bm{\theta}_1); \bm{\theta}_2); \bm{\theta}_3); \bm{\theta}_4),
     \end{align}
     dengan $\bm{\theta} = \{\bm{\theta}_1, \bm{\theta}_2, \bm{\theta}_3, \bm{\theta}_4\}$ adalah parameter dari model.
 

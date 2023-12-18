@@ -40,15 +40,15 @@ Simulasi diawali dengan pengambilan data. Data yang digunakan adalah data pada p
 \section{Data}
 \label{sec:dataset}
 
-Penelitian ini menggunakan satu \f{dataset} latih Mmarco \f{train set} bahasa Indonesia \citep{mmarco} dan tiga \f{dataset} uji, yaitu Mmarco \f{dev set} bahasa Indonesia, MrTyDi Test set Indonesia \citep{mrtydi}, dan Miracl \f{dev set} bahasa Indonesia \citep{miracl}. \f{Dataset} Miracl dan MrTyDi dipilih sebagai uji kemampuan \f{out-of-distibution} dari model yang dihasilkan. Setiap \f{dataset} terdiri dari 3 \f{file}, yaitu \f{file} kueri, \f{file} korpus dan \f{file jugdements} yang telah dijelaskan pada \sect~\ref{sec:dataset-umum}. \tab~\ref{tab:dataset-info} menunjukkan informasi mengenai jumlah entri dari \f{file} kueri, \f{file korpus}, dan \f{file jugdements} dari setiap \f{dataset} yang digunakan dalam penelitian ini.
+Penelitian ini menggunakan satu \f{dataset} latih mMarco \f{train set} bahasa Indonesia \citep{mmarco} dan tiga \f{dataset} uji, yaitu mMarco \f{dev set} bahasa Indonesia, MrTyDi Test set Indonesia \citep{mrtydi}, dan Miracl \f{dev set} bahasa Indonesia \citep{miracl}. \f{Dataset} Miracl dan MrTyDi dipilih sebagai uji kemampuan \f{out-of-distibution} dari model yang dihasilkan. Setiap \f{dataset} terdiri dari 3 \f{file}, yaitu \f{file} kueri, \f{file} korpus dan \f{file jugdements} yang telah dijelaskan pada \sect~\ref{sec:dataset-umum}. \tab~\ref{tab:dataset-info} menunjukkan informasi mengenai jumlah entri dari \f{file} kueri, \f{file korpus}, dan \f{file jugdements} dari setiap \f{dataset} yang digunakan dalam penelitian ini.
 \begin{table}
     \centering
     \captionsource{Tabel Informasi untuk Setiap \f{Dataset}. Kolom \f{Korpus} menunjukkan jumlah entri pada \f{file korpus}, kolom \f{Kueri} menunjukkan jumlah entri pada \f{file kueri}, dan kolom \f{Jugdements} menunjukkan jumlah entri pada \f{file jugdements} (pasangan kueri dan teks dengan nilai relevansi).}{\citep{attentionkernel}}
     \label{tab:dataset-info}
     \begin{tabular}{|l|c|c|c|} \hline
         \textbf{Dataset} & \textbf{Korpus} & \textbf{Kueri} & \textbf{Jugdements} \\ \hline
-        Mmarco train set & 8,841,823       & 1,010,916      & 532,761             \\ \hline
-        Mmarco dev set   & 8,841,823       & 1,010,916      & 7,437               \\ \hline
+        mMarco train set & 8,841,823       & 1,010,916      & 532,761             \\ \hline
+        mMarco dev set   & 8,841,823       & 1,010,916      & 7,437               \\ \hline
         Mrtydi test set  & 1,469,399       & 829            & 961                 \\ \hline
         Miracl dev set   & 1,446,315       & 960            & 9,668               \\ \hline
     \end{tabular}
@@ -99,11 +99,11 @@ Setiap \f{judgements} pada \f{dataset} adalah \f{jugdgements} biner, yaitu berni
 \section{\f{Fine Tuning} Model BERT}
 \label{sec:finetuning}
 
-Bagian ini menjelaskan mengenai konfigurasi \f{hyperparameter} yang digunakan pada setiap model yang dikerjakan pada peneletian ini. Terdapat empat model yang dikerjakan pada penelitian ini, yaitu $\text{IndoBERT}_{\text{CAT}}$, $\text{IndoBERT}_{\text{DOT}}$, $\text{IndoBERT}_{\text{DOThardnegs}}$, dan $\text{IndoBERT}_{\text{DOTKD}}$. Keempat model tersebut merupakan model BERT yang dilatih dengan menggunakan \f{dataset} Mmarco \f{train set} dengan prosedur yang berbeda-beda.
+Bagian ini menjelaskan mengenai konfigurasi \f{hyperparameter} yang digunakan pada setiap model yang dikerjakan pada peneletian ini. Terdapat empat model yang dikerjakan pada penelitian ini, yaitu $\text{IndoBERT}_{\text{CAT}}$, $\text{IndoBERT}_{\text{DOT}}$, $\text{IndoBERT}_{\text{DOThardnegs}}$, dan $\text{IndoBERT}_{\text{DOTKD}}$. Keempat model tersebut merupakan model BERT yang dilatih dengan menggunakan \f{dataset} mMarco \f{train set} dengan prosedur yang berbeda-beda.
 
 \subsection{$\text{IndoBERT}_{\text{CAT}}$}
 
-Pada model $\text{IndoBERT}_{\text{CAT}}$, arsitektur $\text{BERT}_\text{CAT}$ (lihat \sect~\ref{sec:bert-cat}) digunakan untuk melakukan pemeringkatan teks. Proses pelatihan model menggunakan \f{dataset} yang digunakan berasal dari Mmarco \f{train set} dengan format $(q, d, r)$ dengan $q$ adalah kueri, $d$ adalah teks, dan $r$ adalah relevansi teks $d$ terhadap kueri $q$. Pelatihan yang dilakukan seperti melakukan klasifikasi relevansi teks terhadap kueri. Perlu dicatat bahwa tidak ada contoh $r=0$ dalam \f{dataset} Mmarco \f{train set} (lihat \sect~\ref{sec:dataset-umum}).
+Pada model $\text{IndoBERT}_{\text{CAT}}$, arsitektur $\text{BERT}_\text{CAT}$ (lihat \sect~\ref{sec:bert-cat}) digunakan untuk melakukan pemeringkatan teks. Proses pelatihan model menggunakan \f{dataset} yang digunakan berasal dari mMarco \f{train set} dengan format $(q, d, r)$ dengan $q$ adalah kueri, $d$ adalah teks, dan $r$ adalah relevansi teks $d$ terhadap kueri $q$. Pelatihan yang dilakukan seperti melakukan klasifikasi relevansi teks terhadap kueri. Perlu dicatat bahwa tidak ada contoh $r=0$ dalam \f{dataset} mMarco \f{train set} (lihat \sect~\ref{sec:dataset-umum}).
 
 Untuk membentuk data latih dengan penilaian $r=0$, pasangan $(q, d',0)$ ditambahkan dengan $d'$ sebagai teks acak yang tidak relevan dengan kueri $q$. \f{Dataset} yang telah dibuat terdiri dari 500 ribu pasangan $(q, d, r)$ dengan rasio 1:1 antara $r=1$ dan $r=0$. Potongan \f{dataset} yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{CAT}}$ dapat ditemukan pada \tab~\ref{tab:contoh-indobert-cat-data}.
 \begin{table}
@@ -158,7 +158,7 @@ dengan keterangan sebagai berikut:
     \mathbf{h}^-_i &= \text{IndoBERT}_{\text{DOT}}((\text{[CLS]}, d^-_i, \text{[SEP]}))_{\text{[CLS]}} && \\
 \end{flalign*}
 
-Pasangan $(q,d^+)$ diambil langsung dari \f{file judgements} pada Mmarco \f{train set}. Kumpulan teks tak relevan $\{d_i^-\}_{i=1}^{N-1}$ dibentuk dengan menggunakan teks $d$ pada \f{data point} yang berbeda pada \f{batch} yang sama. Nilai $N$ pada \f{N-pair loss} adalah ukuran \f{batch} yang digunakan selama pelatihan model. Metode pemilihan teks negatif ini disebut dengan \f{in-batch negative sampling} \citep{dprmeta}. Pada penelitian ini, digunakan seluruh \f{datapoint} pada \f{file jugdements} Mmarco \f{train set} -- 532,761 \f{data point} -- untuk membentuk \f{dataset} latih model $\text{IndoBERT}_{\text{DOT}}$.
+Pasangan $(q,d^+)$ diambil langsung dari \f{file judgements} pada mMarco \f{train set}. Kumpulan teks tak relevan $\{d_i^-\}_{i=1}^{N-1}$ dibentuk dengan menggunakan teks $d$ pada \f{data point} yang berbeda pada \f{batch} yang sama. Nilai $N$ pada \f{N-pair loss} adalah ukuran \f{batch} yang digunakan selama pelatihan model. Metode pemilihan teks negatif ini disebut dengan \f{in-batch negative sampling} \citep{dprmeta}. Pada penelitian ini, digunakan seluruh \f{datapoint} pada \f{file jugdements} mMarco \f{train set} -- 532,761 \f{data point} -- untuk membentuk \f{dataset} latih model $\text{IndoBERT}_{\text{DOT}}$.
 
 Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{DOT}}$ dapat  dilihat pada \tab~\ref{tab:indobert-dot-hyperparameter}.
 \begin{table}[!ht]
@@ -191,20 +191,24 @@ Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{D
 \subsection{$\text{IndoBERT}_{\text{DOThardnegs}}$}
 
 Pada $\text{IndoBERT}_\text{DOThardnegs}$, arsitektur $\text{BERT}_\text{DOT}$ digunakan untuk melakukan pemeringkatan teks. Fungsi loss yang digunakan untuk pelatihan model $\text{IndoBERT}_{\text{DOThardnegs}}$ adalah \f{N-pair loss} seperti $\text{IndoBERT}_{\text{DOT}}$. Perbedaan utama antara $\text{IndoBERT}_{\text{DOT}}$ dan $\text{IndoBERT}_{\text{DOThardnegs}}$ pada metode pemilihan teks negatif. Pada $\text{IndoBERT}_{\text{DOThardnegs}}$, teks negatif sudah terlebih dahulu dipilih dengan kriteria bahwa teks tersebut adalah teks yang tidak relevan dengan kueri $q$, tetapi pemeringkatan dengan BM25 berada di 100 teratas. Dengan kata lain, teks negatif adalah teks yang sulit dibedakan dengan teks positif ketika menggunakan BM25. Teks \f{hard negative} ini diberikan oleh suatu \f{file} dan \tab~\ref{tab:hardnegsbm25} menunjukkan contoh dari teks \f{file} tersebut. Nilai $N$ yang dipilih pada penelitian ini adalah $N=5$, dan jumlah data yang digunakan adalah 502.939 \f{data point}.
+
 \begin{table}[!ht]
     \centering
-    \caption{Potongan \f{file} \code{sentence-transformers/msmarco-hard-negatives}. kolom qid berisikan id dari kueri, kolom \f{positive} adalah id teks positif, dan kolom \f{hard negative} adalah id teks yang sulit dibedakan dengan teks positif menggunakan BM25.}
+    \captionsource{Potongan \f{file hard negative}. Kolom qid berisikan id dari kueri, kolom \f{positive} adalah id teks positif, dan kolom \f{hard negative} adalah id teks yang sulit dibedakan dengan teks positif menggunakan BM25.}{\url{https://huggingface.co/datasets/carles-undergrad-thesis/mmarco-hardnegs-bm25}}
     \label{tab:hardnegsbm25}
     \begin{tabular}{|c|c|p{8cm}|}
         \hline
         qid & \f{Positive} & \f{Hard Negative}                                           \\
         \hline
-        634 & 1668221      & \{ "bm25": [830424, 1985345, 1153265, 1638798, 2866545] \}  \\
+        1185869 &  0  & [ 2942572, 5154062, 2942571, 5154065, 3870084 ] \\
         \hline
-        492 & 875          & \{ "bm25": [1147445, 4859158, 7980570, 3409840, 6889336] \} \\
+        1185868 &  16  & [ 6821177, 1641650, 1641656, 1641659, 1203539 ] \\
+        \hline
+        597651 &  49  & [ 6398884, 162755, 1838949, 1391482, 7818305 ] \\
         \hline
     \end{tabular}
 \end{table}
+
 
 Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{DOThardnegs}}$ dapat  dilihat pada \tab~\ref{tab:indobert-dothardnegs-hyperparameter}.
 
@@ -248,7 +252,7 @@ dengan keterangan sebagai berikut:
     s_i      &= \text{teks sumber (bahasa Inggris)},&& \\
     t_i      &= \text{teks target (bahasa Indonesia)}.&&
 \end{flalign*}
-\pic~\ref{fig:kd} menunjukkan ilustrasi dari proses pelatihan dengan \f{knowledge distillation}. 500 ribu kueri dan 500 ribu korpus dari Mmarco \f{train set} Indonesia di-\f{align} dengan terjemahannya seperti yang ditunjukkan pada \tab~\ref{tab:sentence-parallel}.
+\pic~\ref{fig:kd} menunjukkan ilustrasi dari proses pelatihan dengan \f{knowledge distillation}. 500 ribu kueri dan 500 ribu korpus dari mMarco \f{train set} Indonesia di-\f{align} dengan terjemahannya seperti yang ditunjukkan pada \tab~\ref{tab:sentence-parallel}.
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{assets/pics/kd.png}
@@ -312,17 +316,17 @@ Konfigurasi \f{hyperparameter} selama pelatiahan model $\text{indoBERT}_{\text{K
 
 Subbab ini membahas perihal hasil dari \f{Fine tuning} dan evaluasi dari keempat model. BM25 digunakan sebagai \f{baseline} untuk membandingkan evaluasi setiap model. BM25 yang digunakan adalah \f{software} \f{Elastic search} (\url{https://www.elastic.co/elasticsearch/}) untuk bahasa Indonesia dengan konfigurasi parameter \f{default}. 
 
-Metrik yang digunakan pada \f{datasets} Mmarco \f{dev set} dan MrTyDi \f{test set} adalah \f{Reciprocal Rank} pada 10 teks teratas (RR@10) dan \f{Recall} pada 1000 teks teratas (R@1000). Berbeda dengan mMarco dan MrTyDi,  Metrik yang digunakan pada \f{dataset} Miracl \f{dev set} adalah \f{Normalized Discounted Cumulative Gain} pada 10 teks teratas (NDCG@10) dan \f{Recall} pada 1000 teks teratas (R@1000). Perhitungan metrik lainnya untuk setiap model dapat dilihat pada bagian lampiran.
+Metrik yang digunakan pada \f{datasets} mMarco \f{dev set} dan MrTyDi \f{test set} adalah \f{Reciprocal Rank} pada 10 teks teratas (RR@10) dan \f{Recall} pada 1000 teks teratas (R@1000). Berbeda dengan mMarco dan MrTyDi,  Metrik yang digunakan pada \f{dataset} Miracl \f{dev set} adalah \f{Normalized Discounted Cumulative Gain} pada 10 teks teratas (NDCG@10) dan \f{Recall} pada 1000 teks teratas (R@1000). Perhitungan metrik lainnya untuk setiap model dapat dilihat pada bagian lampiran.
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{CAT}}$}
 \label{sec:resultindobertcat}
 
 \begin{table}
     \centering
-    \caption{Evaluasi model $\text{IndoBERT}_{\text{CAT}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
+    \caption{Evaluasi model $\text{IndoBERT}_{\text{CAT}}$ pada \f{dataset} mMarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
     \label{tab:indobertcat-hasil}
     \begin{tabular}{|c|c|c|c|c|c|c|} \hline
-        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        Model                             & \multicolumn{2}{c|}{mMarco Dev} &
         \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
                                           & RR@10 & R@1000 & RR@10 & R@1000 & NDCG@10 & R@1000 \\ \hline
         BM25                              & .114  & \bo{.642}   & .279   & \bo{.858}   & .391    & \bo{.971} \\ \hline
@@ -333,7 +337,7 @@ Metrik yang digunakan pada \f{datasets} Mmarco \f{dev set} dan MrTyDi \f{test se
 
 \tab~\ref{tab:indobertcat-hasil} menujukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{CAT}}$ dan BM25. Perlu diingat kembali bahwa model $\text{IndoBERT}_{\text{CAT}}$ digunakan sebagai \f{reranker} (lihat \sect~\ref{sec:bert-cat}) untuk memperbaiki hasil dari BM25. Efeknya nilai \f{Recall} dari model $\text{IndoBERT}_{\text{CAT}}$ sama dengan nilai \f{Recall} dari BM25. Namun, nilai \f{Reciprocal Rank} dari model $\text{IndoBERT}_{\text{CAT}}$ lebih tinggi dari BM25. Hal ini menunjukkan bahwa model $\text{IndoBERT}_{\text{CAT}}$ lebih baik dalam memberikan urutan teks yang direkomendasikan oleh BM25.
 
-nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev set} meningkat sebesar .67 poin (58\%) dibandingkan dengan BM25. Peningkatan yang sama juga terjadi pada nilai RR@10 MrTyDi \f{test set} dan nilai NDCG@10 Miracl \f{dev set} dengan peningkatan sebesar .168 poin (60\%) dan .064 poin (16\%) masing-masingnya.
+nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset mMarco \f{dev set} meningkat sebesar .67 poin (58\%) dibandingkan dengan BM25. Peningkatan yang sama juga terjadi pada nilai RR@10 MrTyDi \f{test set} dan nilai NDCG@10 Miracl \f{dev set} dengan peningkatan sebesar .168 poin (60\%) dan .064 poin (16\%) masing-masingnya.
 
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{DOT}}$}
@@ -342,12 +346,12 @@ nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev
 
 \begin{table}
     \centering
-    \caption{Evaluasi model $\text{IndoBERT}_{\text{DOT}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
+    \caption{Evaluasi model $\text{IndoBERT}_{\text{DOT}}$ pada \f{dataset} mMarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
     
     \label{tab:indobertdot-hasil}
     \begin{tabular}
         {|c|c|c|c|c|c|c|} \hline
-        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        Model                             & \multicolumn{2}{c|}{mMarco Dev} &
         \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
                                           & RR@10 & R@1000 & RR@10 & R@1000 & NCDG@10 & R@1000 \\ \hline
         BM25                              & .114  & .642   & .279   & .858   & \bo{.391}    & \bo{.971} \\ \hline
@@ -359,17 +363,17 @@ nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev
 
 \end{table}
 
-\tab~\ref{tab:indobertdot-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOT}}$ dan BM25. Peningkatan terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} Mmarco \f{dev set} dan MrTyDi \f{test set}. Nilai RR@10 pada Mmarco \f{dev set} meningkat sebesar .078 poin (68\%) dan pada MrTyDi \f{test set} sebesar .099 poin (35\%). Nilai R@1000 pada Mmarco \f{dev set} meningkat sebesar .205 poin (32\%) dan pada MrTyDi \f{test set} sebesar .078 poin (9\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .036 poin (-9\%) dan nilai R@1000 juga menurun sebesar .051 poin (-5\%).
+\tab~\ref{tab:indobertdot-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOT}}$ dan BM25. Peningkatan terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} mMarco \f{dev set} dan MrTyDi \f{test set}. Nilai RR@10 pada mMarco \f{dev set} meningkat sebesar .078 poin (68\%) dan pada MrTyDi \f{test set} sebesar .099 poin (35\%). Nilai R@1000 pada mMarco \f{dev set} meningkat sebesar .205 poin (32\%) dan pada MrTyDi \f{test set} sebesar .078 poin (9\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .036 poin (-9\%) dan nilai R@1000 juga menurun sebesar .051 poin (-5\%).
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{DOThardnegs}}$}
 \label{sec:resultindobertdothardnegs}
 
 \begin{table}
     \centering
-    \caption{Evaluasi model $\text{IndoBERT}_{\text{DOThardnegs}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
+    \caption{Evaluasi model $\text{IndoBERT}_{\text{DOThardnegs}}$ pada \f{dataset} mMarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
     \label{tab:indobertdothardnegs-hasil}
     \begin{tabular}{|c|c|c|c|c|c|c|} \hline
-        Model                                     & \multicolumn{2}{c|}{Mmarco Dev} &
+        Model                                     & \multicolumn{2}{c|}{mMarco Dev} &
         \multicolumn{2}{c|}{MrTyDi Test}          & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
                                                   & RR@10 & R@1000 & RR@10 & R@1000 & NCDG@10 & R@1000 \\ \hline
         BM25                                      & .114  & .642   & .279   & .858   & .391    & \bo{.971} \\ \hline
@@ -377,7 +381,7 @@ nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev
     \end{tabular}
 \end{table}
 
-\tab~\ref{tab:indobertdothardnegs-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOThardnegs}}$ dan BM25. Peningkatan terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} Mmarco \f{dev set} dan MrTyDi \f{test set}. Nilai RR@10 pada Mmarco \f{dev set} meningkat sebesar .118 poin (103\%) dan pada MrTyDi \f{test set} sebesar .192 poin (69\%). Nilai R@1000 pada Mmarco \f{dev set} juga meningkat sebesar .205 poin (32\%) dan pada MrTyDi \f{test set} sebesar .063 poin (7\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .006 poin (-1\%) dan nilai R@1000 juga menurun sebesar .073 poin (-8\%).
+\tab~\ref{tab:indobertdothardnegs-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOThardnegs}}$ dan BM25. Peningkatan terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} mMarco \f{dev set} dan MrTyDi \f{test set}. Nilai RR@10 pada mMarco \f{dev set} meningkat sebesar .118 poin (103\%) dan pada MrTyDi \f{test set} sebesar .192 poin (69\%). Nilai R@1000 pada mMarco \f{dev set} juga meningkat sebesar .205 poin (32\%) dan pada MrTyDi \f{test set} sebesar .063 poin (7\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .006 poin (-1\%) dan nilai R@1000 juga menurun sebesar .073 poin (-8\%).
 
 
 \subsection{Evaluasi $\text{IndoBERT}_{\text{KD}}$}
@@ -385,10 +389,10 @@ nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev
 
 \begin{table}
     \centering
-    \caption{Evaluasi model $\text{IndoBERT}_{\text{KD}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
+    \caption{Evaluasi model $\text{IndoBERT}_{\text{KD}}$ pada \f{dataset} mMarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
     \label{tab:indobertkd-hasil}
     \begin{tabular}{|c|c|c|c|c|c|c|} \hline
-        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        Model                             & \multicolumn{2}{c|}{mMarco Dev} &
         \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
                                           & RR@10 & R@1000 & RR@10 & R@1000 & NCDG@10 & R@1000 \\ \hline
         BM25                              & .114  & .642   & .279   & .858   & \bo{.391}    & \bo{.971} \\ \hline
@@ -396,17 +400,17 @@ nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev
     \end{tabular}
 \end{table}
 
-\tab~\ref{tab:indobertkd-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOTKD}}$ dengan BM25. Peningkatan Terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} Mmarco \f{dev set}  dan MrTyDi \f{test set}. Nilai RR@10 pada Mmarco \f{dev set} meningkat sebesar .121 poin (106\%) dan pada MrTyDi \f{test set} sebesar .114 poin (41\%). Nilai R@1000 pada Mmarco \f{dev set} juga meningkat sebesar .225 poin (37\%) dan pada MrTyDi \f{test set} sebesar .024 poin (3\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .017 poin (-4\%) dan nilai R@1000 juga menurun sebesar .100 poin (-10\%).
+\tab~\ref{tab:indobertkd-hasil} menunjukkan evaluasi dan perbandingan antara model $\text{IndoBERT}_{\text{DOTKD}}$ dengan BM25. Peningkatan Terjadi pada nilai RR@10 dan R@1000 pada \f{dataset} mMarco \f{dev set}  dan MrTyDi \f{test set}. Nilai RR@10 pada mMarco \f{dev set} meningkat sebesar .121 poin (106\%) dan pada MrTyDi \f{test set} sebesar .114 poin (41\%). Nilai R@1000 pada mMarco \f{dev set} juga meningkat sebesar .225 poin (37\%) dan pada MrTyDi \f{test set} sebesar .024 poin (3\%). Sementara itu, nilai NDCG@10 pada Miracl \f{dev set} menurun sebesar .017 poin (-4\%) dan nilai R@1000 juga menurun sebesar .100 poin (-10\%).
 
 
 \section{Diskusi Hasil}
 \label{sec:diskusihasil}
 \begin{table}
     \centering
-    \caption{Evaluasi dari model $\text{IndoBERT}_{\text{CAT}}$, $\text{IndoBERT}_{\text{DOT}}$, $\text{IndoBERT}_{\text{DOThardnegs}}$, dan $\text{IndoBERT}_{\text{DOTKD}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
+    \caption{Evaluasi dari model $\text{IndoBERT}_{\text{CAT}}$, $\text{IndoBERT}_{\text{DOT}}$, $\text{IndoBERT}_{\text{DOThardnegs}}$, dan $\text{IndoBERT}_{\text{DOTKD}}$ pada \f{dataset} mMarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}.}
     \label{tab:evaluasisemuamodel}
     \begin{tabular}{|c|c|c|c|c|c|c|} \hline
-        Model                             & \multicolumn{2}{c|}{Mmarco Dev} &
+        Model                             & \multicolumn{2}{c|}{mMarco Dev} &
         \multicolumn{2}{c|}{MrTyDi Test} & \multicolumn{2}{c|}{Miracl Dev}                                             \\ \hline
                                           & RR@10 & R@1000 & RR@10 & R@1000 & NCDG@10 & R@1000 \\ \hline
         BM25                              & .114  & .642   & .279   & .858   & .391    & \bo{.971} \\ \hline
@@ -417,17 +421,17 @@ nilai RR@10 dari model $\text{IndoBERT}_{\text{CAT}}$ pada dataset Mmarco \f{dev
     \end{tabular}
 \end{table}
 
-\tab~\ref{tab:evaluasisemuamodel} menunjukkan evaluasi dari model $\text{IndoBERT}_{\text{CAT}}$, $\text{IndoBERT}_{\text{DOT}}$, $\text{IndoBERT}_{\text{DOThardnegs}}$, dan $\text{IndoBERT}_{\text{DOTKD}}$ pada \f{dataset} Mmarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}. Perhatikan bahwa model $\text{IndoBERT}_{\text{CAT}}$ adalah model yang \f{robust} dibandingkan dengan model lainnya -- Peningkatan metrik terjadi disetiap \f{dataset} yang digunakan. Hal ini dapat dikaitkan dengan fakta bahwa model dengan arsitektur $\text{BERT}_{\text{CAT}}$ dapat mengaitkan kata-kata pada kueri dengan kata-kata pada teks ketika proses pemberian skor. Namun, meskipun $\text{IndoBERT}_{\text{CAT}}$ adalah model yang paling \f{robust}, peningkatan setiap metrik tidaklah terlalu besar seperti model yang berasitekturkan $\text{BERT}_{\text{DOT}}$. Dugaan yang dapat penulis berikan adalah proses pelatihan tersebut membutuhkan waktu yang lebih lama untuk menghasilkan fungsi skoring yang baik karena cara melatih model $\text{BERT}_{\text{CAT}}$ yang berupa klasifikasi relevansi antara kueri dan teks. Pelatihan yang dilakukan pada model $\text{IndoBERT}_{\text{CAT}}$ memiliki kelebihan dan kekurangan tersendiri. Kelebihan yang didapat adalah nilai skor antar kueri dan teks memiliki makna, meskipun berdiri sendiri. Nilai skor antara kueri dan dokumen menunjukkan nilai relevansinya antara kueri dan teks tersebut, hal ini kontras dengan model $\text{BERT}_{\text{DOT}}$ yang hanya menghasilkan skor antara kueri dan teks, tanpa memiliki makna. Di lain sisi, kekurangannya adalah tugas klasifikasi relevansi tidak secara langsung melatih dengan tujuan yang diharapkan. Pada proses pemeringkatan teks, skor antara kueri dan teks tidak perlu memiliki makna, yang diinginkan hanyalah skor antara kueri dan teks yang relevan lebih tinggi dibandingkan skor antara kueri dan teks tidak relevan. 
+\tab~\ref{tab:evaluasisemuamodel} menunjukkan evaluasi dari model $\text{IndoBERT}_{\text{CAT}}$, $\text{IndoBERT}_{\text{DOT}}$, $\text{IndoBERT}_{\text{DOThardnegs}}$, dan $\text{IndoBERT}_{\text{DOTKD}}$ pada \f{dataset} mMarco \f{dev set}, MrTyDi \f{test set}, dan Miracl \f{dev set}. Perhatikan bahwa model $\text{IndoBERT}_{\text{CAT}}$ adalah model yang \f{robust} dibandingkan dengan model lainnya -- Peningkatan metrik terjadi disetiap \f{dataset} yang digunakan. Hal ini dapat dikaitkan dengan fakta bahwa model dengan arsitektur $\text{BERT}_{\text{CAT}}$ dapat mengaitkan kata-kata pada kueri dengan kata-kata pada teks ketika proses pemberian skor. Namun, meskipun $\text{IndoBERT}_{\text{CAT}}$ adalah model yang paling \f{robust}, peningkatan setiap metrik tidaklah terlalu besar seperti model yang berasitekturkan $\text{BERT}_{\text{DOT}}$. Dugaan yang dapat penulis berikan adalah proses pelatihan tersebut membutuhkan waktu yang lebih lama untuk menghasilkan fungsi skoring yang baik karena cara melatih model $\text{BERT}_{\text{CAT}}$ yang berupa klasifikasi relevansi antara kueri dan teks. Pelatihan yang dilakukan pada model $\text{IndoBERT}_{\text{CAT}}$ memiliki kelebihan dan kekurangan tersendiri. Kelebihan yang didapat adalah nilai skor antar kueri dan teks memiliki makna, meskipun berdiri sendiri. Nilai skor antara kueri dan dokumen menunjukkan nilai relevansinya antara kueri dan teks tersebut, hal ini kontras dengan model $\text{BERT}_{\text{DOT}}$ yang hanya menghasilkan skor antara kueri dan teks, tanpa memiliki makna. Di lain sisi, kekurangannya adalah tugas klasifikasi relevansi tidak secara langsung melatih dengan tujuan yang diharapkan. Pada proses pemeringkatan teks, skor antara kueri dan teks tidak perlu memiliki makna, yang diinginkan hanyalah skor antara kueri dan teks yang relevan lebih tinggi dibandingkan skor antara kueri dan teks tidak relevan. 
 
-Berbeda dengan arsitektur $\text{BERT}_{\text{CAT}}$, arsitektur $\text{BERT}_{\text{DOT}}$ dilatih dengan tujuan yang diharapkan secara langsung dengan \f{N-pair loss}. Hal ini dapat dilihat dari hasil evaluasi pada \tab~\ref{tab:evaluasisemuamodel} dimana model $\text{IndoBERT}_{\text{DOT}}$ dan $\text{IndoBERT}_{\text{DOThardnegs}}$ memiliki peningkatan yang lebih besar dibandingkan model $\text{IndoBERT}_{\text{CAT}}$ pada Mmarco \f{dev set} -- \f{in-domain} \f{dataset}. Pemilihan \f{hard negative} teks pada model $\text{IndoBERT}_{\text{DOThardnegs}}$ juga meningkatkan performa model. Hal ini dapat dilihat pada evaluasi di \f{dataset} lainnya.
+Berbeda dengan arsitektur $\text{BERT}_{\text{CAT}}$, arsitektur $\text{BERT}_{\text{DOT}}$ dilatih dengan tujuan yang diharapkan secara langsung dengan \f{N-pair loss}. Hal ini dapat dilihat dari hasil evaluasi pada \tab~\ref{tab:evaluasisemuamodel} dimana model $\text{IndoBERT}_{\text{DOT}}$ dan $\text{IndoBERT}_{\text{DOThardnegs}}$ memiliki peningkatan yang lebih besar dibandingkan model $\text{IndoBERT}_{\text{CAT}}$ pada mMarco \f{dev set} -- \f{in-domain} \f{dataset}. Pemilihan \f{hard negative} teks pada model $\text{IndoBERT}_{\text{DOThardnegs}}$ juga meningkatkan performa model. Hal ini dapat dilihat pada evaluasi di \f{dataset} lainnya.
 
 Skor yang dihasilkan oleh model $\text{IndoBERT}_{\text{DOT}}$ dan $\text{IndoBERT}_{\text{DOThardnegs}}$ tidak memiliki makna jika berdiri sendiri. Skor antara kueri dan teks hanya digunakan untuk membandingkan skor antara kueri dan teks lainnya. Skor antara kueri dan teks tidak dapat digunakan untuk mengetahui nilai relevansi antara kueri dan teks tersebut.
 
-Model $\text{IndoBERT}_{\text{DOTKD}}$ memiliki performa yang terbaik pada \f{in-domain} \f{dataset} Mmarco \f{dev set}. Namun performa tersebut tidaklah sebaik model $\text{IndoBERT}_{\text{DOThardnegs}}$ pada \f{out-of-domain} \f{dataset} MrTyDi \f{test set} dan Miracl \f{dev set}. Pelatihan dengan meng-\f{align} pemetaan vektor antara model murid dan model guru tidak baik untuk mengeneralisasi teks dan kueri yang tidak ada pada \f{dataset} pelatihan. 
+Model $\text{IndoBERT}_{\text{DOTKD}}$ memiliki performa yang terbaik pada \f{in-domain} \f{dataset} mMarco \f{dev set}. Namun performa tersebut tidaklah sebaik model $\text{IndoBERT}_{\text{DOThardnegs}}$ pada \f{out-of-domain} \f{dataset} MrTyDi \f{test set} dan Miracl \f{dev set}. Pelatihan dengan meng-\f{align} pemetaan vektor antara model murid dan model guru tidak baik untuk mengeneralisasi teks dan kueri yang tidak ada pada \f{dataset} pelatihan. 
 
 \begin{table}[!ht]
     \centering
-    \caption{\f{Benchmark} model $\text{BERT}_{\text{DOT}}$ dan $\text{BERT}_{\text{CAT}}$, dan BM25 pada \f{dataset} Mmarco \f{dev set}. Latensi dan memori diukur pada \f{hardware} yang sama dengan yang digunakan pada pelatihan model.}
+    \caption{\f{Benchmark} model $\text{BERT}_{\text{DOT}}$ dan $\text{BERT}_{\text{CAT}}$, dan BM25 pada \f{dataset} mMarco \f{dev set}. Latensi dan memori diukur pada \f{hardware} yang sama dengan yang digunakan pada pelatihan model.}
     \label{tab:latensimemori}
     \begin{tabular}{|l|l|l|}
         \hline

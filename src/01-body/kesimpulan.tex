@@ -9,16 +9,12 @@ Pada bab ini, Penulis akan memaparkan kesimpulan penelitian dan saran untuk pene
 \section{Kesimpulan}
 \label{sec:kesimpulan}
 %---------------------------------------------------------------
-Berikut ini adalah kesimpulan terkait pekerjaan yang dilakukan dalam penelitian ini:
+Implementasi model \f{Bidirectional Encoder Representations from Transformers} (BERT) untuk pemeringkatan teks berbahasa Indonesia telah dilakukan pada \sect~\ref{bab:4}. Berikut ini adalah kesimpulan terkait pekerjaan yang dilakukan dalam penelitian ini:
+
 \begin{enumerate}
-	\item \bo{Poin pertama} \\
-	Penjelasan poin pertama.
-	\item \bo{Poin kedua} \\
-	Penjelasan poin kedua.
+	\item  Berdasarkan penjelasan pada \sect~\ref{bab:3} dan implementasi pada \sect~\ref{bab:4} telah ditunjukkan dua cara penggunaan BERT untuk pemeringakatan teks, yaitu BERT sebagai \f{soft classifier} dari nilai relevansi (kueri, teks) dan BERT sebagai pemetaan teks ke dalam ruang vektor dengan nilai skor relevansi dihitung dengan fungsi \f{similarity} seperti jarak kosinus dan \f{dot product}.
+	\item \tab~\ref{tab:indobertcat-hasil} hingga \tab~\ref{tab:indobertkd-hasil} menunjukkan bahwa model BERT yang dilatih kembali (\f{fine tuning}) pada \f{dataset} Mmarco \f{train set} menghasilkan skor yang lebih baik dibandingkan dengan model \f{baseline} BM25 pada dua \f{dataset} uji Mmarco \f{dev set} dan MrTyDi \f{dev set}. Pada \f{dataset} Miracl \f{dev set}, hanya $\text{IndoBERT}_{\text{CAT}}$ yang menghasilkan skor yang lebih baik dibandingkan dengan model \f{baseline} BM25.
 \end{enumerate}
-
-Tulis kalimat penutup di sini.
-
 
 %---------------------------------------------------------------
 \section{Saran}
@@ -26,6 +22,7 @@ Tulis kalimat penutup di sini.
 %---------------------------------------------------------------
 Berdasarkan hasil penelitian ini, berikut ini adalah saran untuk pengembangan penelitian berikutnya:
 \begin{enumerate}
-	\item Saran 1.
-	\item Saran 2.
+	\item Pelatihan model BERT dapat dilakukan dengan \f{dataset} yang lebih beragam. 
+	\item Memperbanyak \f{dataset} uji untuk pemeringkatan teks, sehingga dapat dilakukan analisis yang lebih mendalam terhadap setiap model yang dihasilkan.
+	\item Menambah jumlah model \f{baseline} untuk pemeringkatan teks. Beberapa model yang dapat ditambahkan adalah TF-IDF, Word2Vec, ELMo, dan arsitektur \f{non-transformer} seperti LSTM dan CNN.
 \end{enumerate}

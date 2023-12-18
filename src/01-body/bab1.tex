@@ -1,6 +1,57 @@
 \chapter{\babSatu}
 \label{bab:1}
 
-\noindent\todo{
-	wew
-}
+\section{Latar Belakang}
+\label{sec:latar-belakang}
+
+Dalam era informasi digital, peningkatan jumlah data teks digital membuat manusia kesulitan untuk dapat memproses informasi secara efektif dan efisien. Untuk dapat memproses informasi dalam data teks, tahap pertama adalah melakukan penyimpanan data teks tersebut dengan efisien. Setelah itu, untuk dapat mengakses informasi yang ada didalam data teks, diperlukan suatu mekanisme untuk mengembalikan teks yang relevan ketika diperlukan. Jumlah data teks yang makin banyak membuat mekanisme pengembalian informasi menjadi semakin penting. Pada tahun 2005 saja, Yahoo! telah mengindeks lebih dari 19.2 milyar dokumen \citep{LETOR} untuk Yahoo! \f{search engine}. Tanpa adanya mekanisme untuk mengembalikan teks yang efektif dan efisien, informasi yang melimpah tersebut akan tidak berguna.
+
+Salah satu mekanisme untuk mengembalikan teks yang relevan adalah dengan melakukan pemeringkatan teks. Tujuan dari pemeringkatan teks adalah menghasilkan daftar teks yang terurut berdasarkan relevansinya dalam menanggapi permintaan kueri pengguna \citep{textrankingsurvey}. Aplikasi paling umum dari pemeringkatan teks adalah pencarian, di mana mesin pencari (juga disebut sistem temu balik) menghasilkan daftar teks yang terurut seperti, halaman web, makalah ilmiah, artikel berita, tweet, berdasarkan relevansi terhadap permintaan pengguna. Dalam konteks ini, teks yang relevan adalah teks yang memiliki topik sesuai permintaan pengguna dan memenuhi kebutuhan informasi pengguna.
+
+Salah satu algoritma pemeringkatan teks adalah \f{Best Match} 25 (BM25). BM25 dikembangkan oleh \cite{BM25ori} adalah metode pemeringkatan teks berdasarkan statistik dari kata-kata pada kueri dan teks. kata-kata yang \f{match} pada kueri dan teks akan memberikan kontribusi terhadap skor relevansi dari kueri dan teks. Sampai sekarang BM25 masih digunakan sebagai metode pemeringkatan teks baik pada penelitian akademis -- sebagai \f{baseline} biasanya -- maupun pada sistem komersial \citep{textrankingsurvey}. Salah satu penyedia layanan pemeringkatan teks dengan algoritma BM25 adalah Elastic search (\url{https://www.elastic.co/}). Meskipun populer, BM25 tentunya memiliki kekurangan. Kekurangan BM25 akan tampak ketika kata pada kueri dan teks tidak \f{match} sama sekali. Hal ini sering terjadi ketika pengguna menggunakan kata-kata yang berbeda untuk mendeskripsikan kebutuhan informasi yang dibutuhkan pengguna dengan kata-kata yang digunakan pada teks yang relevan.
+
+Untuk mengatasi kekurangan tersebut, pemeringkatan tidak hanya dilakukan pada informasi staistik dari kueri dan dokumen saja. Dengan memanfaatkan data tambahan seperti log atau metadata dari teks, seperti jumlah klik, model \f{machine learning} dapat digunakan untuk memeringkatkan teks. Penggunaan \f{machine learning} untuk memeringkatan biasa dikenal sebagai topik \f{learning to rank}. Contoh konkrit Penggunaan \f{machine learning} untuk pemeringkatan teks dapat ditemukan pada tulisan \cite{letorhendri}. Kekurangan Penggunaan \f{machine learning} untuk pemeringkatan adalah jumlah fitur tambahan yang dibutuhkan cukup banyak untuk mengimbangi kekurangan dari BM25, dan fitur tersebut biasanya dibuat secara manual \citep{textrankingsurvey}.
+
+Batasan yang dialami model \f{machine learning} pada era \f{learning to rank}, diatasi dengan menggunakan \f{deep learning}. \f{Deep learning} merupakan model komputasional yang belajar melakukan suatu tugas dengan men-\f{fitting} model dengan data dalam jumlah yang banyak. Dalam konteks pemeringakatan teks, metode \f{deep learning} menarik perhatian dengan dua alasan utama: Pertama, representasi vektor (fitur) yang kontinu dari teks mengatasi batasan metode BM25 yang hanya berdasarkan pencocokan kata kueri dan teks \citep{irlecture}. Kedua, \f{Deep learning} menghilangkan kebutuhan akan fitur yang dibuat secara manual -- yang merupakan tantangan besar dalam membangun model pemeringkatan teks dengan \f{machine learning} biasa \citep{irlecture}.
+
+Model \f{Bidirectional Encoder Representations from Transformers} (BERT) adalah model pra-latih \f{deep learning} yang dikembangkan oleh \cite{bertori} untuk permasalahan bahasa alami. BERT menggunakan \f{transformer} \citep{transformerori} sebagai arsitektur dasarnya. Penggunaan BERT mengikuti prinsip \f{transfer learning}, yaitu model yang sudah dilatih sebelumnya pada tugas tertentu -- dengan jumlah data yang besar -- dapat digunakan untuk tugas lainnya dengan hanya menggunakan sedikit data latih. BERT telah menjadi \f{state-of-the-art} untuk berbagai permasalahan pemrosesan bahasa alami seperti \f{question answering}, \f{named entity recognition}, \f{sentiment analysis}, dan lain-lain.
+
+Model BERT juga dapat digunakan untuk pemeringkatan teks. model BERT pertama kali digunakan untuk pemeringkatan teks dilakukan oleh \cite{firstRerankingBert}. Model BERT hasil penelitian \cite{firstRerankingBert} digunakan sebagai \f{classifier} relevansi antara kueri dan dokumen dan model BERT tersebut dilatih pada \f{dataset} MS MARCO \f{passage retrieval} \citep{msmarco}. model BERT yang digunakan sebagai \f{classifier} biasa disebut sebagai $\text{BERT}_{\text{CAT}}$. Di lain sisi, model BERT juga dapat digunakan untuk menghasilkan representasi vektor dari kueri dan dokumen. Representasi vektor tersebut dapat digunakan untuk menghitung skor relevansi antara kueri dan dokumen dengan fungsi \f{similarity} seperti jarak kosinus, ataupun \f{dot product} seperti yang ditunjukkan oleh \cite{dprmeta,reimers-2019-sentence-bert}. model BERT yang digunakan untuk menghasilkan representasi vektor biasa disebut sebagai $\text{BERT}_{\text{DOT}}$. 
+
+Model-Model BERT yang sudah siap digunakan untuk pemeringkatan teks sangat berlimpah pada bahasa Inggris. Hal ini dapat dilihat pada \f{repository} model huggingface \href{https://huggingface.co/sentence-transformers}{\code{sentence-transformers}}. Namun, untuk bahasa Indonesia, model-model BERT yang siap digunakan untuk pemeringkatan teks masih sangat terbatas dan tidak ada dokumen yang mendokumentasi performa model-model tersebut. Oleh karena itu, Penelitian ini akan mengembangkan model BERT untuk pemeringkatan teks berbahasa Indonesia dan mengukur performa model tersebut pada \f{dataset} pemeringkatan teks berbahasa Indonesia.
+
+\section{Rumusan Permasalahan}
+\label{sec:rumusan-permasalahan}
+Berdasarkan  latar belakang pada \sect~\ref{sec:latar-belakang}, rumusan Permasalahan yang ingin dibahas pada penelitian ini adalah sebagai berikut:
+\begin{enumerate}
+	\item Bagaimana pengaplikasian model BERT untuk pemeringkatan teks berbahasa Indonesia?
+	\item Bagaimana kinerja model BERT pada setiap \f{dataset} yang digunakan bila dibandingkan dengan model \f{baseline} BM25?
+\end{enumerate}
+
+\section{Tujuan Penelitian}
+Berdasarkan rumusan permasalahan pada \sect~\ref{sec:rumusan-permasalahan}, tujuan dari penelitian ini adalah sebagai berikut:
+\begin{enumerate}
+	\item Membangun dan melatih kembali \f{(fine tuning)} model BERT untuk pemeringkatan teks berbahasa Indonesia.
+	\item Membandingkan kinerja model BERT pada setiap \f{dataset} yang digunakan bila dibandingkan dengan model \f{baseline} BM25.
+\end{enumerate}
+
+\section{Metodologi Penelitian}
+Metodologi yang dilakukan pada peneletian ini adalah sebagai berikut:
+\begin{enumerate}
+	\item Studi literatur \\
+	Penelitian dimulai dengan sebuah studi literatur terkait model dan konsep yang perlu dipahami pada peneletian ini. Topik yang dipelajari antara lain, Pemeringkatan teks, Metrik untuk pemeringakatan teks, \f{transformer}, \f{Bidirectional Encoder Representations from Transformers} (BERT) untuk pemeringakatan teks dan \f{Representation learning}. Studi dijalankan dengan membaca buku dan penelitian terdahulu. Hasil dari studi ini digunakan sebagai landasan teori pada penelitian.
+	\item Pengumpulan data \\
+	\f{Dataset} yang digunakan pada penelitian ini adalah \f{dataset} Mmarco \f{train set} bahasa Indonesia \citep{mmarco} untuk melatih kembali (\f{fine tuning}) model BERT, \f{dataset} Mmarco \f{dev set} bahasa Indonesia \citep{mmarco}, MrTyDi \f{dev set} bahasa Indonesia \citep{mrtydi}, dan Miracl \f{dev set} bahasa Indonesia \citep{miracl} untuk menguji performa model yang dihasilkan.
+	\item Implementasi \\
+	Implementasi dilakukan dengan bahasa Pemrograman python. Tahapan implementasi terdiri atas, persiapan data, pelatihan model, dan pengevaluasian model yang dihasilkan.
+	\item Analisis hasil dan diskusi \\
+	Penelitian difokuskan pada perbandingan kinerja model dengan model \f{baseline} BM25. Analisis dilakukan dengan membandingkan nilai metrik \f{recriprocal rank} (RR), \f{recall} (R), dan \f{normalized discounted cumulative gain} (NDCG).
+\end{enumerate}
+
+\section{Batasan Permasalahan}
+Batasan-batasan permasalahan pada penelitian ini adalah sebagai berikut:
+\begin{enumerate}
+	\item \f{Dataset} yang digunakan untuk melatih kembali (\f{fine tuning}) model BERT adalah \f{dataset} Mmarco \f{train set} bahasa Indonesia \citep{mmarco}.
+	\item \f{Dataset} yang digunakan untuk mengukur performa model adalah \f{dataset} Mmarco \f{dev set} bahasa Indonesia \citep{mmarco} untuk \f{in-domain test} serta MrTyDi \f{dev set} bahasa Indonesia \citep{mrtydi}, dan Miracl \f{dev set} bahasa Indonesia \citep{miracl} untuk \f{out-of-domain test}.
+	\item Kinerja model diamati dengan metrik \f{recriprocal rank} (RR), \f{recall} (R), dan \f{normalized discounted cumulative gain} (NDCG).
+\end{enumerate}
