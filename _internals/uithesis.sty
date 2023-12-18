@@ -224,32 +224,33 @@
 % Atur header dan footer dalam dokumen.
 \renewcommand{\headrulewidth}{0.0pt}
 \fancyhf{}
-\fancypagestyle{plain}{
-	\fancyhead[L]{}
-	\fancyhead[C]{}
-	\fancyhead[R]{}
-	\fancyfoot[L]{}
-	\fancyfoot[C]{\thepage}
-	\fancyfoot[R]{\footnotesize \fontfamily{phv} \selectfont \bo{Universitas Indonesia}}
-}
-\fancypagestyle{standard}{
-	\fancyhead[L]{}
-	\fancyhead[C]{}
-	\fancyhead[R]{}
-	\fancyfoot[L]{}
-	\fancyfoot[C]{}
-	\renewcommand{\headrulewidth}{0.0pt}
-	\fancyfoot[R]{\footnotesize \fontfamily{phv} \selectfont \bo{Universitas Indonesia}}
-	\renewcommand{\footrulewidth}{0.0pt}
-}
-\fancypagestyle{first-pages}{
-	\fancyhead[L]{}
-	\fancyhead[C]{}
-	\fancyhead[R]{}
-	\fancyfoot[L]{}
-	\fancyfoot[C]{\thepage}
-	\fancyfoot[R]{\footnotesize \fontfamily{phv} \selectfont \bo{Universitas Indonesia}}
-}
+
+% \fancypagestyle{plain}{
+% 	\fancyhead[L]{}
+% 	\fancyhead[C]{}
+% 	\fancyhead[R]{}
+% 	\fancyfoot[L]{}
+% 	\fancyfoot[C]{\thepage}
+% 	\fancyfoot[R]{\footnotesize \fontfamily{phv} \selectfont \bo{Universitas Indonesia}}
+% }
+% \fancypagestyle{standard}{
+% 	\fancyhead[L]{}
+% 	\fancyhead[C]{}
+% 	\fancyhead[R]{}
+% 	\fancyfoot[L]{}
+% 	\fancyfoot[C]{}
+% 	\renewcommand{\headrulewidth}{0.0pt}
+% 	\fancyfoot[R]{\footnotesize \fontfamily{phv} \selectfont \bo{Universitas Indonesia}}
+% 	\renewcommand{\footrulewidth}{0.0pt}
+% }
+% \fancypagestyle{first-pages}{
+% 	\fancyhead[L]{}
+% 	\fancyhead[C]{}
+% 	\fancyhead[R]{}
+% 	\fancyfoot[L]{}
+% 	\fancyfoot[C]{\thepage}
+% 	\fancyfoot[R]{\footnotesize \fontfamily{phv} \selectfont \bo{Universitas Indonesia}}
+% }
 
 % Add new chapter page count
 \newcounter{chapterpagecount}[chapter] % Reset with an increment in chapter
@@ -465,12 +466,7 @@
 
 % Alias untuk mengatur ulang konfigurasi footer setiap awal bab
 \newcommand{\setoddevenheader}{
-	\fancyhead{}
-	\ifodd\thepage
-		\fancyhead[RO,LE]{\thepage}
-	\else
-		\fancyhead[LO,RE]{\thepage}
-	\fi
+	\fancypagestyle{}
 }
 
 % Untuk membuat halaman kosong
@@ -586,6 +582,9 @@
 \renewcommand{\cfttabpresnum}{\tab~}
 
 
+\fancypagestyle{plain}{\fancyhead[L]{} \fancyhead[C]{}
+\fancyhead[R]{} \fancyfoot[L]{} \fancyfoot[C]{} \fancyfoot[R]{}}
+
 
 %-----------------------------------------------------------------------------%
 % BETA FEATURE: Multi-Language Support
@@ -640,3 +639,4 @@
 %		\CJKfamily{mj}
 %		\CJKtilde}
 %	{\end{CJK}}
+
