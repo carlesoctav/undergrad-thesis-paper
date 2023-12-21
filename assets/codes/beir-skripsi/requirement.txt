@@ -1,0 +1,7 @@
+git+https://github.com/UKPLab/sentence-transformers.git
+beir
+gdown
+torch
+pyprojroot
+transformers-interpret
+accelerate

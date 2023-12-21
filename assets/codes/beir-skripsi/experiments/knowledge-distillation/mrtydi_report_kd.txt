@@ -1,0 +1,96 @@
+2023-10-02 13:01:07 - Index size: 2257.00MB                                                                     
+2023-10-02 13:01:07 - Retriever evaluation for k in: [1, 3, 5, 10, 100, 1000]                                   
+2023-10-02 13:01:07 - For evaluation, we ignore identical query and document ids (default), please explicitly se
+t ``ignore_identical_ids=False`` to ignore this.                                                                
+2023-10-02 13:01:08 -                                                                                           
+                                                                                                                
+2023-10-02 13:01:08 - NDCG@1: 0.2280                                                                            
+2023-10-02 13:01:08 - NDCG@3: 0.2791                                                                            
+2023-10-02 13:01:08 - NDCG@5: 0.3024                                                                            
+2023-10-02 13:01:08 - NDCG@10: 0.3213                                                                           
+2023-10-02 13:01:08 - NDCG@100: 0.3629                                                                          
+2023-10-02 13:01:08 - NDCG@1000: 0.3805                                                                         
+2023-10-02 13:01:08 -                                                                                           
+                                                                                                                
+2023-10-02 13:01:08 - MAP@1: 0.2071                                                                             
+2023-10-02 13:01:08 - MAP@3: 0.2591                                                                             
+2023-10-02 13:01:08 - MAP@5: 0.2725                                                                             
+2023-10-02 13:01:08 - MAP@10: 0.2804                                                                            
+2023-10-02 13:01:08 - MAP@100: 0.2885                                                                           
+2023-10-02 13:01:08 - MAP@1000: 0.2891                                                                          
+2023-10-02 13:01:08 -
+
+2023-10-02 13:01:08 - Recall@1: 0.2071                                                                 [48/1380]
+2023-10-02 13:01:08 - Recall@3: 0.3170
+2023-10-02 13:01:08 - Recall@5: 0.3717
+2023-10-02 13:01:08 - Recall@10: 0.4288
+2023-10-02 13:01:08 - Recall@100: 0.6240
+2023-10-02 13:01:08 - Recall@1000: 0.7610
+2023-10-02 13:01:08 - 
+
+2023-10-02 13:01:08 - P@1: 0.2280
+2023-10-02 13:01:08 - P@3: 0.1190
+2023-10-02 13:01:08 - P@5: 0.0840
+2023-10-02 13:01:08 - P@10: 0.0485
+2023-10-02 13:01:08 - P@100: 0.0072
+2023-10-02 13:01:08 - P@1000: 0.0009
+2023-10-02 13:01:08 - 
+
+2023-10-02 13:01:08 - MRR@1: 0.2280
+2023-10-02 13:01:08 - MRR@3: 0.2799
+2023-10-02 13:01:08 - MRR@5: 0.2922
+2023-10-02 13:01:08 - MRR@10: 0.2999
+2023-10-02 13:01:08 - MRR@100: 0.3075
+2023-10-02 13:01:08 - MRR@1000: 0.3080
+2023-10-02 13:01:08 - 
+
+2023-10-02 13:01:09 - R_cap@1: 0.2280
+2023-10-02 13:01:09 - R_cap@3: 0.3170
+2023-10-02 13:01:09 - R_cap@5: 0.3717
+2023-10-02 13:01:09 - R_cap@10: 0.4288
+2023-10-02 13:01:09 - R_cap@100: 0.6240
+2023-10-02 13:01:09 - R_cap@1000: 0.7610
+2023-10-02 13:01:09 - 
+
+2023-10-02 13:01:09 - Hole@1: 0.7624
+2023-10-02 13:01:09 - Hole@3: 0.8721
+2023-10-02 13:01:09 - Hole@5: 0.9069
+2023-10-02 13:01:09 - Hole@10: 0.9446
+2023-10-02 13:01:09 - Hole@100: 0.9904
+2023-10-02 13:01:09 - Hole@1000: 0.9981
+
+
+2023-10-02 13:01:09 - Query : Apakah nama stasiun kereta api di Bekasi?
+
+2023-10-02 13:01:09 - Rank 1: 715484#0 [] - Stasiun Majori adalah sebuah stasiun kereta pada Jalur Kereta Api To
+rņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 2: 716429#0 [] - Stasiun Asari adalah sebuah stasiun kereta pada Jalur Kereta Api Tor
+ņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 3: 715483#0 [] - Stasiun Dzintari adalah sebuah stasiun kereta pada Jalur Kereta Api 
+Torņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 4: 715482#0 [] - Stasiun Bulduri adalah sebuah stasiun kereta pada Jalur Kereta Api T
+orņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 5: 716428#0 [] - Stasiun Melluži adalah sebuah stasiun kereta pada Jalur Kereta Api T
+orņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 6: 1755324#0 [] - Stasiun Sumari (SUR) adalah stasiun kereta api nonaktif yang berada
+ di Tirem, Duduk Sampeyan, Gresik. Dulu terdapat jalur cabang menuju Stasiun Gresik yang bersambung hingga Stasi
+un Indro dan bertemu kembali dengan jalur utama di Stasiun Kandangan. Jalur menuju Sumari hingga Gresik ditutup 
+oleh Jepang tahun 1943 silam, sementara jalur relnya dicabut dan dipakai untuk pembangunan jalur KA di tempat la
+in.
+
+2023-10-02 13:01:09 - Rank 7: 715485#0 [] - Stasiun Dubulti adalah sebuah stasiun kereta pada Jalur Kereta Api T
+orņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 8: 715488#0 [] - Stasiun Pumpuri adalah sebuah stasiun kereta pada Jalur Kereta Api T
+orņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 9: 716434#0 [] - Stasiun Sloka adalah sebuah stasiun kereta pada Jalur Kereta Api Tor
+ņakalns – Tukums II.
+
+2023-10-02 13:01:09 - Rank 10: 417471#0 [] - Stasiun Blimbing atau Stasiun Belimbing adalah stasiun kereta api y
+ang merujuk kepada:

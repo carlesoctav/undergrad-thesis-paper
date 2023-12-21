@@ -1,0 +1,114 @@
+Time taken to retrieve: 2231.43 seconds                                                                        
+2023-11-05 13:50:52 - Retriever evaluation for k in: [1, 3, 5, 10, 100, 1000]                                  
+2023-11-05 13:50:52 - For evaluation, we ignore identical query and document ids (default), please explicitly s
+et ``ignore_identical_ids=False`` to ignore this.                                                              
+2023-11-05 13:50:56 -                                                                                          
+                                                                                                               
+2023-11-05 13:50:56 - NDCG@1: 0.1053                                                                           
+2023-11-05 13:50:56 - NDCG@3: 0.1653                                                                           
+2023-11-05 13:50:56 - NDCG@5: 0.1882                                                                           
+2023-11-05 13:50:56 - NDCG@10: 0.2146                                                                          
+2023-11-05 13:50:56 - NDCG@100: 0.2712                                                                         
+2023-11-05 13:50:56 - NDCG@1000: 0.2950                                                                        
+2023-11-05 13:50:56 -
+
+2023-11-05 13:50:56 - MAP@1: 0.1026                                                                    [70/473]
+2023-11-05 13:50:56 - MAP@3: 0.1491                                                                            
+2023-11-05 13:50:56 - MAP@5: 0.1618                                                                            
+2023-11-05 13:50:56 - MAP@10: 0.1729                                                                           
+2023-11-05 13:50:56 - MAP@100: 0.1836                                                                          
+2023-11-05 13:50:56 - MAP@1000: 0.1845                                                                         
+2023-11-05 13:50:56 -                                                                                          
+                                                                                                               
+2023-11-05 13:50:56 - Recall@1: 0.1026                                                                         
+2023-11-05 13:50:56 - Recall@3: 0.2091                                                                         
+2023-11-05 13:50:56 - Recall@5: 0.2643                                                                         
+2023-11-05 13:50:56 - Recall@10: 0.3445                                                                        
+2023-11-05 13:50:56 - Recall@100: 0.6156                                                                       
+2023-11-05 13:50:56 - Recall@1000: 0.8036                                                                      
+2023-11-05 13:50:56 -   
+
+
+
+2023-11-05 13:50:56 - P@1: 0.1053                                                                      [54/473]
+2023-11-05 13:50:56 - P@3: 0.0720                                                                              
+2023-11-05 13:50:56 - P@5: 0.0548                                                                              
+2023-11-05 13:50:56 - P@10: 0.0359                                                                             
+2023-11-05 13:50:56 - P@100: 0.0065                                                                            
+2023-11-05 13:50:56 - P@1000: 0.0008                                                                           
+2023-11-05 13:50:56 -                                                                                          
+                                                                                                               
+2023-11-05 13:50:58 - MRR@1: 0.1053                                                                            
+2023-11-05 13:50:58 - MRR@3: 0.1523                                                                            
+2023-11-05 13:50:58 - MRR@5: 0.1651                                                                            
+2023-11-05 13:50:58 - MRR@10: 0.1761                                                                           
+2023-11-05 13:50:58 - MRR@100: 0.1868                                                                          
+2023-11-05 13:50:58 - MRR@1000: 0.1876                                                                         
+2023-11-05 13:50:59 -                                                                                          
+                                                                                                               
+2023-11-05 13:51:02 - R_cap@1: 0.1053                                                                          
+2023-11-05 13:51:02 - R_cap@3: 0.2091                                                                          
+2023-11-05 13:51:02 - R_cap@5: 0.2645                                                                          
+2023-11-05 13:51:02 - R_cap@10: 0.3445                                                                         
+2023-11-05 13:51:02 - R_cap@100: 0.6156                                                                        
+2023-11-05 13:51:02 - R_cap@1000: 0.8036                                                                       
+2023-11-05 13:51:02 -                      
+
+
+2023-11-05 13:51:05 - Hole@1: 0.8921                                                                           
+2023-11-05 13:51:05 - Hole@3: 0.9259                                                                           
+2023-11-05 13:51:05 - Hole@5: 0.9432                                                                           
+2023-11-05 13:51:05 - Hole@10: 0.9624                                                                          
+2023-11-05 13:51:05 - Hole@100: 0.9923                                                                         
+2023-11-05 13:51:05 - Hole@1000: 0.9981
+2023-11-05 13:51:05 - Query : Apa gejala anafilaksis 
+
+2023-11-05 13:51:05 - Rank 1: 5979050 [] - Tanda - tanda dan gejala anafilaksis mencakup: 1 Reaksi kulit, terma
+suk gatal, dan kulit pucat. 2 Luka gores pada wajah, mata, bibir atau tenggorokan. 3 Kontriksi saluran udara, m
+enyebabkan sesak napas dan kesulitan bernapas. Sebuah lemah dan cepat 1 denyut. Mual, muntah atau diare. Pusing
+, pingsan atau tidak sadar.                                                                                    
+                                                                                                               
+2023-11-05 13:51:05 - Rank 2: 2867724 [] - Tanda - tanda anafilaksis antara lain adalah: 1 Tenggorokan atau ben
+jolan di tenggorokan Anda (penyempitan melalui udara) yang membuat Anda sulit bernapas. 2 Shock, dengan penurun
+an tekanan darahmu. 3 denyutan cepat. 4 pusing, pusing karena pusing atau pingsan.                             
+                                                                                                               
+2023-11-05 13:51:05 - Rank 3: 481330 [] - Gejala reaksi anafilaksis dapat mencakup: 1 Sulit bernapas. 2 Dada ke
+tat. 3 Pusing atau pusing. 4 Mual atau muntah. 5 Sulit menelan. 6 Pingsan. 7 gatal dan gatal-gatal. 8 Swelling,
+ wajah, mata, mulut, lidah dan tenggorokan.                                                                    
+                                                                                                               
+2023-11-05 13:51:05 - Rank 4: 2298528 [] - Gejala Anafilaksis terjadi secara mendadak dan dapat berkembang deng
+an cepat. Gejala - gejala awalnya mungkin ringan, seperti hidung yang berair, ruam kulit atau perasaan yang ane
+h. Gejala - gejala ini dapat dengan cepat menimbulkan problem yang lebih serius, termasuk: 1 Pernapasan yang Su
+lit. 2 Sarang atau bengkak. 3 kali lipat dari tenggorokan. 4 suara Hoarse. 5 Nausea. 6 Muntah. 7 penderitaan ab
+dominal. 
+
+
+
+2023-11-05 13:51:05 - Rank 5: 8529106 [] - Anaphylaxis adalah reaksi alergi yang langka dan mengancam jiwa yang
+ menyebabkan meluasnya disfungsi sistem tubuh. Tanda - tanda dan gejala anafilaksis antara lain adalah: 1 sesak
+nya saluran udara dan tenggorokan, sehingga sulit bernapas. 2 Nausea atau kram perut. Muntah atau diare.       
+                                                                                                               
+2023-11-05 13:51:05 - Rank 6: 8529102 [] - Anaphylaxis adalah reaksi alergi yang langka dan mengancam jiwa yang
+ menyebabkan meluasnya disfungsi sistem tubuh. Tanda - tanda dan gejala anafilaksis antara lain adalah: 1 sesak
+nya saluran udara dan tenggorokan, sehingga sulit bernapas. Nausea atau kram perut.                            
+                                                                                                               
+2023-11-05 13:51:05 - Rank 7: 2326265 [] - Gejala Anafilaksis terjadi secara mendadak dan dapat berkembang deng
+an cepat. Gejala - gejala awalnya mungkin ringan, seperti hidung yang berair, ruam kulit atau perasaan yang ane
+h. Gejala - gejala ini dapat dengan cepat menimbulkan problem yang lebih serius, termasuk: 1 Pernapasan yang Su
+lit. 2 Sarang atau bengkak. 3 kali lipat dari tenggorokan.                                                     
+                                                                                                               
+2023-11-05 13:51:05 - Rank 8: 7550142 [] - Gejala - gejala Anafilaksis mencakup kekakuan tenggorokan, susah ber
+napas, kesemutan, pusing, dan rengekan. Anaphylaxis tiba-tiba, reaksi mengancam jiwa yang perlu segera diobati.
+ Anafilaksis mungkin terjadi jika Anda berolahraga setelah terkena pemicu, seperti setelah Anda minum antibioti
+k.                                                                                                             
+                                                                                                               
+2023-11-05 13:51:05 - Rank 9: 4492470 [] - Anafilaksis biasanya mempengaruhi lebih dari satu bagian tubuh pada 
+waktu yang sama. Gejalanya termasuk kehangatan, kesemutan, ruam merah, gatal, perasaan pusing, sesak napas, ses
+ak tenggorokan, kecemasan, nyeri/keram dan/atau muntah dan diare.
+
+
+2023-11-05 13:51:05 - Rank 10: 2131690 [] - Itu mungkin mempengaruhi kulit, saluran udara, dan organ. Itu juga 
+terjadi sangat cepat setelah minum obat, sering kali dalam beberapa menit atau detik. Anaphylaxis adalah keadaa
+n darurat dan mengancam nyawa. Gejalanya antara lain: 1 Pernapasan atau tenggorokan terasa sesak. Kebingungan 2
+. 3 Kram. 4 pusing atau pingsan. 5 Sarang yang menutupi sebagian besar tubuhnya. 6 detak jantung tidak teratur.
+7 Shock atau pingsan.

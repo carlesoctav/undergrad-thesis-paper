@@ -1,0 +1,116 @@
+2023-11-05 13:03:44 - Retriever evaluation for k in: [1, 3, 5, 10, 100, 1000]                                  │······
+2023-11-05 13:03:44 - For evaluation, we ignore identical query and document ids (default), please explicitly s│······
+et ``ignore_identical_ids=False`` to ignore this.                                                              │······
+2023-11-05 13:03:45 -                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:45 - NDCG@1: 0.1698                                                                           │······
+2023-11-05 13:03:45 - NDCG@3: 0.1560                                                                           │······
+2023-11-05 13:03:45 - NDCG@5: 0.1605                                                                           │······
+2023-11-05 13:03:45 - NDCG@10: 0.1794                                                                          │······
+2023-11-05 13:03:45 - NDCG@100: 0.2470                                                                         │······
+2023-11-05 13:03:45 - NDCG@1000: 0.2923                                                                        │······
+2023-11-05 13:03:45 -
+
+2023-11-05 13:03:45 - MAP@1: 0.0675                                                                            │······
+2023-11-05 13:03:45 - MAP@3: 0.1023                                                                            │······
+2023-11-05 13:03:45 - MAP@5: 0.1135                                                                            │······
+2023-11-05 13:03:45 - MAP@10: 0.1257                                                                           │······
+2023-11-05 13:03:45 - MAP@100: 0.1426                                                                          │······
+2023-11-05 13:03:45 - MAP@1000: 0.1450                                                                         │······
+2023-11-05 13:03:45 -                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:45 - Recall@1: 0.0675                                                                         │······
+2023-11-05 13:03:45 - Recall@3: 0.1320                                                                         │······
+2023-11-05 13:03:45 - Recall@5: 0.1685                                                                         │······
+2023-11-05 13:03:45 - Recall@10: 0.2239                                                                        │······
+2023-11-05 13:03:45 - Recall@100: 0.4609                                                                       │······
+2023-11-05 13:03:45 - Recall@1000: 0.7259                                                                      │······
+2023-11-05 13:03:45 -                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:45 - P@1: 0.1698                                                                              │······
+2023-11-05 13:03:45 - P@3: 0.1181                                                                              │······
+2023-11-05 13:03:45 - P@5: 0.0917                                                                              │······
+2023-11-05 13:03:45 - P@10: 0.0644                                                                             │······
+2023-11-05 13:03:45 - P@100: 0.0143                                                                            │······
+2023-11-05 13:03:45 - P@1000: 0.0023                                                                           │······
+2023-11-05 13:03:45 -       
+
+2023-11-05 13:03:45 - MRR@1: 0.1698                                                                            │······
+2023-11-05 13:03:45 - MRR@3: 0.2186                                                                            │······
+2023-11-05 13:03:45 - MRR@5: 0.2298                                                                            │······
+2023-11-05 13:03:45 - MRR@10: 0.2392                                                                           │······
+2023-11-05 13:03:45 - MRR@100: 0.2492                                                                          │······
+2023-11-05 13:03:45 - MRR@1000: 0.2501                                                                         │······
+2023-11-05 13:03:45 -                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:46 - R_cap@1: 0.1698                                                                          │······
+2023-11-05 13:03:46 - R_cap@3: 0.1599                                                                          │······
+2023-11-05 13:03:46 - R_cap@5: 0.1768                                                                          │······
+2023-11-05 13:03:46 - R_cap@10: 0.2240                                                                         │······
+2023-11-05 13:03:46 - R_cap@100: 0.4609                                                                        │······
+2023-11-05 13:03:46 - R_cap@1000: 0.7259                                                                       │······
+2023-11-05 13:03:46 -                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Hole@1: 0.8052                                                                           │······
+2023-11-05 13:03:46 - Hole@3: 0.8542                                                                           │······
+2023-11-05 13:03:46 - Hole@5: 0.8777                                                                           │······
+2023-11-05 13:03:46 - Hole@10: 0.9062                                                                          │······
+2023-11-05 13:03:46 - Hole@100: 0.9663                                                                         │······
+2023-11-05 13:03:46 - Hole@1000: 0.9870                                                                        │······
+2023-11-05 13:03:46 - Query : dari manakah kucing bengal berasal? 
+
+2023-11-05 13:03:46 - Rank 1: 1597917#2 [Kucing raas] - Raas adalah kucing yang awal mulanya tidak diketahui. K│······
+emungkinan besar kucing ini terbentuk secara alami. Menurut penelitian Lasley Morgan dari Australia dan dr. Ron│······
+ny Rachman Noor dari Fakultas Peternakan IPB, raas dengan warna biru diyakini berasal dari ras korat yang beras│······
+al dari Thailand. Kucing ini juga diyakini berasal dari ras asia karena bentuk ekornya yang bengkok di bagian u│······
+jung.                                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 2: 1497370#0 [Kucing siprus] - Kucing siprus adalah salah satu ras lokal kucing dome│······
+stik yang diyakini berasal dari Mesir atau Palestina yang kemudian dibawa ke Siprus oleh Santa Helena untuk mem│······
+bersihkan pulau dari ular dan hama. Siprus tidak diakui resmi oleh organisasi pendaftaran kucing.              │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 3: 1567106#0 [Genetta] - Genetta adalah salah satu ras kucing domestik baru yang dic│······
+iptakan oleh Shannon Kiley di "Pawstruk Cattery" pada tahun 2006. Kucing ini adalah kucing yang termasuk kucing│······
+ kerdil. Genetta lahir dari persilangan ras Munchkin, Savannah dan Bengal. Kucing ini adalah kucing berkaki pen│······
+dek dengan pola warna tutul dan marmer yang eksotis yang dibuat agar menyerupai Genet Afrika.                  │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 4: 1608926#0 [Kucing tibetan] - Kucing tibetan adalah salah satu ras kucing domestik│······
+ yang berasal dari Belanda.                                                                                    │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 5: 1544402#0 [Kucing munchkin] - Kucing munchkin adalah salah satu ras kucing berkak│······
+i pendek yang terbentuk karena mutasi genetik alami. Ras ini baru mulai dikembangbiakkan sekitar tahun 1980-an │······
+di Amerika Serikat, negara asalnya. Karena kakinya yang pendek, munchkin menjadi salah satu ras kucing terkecil│······
+ di dunia.  
+
+
+
+ 2023-11-05 13:03:46 - Rank 6: 1550440#0 [Kucing birma] - Kucing birma adalah salah satu ras kucing alami yang b│······
+erasal dari Perancis.                                                                                          │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 7: 1575223#3 [Kucing kerdil] - Munchkin adalah ras kucing asli dari kucing kerdil. T│······
+he International Cat Association (TICA) telah memberikan pengakuan kepada Munchkin sebagai ras kucing pada tahu│······
+n 1994, bersamaan dengan ras campuran Persia-Munchkin, yaitu Napoleon. Ras kucing lainnya yang diketahui memili│······
+ki kaki pendek diantaranya adalah Skookum, Bambino, Minskin, Genetta, dan Lambkin. Kucing-kucing tersebut belum│······
+ mendapatkan pengakuan, namun pada ras campuran Munchkin-Sphynx, yaitu Minskin, sedang dalam studi penelitian. │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 8: 1039433#6 [Kucing gurun] - Berdasarkan studi DNA mitokondria dari 979 kucing dome│······
+stik dan liar dari Eropa, Asia, dan Afrika, Felis silvestris lybica memisahkan diri dari kucing liar Eropa seki│······
+tar 173.000 tahun yang lalu dan dari F. subspesies Asia s. ornata dan F. s. cafra sekitar 131.000 tahun yang la│······
+lu. Sekitar 10.000 tahun yang lalu, beberapa Felis silvestris lybica individu didomestikasi di Timur Tengah. Ku│······
+cing domestik modern berasal dari setidaknya lima "Eves mitokondria". Tak satu pun dari subspesies lain Felis s│······
+ilvestris berkontribusi dengan ras dalam negeri, dan banyak dari mereka sendiri mtDNA subspesies 'sedang dibanj│······
+iri oleh percampuran dengan kucing liar.Satu-satunya organisasi saat ini dikenal memiliki program khusus yang d│······
+itujukan untuk kucing liar Afrika melestarikan dan mengurangi apa yang beberapa sebut pencemaran genetik dengan│······
+ kucing domestik Alley Cat Rescue.                                                                             │······
+                                                                                                               │······
+2023-11-05 13:03:46 - Rank 9: 1066221#17 [Kucing merah] - Pada tahun 1874, John Edward Gray pertama kali menjel│······
+askan kucing merah berdasarkan binomial badia Felis atas dasar kulit dan tengkorak yang dikumpulkan di Sarawak │······
+pada tahun 1856. Kucing ini pertama kali dianggap sebagai anak kucing dari kucing emas Asia. Pada tahun 1932, R│······
+eginald Innes Pocock menempatkan spesies dalam genus monotypic Badiofelis. Pada tahun 1978, ia ditempatkan di g│······
+enus Catopuma. In 1978, it was placed in the genus "Catopuma".      
+
+2023-11-05 13:03:46 - Rank 10: 221251#3 [Kucing liar] - Suatu penelitian yang pernah dilakukan oleh Institut Ka│······
+nker Nasional Amerika Serikat menyatakan bahwa kucing liar diperkirakan merupakan nenek moyang kucing rumah. Di│······
+perkirakan kucing liar pernah dijadikan sebagai hewan peliharaan oleh sekelompok manusia kira-kira 10.000 tahun│······
+ lalu di suatu tempat di Timur Dekat. Diperkirakan pula "Felis silvestris" memiliki keturunan dekat dengan "Fel│······
+is margarita".  
