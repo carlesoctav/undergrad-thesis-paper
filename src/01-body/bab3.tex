@@ -42,7 +42,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\alpha_{i}(\mathbf{q},\mathbf{k}_i) &= \text{Softmax}_i(\bm{\alpha}) = \frac{\exp(f_{attn}(\mathbf{q}, \mathbf{k}_i))}{\sum_{j=1}^{n} \exp(f_{attn}(\mathbf{q}, \mathbf{k}_j))}.
 	\end{flalign*}
 
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/softattention.png}
 		\captionsource{Ilustrasi dari mekanisme \f{soft attention}.}{ \citep{zhang2023dive}.}
@@ -95,7 +95,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\end{align}
 
 \section{\f{Transformer}}
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/lilianweng-transformer.png}
 		\captionsource{Arsitektur \f{transformer}.}{\citep{weng2018attention}.}
@@ -115,7 +115,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 
 	\subsection{\f{Token Embedding (Input Embedding)}}
 	\label{sec:token-embedding}
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/token-embedding.png}
 		\captionsource{Ilustrasi dari representasi token. Gambar kiri menunjukkan representasi token dengan \f{one-hot encoding}, sedangkan gambar kanan menunjukkan representasi token dengan \f{token embedding}.}{\citep{geiger2022deeplearning}.}
@@ -177,7 +177,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\end{align}
 
 	\subsection{\f{Self-Attention}}
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=0.5\textwidth]{assets/pics/rnn-compare-selfattention.png}
 		\captionsource{Perbandingan RNN dan \f{self-attention} dalam menghasilkan representasi vektor kontekstual. Pada RNN, representasi vektor kontekstual setiap token bergantung pada perhitungan token sebelumnya. Pada \f{self-attention}, representasi vektor kontekstual setiap token dihitung secara independen dan paralel.}{\citep{zhang2023dive}.}
@@ -196,7 +196,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	dengan $\mathbf{W}^q, \mathbf{W}^k, \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}, \mathbf{W}^v \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}$ adalah matriks bobot.
 
 	\f{Self-attention} dapat dikonsepsikan sebagai proses pembentukan representasi token yang kontekstual. Untuk setiap tokennya, \f{self-attention} menghitung keserupaan antara token $\mathbf{E}\mathbf{W}^q$ dengan seluruh token lainnya $\mathbf{E} \mathbf{W}^k$ dengan \f{scaled dot product attention}. Hasil dari \f{scaled dot product attention} adalah vektor yang menunjukkan bobot atensi dari token tersebut terhadap token lainnya. Bobot atensi tersebut kemudian digunakan untuk menghitung rata-rata terbobot dari seluruh token lainnya ($\mathbf{E} \mathbf{W}^v$). Hasil dari rata-rata terbobot tersebut adalah representasi vektor kontekstual dari token tersebut. \pic~\ref{fig:self-attention-example} adalah contoh dari \f{self-attention} yang menghasilkan representasi vektor kontekstual pada token \code{it}. Pada \pic~\ref{fig:self-attention-example} kiri token \code{it} memiliki bobot atensi yang tinggi terhadap token dan \code{animal} sehingga representasi vektor kontekstual dari token \code{it} akan memiliki nilai yang serupa dengan representasi token \code{animal}. Di lain sisi, token \code{it} pada \pic~\ref{fig:self-attention-example} memiliki bobot atensi yang tinggi terhadap token \f{street}.
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/self-attn-example.png}
 		\captionsource{Ilustrasi \f{self-attention} dalam menghasilkan representasi vektor kontekstual dari barisan token. Representasi vektor dari token \code{it} akan bergantung terhadap barisan token \f{input}.}{\citep{pml1Book}}
@@ -204,7 +204,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\end{figure}
 	
 	\subsection{\f{Multi-Head Self-Attention}}
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/MHSA.png}
 		\captionsource{Ilustrasi \f{multi-head self-attention} pada \f{transformer}. \f{Multi-head self-attention} menghitung \f{self-attention} sebanyak $h$ kali pada subruang yang berbeda.}{\citep{pml1Book}, telah diolah kembali.}	
@@ -226,7 +226,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\subsection{\f{Positional Encoding}}
 	\label{sec:positional-encoding}
 
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=0.5\textwidth]{assets/pics/positional_encoding.png}
 		\captionsource{Ilustrasi dari \f{positional encoding} pada \f{transformer}. \f{Positional encoding} ditambahkan pada \f{token embedding} sebelum dijadikan \f{input} untuk \f{transformer}.}{\citep{pi-tau2023transformer}, telah diolah kembali.}
@@ -262,7 +262,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 
 
 \subsection{\f{Position-wise Feed-Forward Network}}
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=0.5\textwidth]{assets/pics/ffn_transformer.png}
 		\caption{Ilustrasi \f{position-wise feed-forward network} pada \f{transformer}.}
@@ -314,7 +314,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\odot &= \text{\f{element-wise product.}} &&
 	\end{flalign*}
 
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/residual-connection.png}
 		\captionsource{Ilustrasi koneksi residu.}{\citep{pml1Book}}
@@ -331,7 +331,7 @@ Pada \f{transformer}, \f{residual connection} digunakan sebelum \f{layer normali
 	\subsection{\f{Transformer Encoder}}
 	\label{sec:encoder}
 
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=0.5\textwidth]{assets/pics/final-transformers-encoder.png}
 		\caption{Ilustrasi \f{transformer encoder}. (a) \f{transformer encoder}, (b) \f{encoder} blok.}
@@ -359,6 +359,7 @@ Pada \f{transformer}, \f{residual connection} digunakan sebelum \f{layer normali
 \f{Bidirectional Encoder Representations from Transformers} (BERT) adalah \f{transformers encoder} yang telah dilatih sebelumnya (\f{pre-trained}) pada tugas \f{Masked Language Model} dan \f{Next Sentence Prediction} \citep{bertori}. \f{Pre-training} BERT dilakukan dengan menggunakan korpus teks yang besar dan dilakukan secara \f{self-supervised} untuk mempelajari informasi umum tentang statistik bahasa dan mempelajari representasi vektor kata yang kontekstual. Pengunaan BERT mengikuti prinsip \f{transfer learning}, yaitu model yang sudah dilatih sebelumnya pada tugas tertentu -- dengan jumlah data yang besar -- dapat digunakan untuk tugas lainnya dengan hanya menggunakan sedikit data latih. Model $\text{BERT}_{\text{BASE}}$ tersusun atas 12 blok \f{encoder} dengan dimensi \f{token embedding} $d_{\text{token}}$ sebesar 768, 12 \f{attention heads} pada setiap blok \f{encoder}-nya, 110 juta parameter dan panjang barisan token maksimal $L_{\max}$ sebesar 512.
 
 \subsection{Representasi Input}
+\label{sec:bert-input-representation}
 
 Model BERT menghasilkan representasi vektor kontekstual dari token dengan \f{transformer encoder}. \f{Input} dari \f{transformer encoder} berupa vektor numerik sehingga teks harus diubah mengikuti format tersebut. \f{Input} dari model BERT adalah penjumlahan dari \f{token embedding} (lihat \sect~\ref{sec:token-embedding}), \f{segment embedding}, dan \f{position embedding} (lihat \sect~\ref{sec:positional-encoding}).
 
@@ -369,7 +370,7 @@ Dalam proses \f{tokenizing}, teks dipecah menjadi kata atau subkata -- kata-kata
 Setelah proses \f{tokenizing}, token khusus \code{[CLS]} dan \code{[SEP]} ditambahkan di awal dan akhir barisan token sehingga barisan token menjadi (\code{[CLS]}, \code{apa}, \code{nama}, \code{ibu}, \code{kota}, \code{eti}, \code{\#\#opia}, \code{[SEP]}). Token \code{[CLS]} digunakan sebagai representasi dari seluruh kalimat dan token \code{[SEP]} digunakan sebagai pemisah antar kalimat.
 
 Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti yang dijelaskan pada \sect~\ref{sec:token-embedding}. Hasil \f{token embedding} berupa vektor numerik yang dapat merepresentasikan suatu kata. Untuk menyimpan representasi vektor dari seluruh kosakata, BERT menggunakan matriks \f{token embedding} yang dipelajari ketika proses \f{pre-training} yang berukuran $|\mathcal{T}| \times d_{\text{token}}$ dengan $|\mathcal{T}|$ adalah ukuran kosakata. \tab~\ref{tab:token-embeddings} menunjukkan ilustrasi dari pemetaan \f{token embedding} pada BERT.
-\begin{table}
+\begin{table}[!ht]
 	\centering
 	\caption{Ilustrasi pemetaan \f{token embedding} pada BERT.}
 	\label{tab:token-embeddings}
@@ -391,7 +392,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 \end{table}
 
 \f{Segment embedding} digunakan sebagai penanda bagian yang berbeda pada suatu barisan token.  Sebagai contoh, pada permasalahan \f{question answering} (\f{QA}), \f{input} pertanyaan direpresentasikan oleh barisan token $A$ dan paragraf konteks direpresentasikan oleh barisan token $B$. Setiap \f{segment} dipisahkan oleh token khusus \code{[SEP]}. Setiap token yang berada pada \f{segment} yang sama akan memiliki vektor numerik yang identik pada \f{segment embedding}. Untuk menyimpan representasi vektor dari setiap \f{segment}, BERT menggunakan matriks \f{segment embedding} yang dipelajari ketika proses \f{pre-training} yang berukuran $2 \times d_{\text{token}}$. \tab~\ref{tab:segment-embeddings} menunjukkan ilustrasi dari pemetaan \f{segment embedding} pada BERT.
-\begin{table}
+\begin{table}[!ht]
 	\centering
 	\caption{Ilustrasi pemetaan \f{segment embedding} pada BERT.}
 	\label{tab:segment-embeddings}
@@ -406,7 +407,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 \end{table}
 
 \f{Positional embedding} digunakan untuk menghilangkan sifat permutasi \f{equivariant} pada barisan token yang telah dijelaskan pada \sect~\ref{sec:positional-encoding}. Untuk menyimpan representasi vektor dari setiap posisi token, BERT menggunakan matriks \f{positional embedding} yang dipelajari ketika proses \f{pre-training} yang berukuran $L_{\max} \times d_{\text{token}}$, dengan $L_{\max}$ adalah panjang maksimal barisan token. \tab~\ref{tab:positional-embeddings} menunjukkan ilustrasi dari pemetaan \f{positional embedding} pada BERT.
-\begin{table}
+\begin{table}[!ht]
 	\centering
 	\caption{Ilustrasi pemetaan \f{positional embedding} pada BERT.}
 	\label{tab:positional-embeddings}
@@ -429,7 +430,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	\label{equ:bert-input-start}
 	\text{BERT}((\text{\code{[CLS]}}, t_1, t_2, \dots, t_L, \text{\code{[SEP]}})) &= (\mathbf{T}_{\text{\code{[CLS]}}}, \mathbf{T}_{t_1}, \mathbf{T}_{t_2}, \dots, \mathbf{T}_{t_L}, \mathbf{T}_{\text{\code{[SEP]}}}).
 \end{align}
-\begin{figure}
+\begin{figure}[!ht]
 	\centering
 	\includegraphics[width=0.75\textwidth]{assets/pics/representasibert.png}
 	\captionsource{Ilustrasi dari representasi \f{input} pada BERT. Barisan kata diubah menjadi \f{token}, \f{segment}, dan \f{positional embedding}. Jumlahan \f{embedding} ini menghasilkan \f{embedding} \f{input}, yang melewati 12 blok \f{transformer encoder}. Representasi kontekstual vektor kata diambil dari blok terakhir.}{\citep{textrankingsurvey}.}
@@ -444,7 +445,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	\subsubsection{\f{Masked Language Model} (MLM)}
 	\label{sec:masked-language-model}
 
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/MLM.png}
 		\caption{Ilustrasi \f{Masked Language Modeling} (MLM) pada BERT. sebuah kata (token) secara acak di-hilangkan (\f{mask}) dan model diminta untuk menebak kata yang dihilangkan tersebut.}
@@ -465,7 +466,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	
 	Selama proses pelatihan, setengah dari \f{input} tersebut adalah pasangan kalimat di mana kalimat kedua adalah kalimat berikutnya, dan setengah lainnya adalah kalimat yang diambil secara acak dari korpus sebagai kalimat kedua. \pic~\ref{fig:next-sentence-prediction} mengilustrasikan contoh dari tugas \f{next sentence prediction}.
 
-	\begin{figure}
+	\begin{figure}[!ht]
 		\centering
 		\includegraphics[width=1\textwidth]{assets/pics/Paste.png}
 		\caption{Ilustrasi \f{next sentence prediction} pada BERT. Model diminta untuk memprediksi apakah kalimat kedua adalah kalimat berikutnya dari kalimat pertama.}
@@ -484,7 +485,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	\subsubsection{$\text{BERT}_{\text{CAT}}$}
 		\label{sec:bert-cat}
 
-		\begin{figure}
+		\begin{figure}[!ht]
 			\centering
 			\includegraphics[width=1\textwidth]{assets/pics/bertcat.png}
 			\captionsource{$\text{BERT}_{\text{CAT}}$ mengambil kueri dan kandidat teks yang akan diberi skor sebagai \f{input} dan menggunakan BERT untuk klasifikasi melakukan relevansi. Penjumlahan elemen-wise dari token, \f{segment}, dan \f{positional embeddings} membentuk representasi vektor \f{input}. Setiap token input memiliki vektor kontekstual sebagai \f{output} model BERT. \f{Linear layer} menerima representasi akhir token \code{[CLS]} dan menghasilkan skor relevansi teks terkait dengan kueri.}{\citep{textrankingsurvey}.}
@@ -503,7 +504,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 
 		Untuk suatu kueri $q$ dan kumpulan teks $D = \{d_1, d_2, \dots, d_n\}$, perlu dilakukan perhitungan skor relevansi untuk setiap pasangan $(q, d_i)$ dengan $i=1,\dots,n$ sebelum dilakukan pemeringkatan. Hal ini menjadi masalah untuk jumlah dokumen yang besar karena setiap perhitungan skor relevansi dengan $\text{BERT}_{\text{CAT}}$ membutuhkan waktu yang lama. Oleh karena itu, $\text{BERT}_{\text{CAT}}$ biasanya digunakan sebagai \f{reranker} dari sistem pemeringkatan teks. Teks yang akan diberikan skor relevansinya oleh $\text{BERT}_{\text{CAT}}$ adalah teks yang sudah dipilih oleh sistem pemeringkatan teks yang lebih efisien seperti {BM25} -- biasanya $k = 100, 1000$ teks teratas dipilih oleh {BM25}. \pic~\ref{fig:bert-cat-withbm25} mengilustrasikan arsitektur \f{retrieve} dan \f{rerank}.
 
-		\begin{figure}
+		\begin{figure}[!ht]
 			\centering
 			\includegraphics[width=1\textwidth]{assets/pics/neural-ir.png}
 			\captionsource{Arsitektur \f{retrieve and rerank}. \f{First-stage retrieval} dilakukan oleh {BM25} dan \f{reranking} dilakukan oleh model \f{scoring} yang lebih kompleks seperti $\text{BERT}_{\text{CAT}}$.}{\citep{irlecture}.}
@@ -512,7 +513,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 
 		\subsubsection{$\text{BERT}_{\text{DOT}}$}
 		\label{sec:bert-dot}
-		\begin{figure}
+		\begin{figure}[!ht]
 			\centering
 			\includegraphics[width=1\textwidth]{assets/pics/bertdot.png}
 			\captionsource{$\text{BERT}_{\text{DOT}}$ memetakan kueri dan kandidat teks ke dalam ruang vektor yang sama dan menghitung skor relevansi dengan melakukan \f{dot product} antara vektor representasi kontekstual dari kueri dan teks.}{\citep{irlecture}.}
@@ -531,7 +532,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 		Salah satu kelebihan dari $\text{BERT}_{\text{DOT}}$ adalah vektor representasi $\mathbf{d}_{\text{\code{[CLS]}}}$ dari teks dapat diindeks terlebih dahulu dan disimpan dalam memori. Akibatnya, kita hanya perlu menghitung $\mathbf{q}_{\text{\code{[CLS]}}}$ sekali, dan dapat menghitung skor relevansi untuk setiap pasangan (kueri, teks) dengan melakukan \f{dot product} antara $\mathbf{q}_{\text{\code{[CLS]}}}$ dan $\mathbf{d}_{\text{\code{[CLS]}}}$ yang sudah disimpan dalam memori sebelumnya. \pic~\ref{fig:dense-retrieval} mengilustrasikan arsitektur pemeringkatan dengan $\text{BERT}_{\text{DOT}}$.
 
 
-		\begin{figure}
+		\begin{figure}[!ht]
 			\centering
 			\includegraphics[width=1\textwidth]{assets/pics/dense-retrieval.png}
 			\captionsource{Arsitektur pemeringkatan dengan $\text{BERT}_{\text{DOT}}$. Vektor representasi dari setiap teks dapat diindeks terlebih dahulu dan disimpan dalam memori dan skor relevansi dapat dihitung dengan melakukan \f{dot product} antara vektor representasi kueri dan teks.}{\citep{irlecture}.}
