@@ -8,31 +8,27 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\label{equ:hard-attention-start}
 	\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) &= [\alpha_{1}, \alpha_{2}, \dots, \alpha_{n}]\mathbf{V} \in \mathbb{R}^{d_v},
 \end{align}
-	dengan keterangan sebagai berikut:
-	\begin{flalign*}
-		\mathbf{K}&= \begin{bmatrix}
+dengan 
+$\mathbf{K}= \begin{bmatrix}
 			\mathbf{k}_1 \\
 			\mathbf{k}_2 \\
 			\vdots \\
 			\mathbf{k}_n
-		\end{bmatrix} \in \mathbb{R}^{n \times d_k},&& \\
-		\mathbf{V} &= \begin{bmatrix}
+		\end{bmatrix} \in \mathbb{R}^{n \times d_k},
+		\mathbf{V} = \begin{bmatrix}
 			\mathbf{v}_1 \\
 			\mathbf{v}_2 \\
 			\vdots \\
 			\mathbf{v}_n
-		\end{bmatrix} \in \mathbb{R}^{n \times d_v},&& \\
-	\alpha_i &= 
+		\end{bmatrix} \in \mathbb{R}^{n \times d_v},
+	\alpha_i = 
 	\begin{cases}
 		1, & \text{jika } i = \arg\max_{j} f_{attn}(\mathbf{q}, \mathbf{k}_j) \\
 	0, & \text{lainnya}
-	\end{cases},
-	\end{flalign*}
-	dan $f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi atensi yang menghitung nilai atensi antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi.
-	
-	Sebagai contoh, untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[1,0]), ([1,2],[0,1])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$, nilai dari $\text{Attention}( \mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $[0,1]$, karena nilai maksimal $f_\text{attn}$ terjadi ketika $\mathbf{k} = [1,2]$. 
+	\end{cases},$
+  dan $f_{attn}(\mathbf{q}, \mathbf{k})$ adalah fungsi atensi yang menghitung nilai atensi antara vektor kueri $\mathbf{q}$ dan vektor kunci $\mathbf{k}$. $\alpha_i$ pada persamaan di atas disebut sebagai bobot atensi dan nilai $f_{attn}(\mathbf{q}, \mathbf{k})$ disebut sebagai nilai atensi. Sebagai contoh, untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[1,0]), ([1,2],[0,1])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$, nilai dari $\text{Attention}( \mathbf{q}, \mathbf{K}, \mathbf{V})$ adalah $[0,1]$, karena nilai maksimal $f_\text{attn}$ terjadi ketika $\mathbf{k} = [1,2]$. 
 
-	Mekansime \f{attention} pada \equ~\ref{equ:hard-attention-start} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention}, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi \f{softmax}. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} menunjukkan bagaimana mekanisme \f{soft attention} dilakukan.
+	Mekanisme \f{attention} pada \equ~\ref{equ:hard-attention-start} disebut sebagai \f{hard attention} karena hanya satu vektor nilai $\mathbf{v}_i$ yang dipilih dari sekumpulan vektor nilai $\mathbf{V}$. Berbeda dengan \f{hard attention}, \f{soft attention} mengambil seluruh vektor nilai $\mathbf{V}$ dan menghitung bobot $\alpha_i$ untuk setiap vektor nilai $\mathbf{v}_i$ dengan fungsi \f{softmax}. Hasil dari \f{soft attention} adalah rata-rata terbobot dari seluruh vektor nilai $\mathbf{V}$. \equ~\ref{equ:soft-attention-start} menunjukkan bagaimana mekanisme \f{soft attention} dilakukan.
 	\begin{align}
 		\label{equ:soft-attention-start}
 		\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V}) &= [\alpha_{1}, \alpha_{2}, \dots, \alpha_{n}]\mathbf{V} \in \mathbb{R}^{d_v},
@@ -50,17 +46,14 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\end{figure}
 
 
-	Dengan rata-rata terbobot dari $\mathbf{V}$, transformasi \f{soft attention} terturunkan. Hal ini merupakan syarat \f{fundamental} yang harus dimiliki oleh sebuah model \f{deep learning}.
-
-	Sebagai contoh, hasil dari $\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V})$ untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[0,1]), ([1,2],[1,0])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$ adalah $0.268 [0,1] + 0.732 [1,0] = [0.732, 0.268]$ dengan $\alpha_1 = \frac{\exp(4)}{\exp(4) + \exp(5)} \approx 0.268$ dan $\alpha_2 = \frac{\exp(5)}{\exp(4) + \exp(5)} \approx 0.732$.
+	Menggunakan rata-rata terbobot dari $\mathbf{V}$, transformasi \f{soft attention} terturunkan. Hal ini merupakan syarat \f{fundamental} yang harus dimiliki oleh sebuah model \f{deep learning}. Sebagai contoh, hasil dari $\text{Attention}(\mathbf{q}, \mathbf{K}, \mathbf{V})$ untuk $\mathbf{q}= [1,2]$, $\mathcal{KV} = \{([2,1],[0,1]), ([1,2],[1,0])\}$ serta fungsi $f_\text{attn}(\mathbf{q}, \mathbf{k}) =\mathbf{q}\cdot \mathbf{k}$ adalah $0.268 [0,1] + 0.732 [1,0] = [0.732, 0.268]$ dengan $\alpha_1 = \frac{\exp(4)}{\exp(4) + \exp(5)} \approx 0.268$ dan $\alpha_2 = \frac{\exp(5)}{\exp(4) + \exp(5)} \approx 0.732$.
 
 	Pada kasus kumpulan kueri $\mathcal{Q} = \{\mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m\}$, mekanisme \f{attention} untuk setiap triplet $(\mathbf{q}_i, \mathbf{K}, \mathbf{V})$ dapat dihitung secara bersamaan seperti yang ditunjukkan pada \equ~\ref{equ:soft-attention-matrix-start}.
 	\begin{align}
 		\label{equ:soft-attention-matrix-start}
 		\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) &= \mathbf{A} \mathbf{V} \in \mathbb{R}^{m \times d_v},
 	\end{align}
-	dengan:
-	\begin{flalign*}
+	dengan \begin{flalign*}
 		\mathbf{Q} &= \begin{bmatrix}
 			\mathbf{q}_1 \\
 			\mathbf{q}_2 \\
@@ -80,9 +73,9 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\end{bmatrix} \in \mathbb{R}^{m \times n}, && \\
 		\alpha_{ij}(\mathbf{q}_i, \mathbf{k}_j) &= \text{Softmax}_j(\mathbf{\alpha}_i) = \frac{\exp(f_{attn}(\mathbf{q}_i, \mathbf{k}_j))}{\sum_{k=1}^{n} \exp(f_{attn}(\mathbf{q}_i, \mathbf{k}_k))} \in \mathbb{R}, &&
 	\end{flalign*}
-	 dan $\alpha_{ij}$ adalah bobot yang menunjukkan bobot atensi antara vektor kueri $\mathbf{q}_i$ dengan vektor kunci $\mathbf{k_j}$. 
+	dan $\alpha_{ij}$ adalah bobot yang menunjukkan bobot atensi antara vektor kueri $\mathbf{q}_i$ dengan vektor kunci $\mathbf{k_j}$. 
 
-	\subsection{\f{Attention} Parametrik}
+	\subsection{Mekanisme \f{Attention} secara Parametrik}
 	Mekanisme \f{attention} yang dilakukan oleh \cite{transformerori} merupakan mekanisme \f{attention} parametrik. Pada mekanisme \f{attention} parametrik, nilai $f_{\text{attn}}$ antar vektor kueri $\mathbf{q}$ dan $\mathbf{v}$ dibandingkan pada ruang vektor yang akan dipelajari (\f{learned embedding space}) daripada ruang vektor aslinya. Sebagai contoh, untuk suatu kueri $\mathbf{q}\in \mathbb{R}^{d_q}$, dan vektor kunci $\mathbf{k} \in \mathbb{R}^{d_k}$, \f{additive attention} yang diperkenalkan oleh \cite{bahdanau2016neural} menghitung nilai keserupaan antara $\mathbf{q}$ dan $\mathbf{k}$ seperti pada \equ~\ref{equ:additive-attention}
 	\begin{align}
 	\label{equ:additive-attention}
@@ -121,15 +114,15 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\captionsource{Ilustrasi dari representasi token. Gambar kiri menunjukkan representasi token dengan \f{one-hot encoding}, sedangkan gambar kanan menunjukkan representasi token dengan \f{token embedding}.}{\citep{geiger2022deeplearning}.}
 		\label{fig:token-embedding}
 	\end{figure}
-	Perlu diingat kembali bahwa \f{input} dari fungsi Attention (dan tentunya \f{transformer}) adalah barisan vektor. Jika mekanisme \f{attention} ingin dapat digunakan pada permasalahan bahasa, barisan kata atau subkata (selanjutnya disebut token) harus terlebih dahulu diubah menjadi barisan vektor.
+	Perlu diingat kembali bahwa \f{input} dari fungsi \f{attention} (dan tentunya \f{transformer}) adalah barisan vektor. Jika mekanisme \f{attention} ingin dapat digunakan pada permasalahan bahasa, barisan kata atau subkata (selanjutnya disebut token) harus terlebih dahulu diubah menjadi barisan vektor.
 
-	Representasi vektor dari token yang paling sederhana adalah dengan \f{one-hot encoding}. Andaikan $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ adalah semua kemungkinan token yang mungkin muncul dalam permasalahan bahasa yang ingin diselesaikan. Untuk sembarang barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$, representasi vektor dari token $t_{i_j}$ adalah vektor $\mathbf{oh}_{i_j} = [0, \dots, 0, 1, 0, \dots, 0] \in\{0,1\}^{|\mathcal{T}|}$, dengan nilai 1 pada indeks ke $j$ dan nilai 0 pada indeks lainnya. \f{One-hot encoding} tentunya memiliki kelemahan:
+	Representasi vektor dari token yang paling sederhana adalah dengan \f{one-hot encoding}. Andaikan $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ adalah semua kemungkinan token yang mungkin muncul dalam permasalahan bahasa yang ingin diselesaikan. Untuk sembarang barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$, representasi vektor dari token $t_{i_j}$ adalah vektor $\mathbf{oh}_{i_j} = [0, \dots, 0, 1, 0, \dots, 0] \in\{0,1\}^{|\mathcal{T}|}$, dengan nilai 1 pada indeks ke $j$ dan nilai 0 pada indeks lainnya. \f{One-hot encoding} memiliki beberapa kelemahan, diantaranya:
 	\begin{enumerate}
 		\item Vektor yang dihasilkan adalah \f{sparse vector}, dan ukuran vektor yang dihasilkan cukup besar, yaitu $|\mathcal{T}|$.
 		\item Representasi token yang buruk. Operasi vektor yang dilakukan pada \f{one-hot encoding} tidaklah bermakna. Misalnya, Jarak antar token akan selalu sama pada \f{one-hot encoding}, yaitu $\sqrt{2}$.
 	\end{enumerate}
 
-	Untuk mengatasi kekurangan dari representasi \f{one-hot encoding}, representasi yang digunakan adalah vektor padat dengan dimensi $d_{\text{token}}$ yang akan dipelajari ketika proses pelatihan. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start} hingga \equ~\ref{equ:token-embedding-end} menunjukkan bagaimana representasi vektor dari barisan suatu barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$ dihitung.
+	Untuk mengatasi kekurangan dari representasi \f{one-hot encoding}, representasi yang digunakan adalah vektor padat dengan dimensi $d_{\text{token}}$ yang akan dipelajari ketika proses pelatihan. Misalkan $\mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{|\mathcal{T}| \times d_{\text{token}}}$ adalah matriks parameter yang merupakan representasi vektor padat dari seluruh token ada. \equ~\ref{equ:token-embedding-start}  menunjukkan bagaimana representasi vektor dari barisan suatu barisan token $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$ dihitung.
 	\begin{align}
 		\label{equ:token-embedding-start}
 		\text{Embed}(t) &= \mathbf{E}_{t} = \begin{bmatrix}
@@ -137,12 +130,11 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 			\mathbf{e}_{i_2} \\
 			\vdots \\
 			\mathbf{e}_{i_L}
-		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}}, \\
-		\mathbf{e}_{i_j} &= \mathbf{oh}_{i_j} \mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{d_{\text{token}}}.
-		\label{equ:token-embedding-end}
-	\end{align}
-
-	\pic~\ref{fig:token-embedding} mengilustrasikan perbedaan antara \f{one-hot encoding} dan \f{token embedding}. Pada representasi token dengan vektor padat, vektor yang secara semantik atau sintaksis mirip akan memiliki jarak yang lebih dekat. Selain itu, biasanya representasi token dengan vektor padat memiliki dimensi $d_{\text{token}}$ yang lebih kecil daripada \f{one-hot encoding} yang memiliki dimensi $|\mathcal{T}|$.
+		\end{bmatrix} \in \mathbb{R}^{L \times d_{\text{token}}}, 
+			\end{align}
+dengan $\mathbf{e}_{i_j} = \mathbf{oh}_{i_j} \mathbf{E}_{\mathcal{T}} \in \mathbb{R}^{d_{\text{token}}}.$
+	
+ \pic~\ref{fig:token-embedding} mengilustrasikan perbedaan antara \f{one-hot encoding} dan \f{token embedding}. Pada representasi token dengan vektor padat, vektor yang secara semantik atau sintaksis mirip akan memiliki jarak yang lebih dekat. Selain itu, biasanya representasi token dengan vektor padat memiliki dimensi $d_{\text{token}}$ yang lebih kecil daripada \f{one-hot encoding} yang memiliki dimensi $|\mathcal{T}|$.
 
 	\subsection{\f{Scaled Dot-Product Attention}}
 	\label{sec:scaled-dot-product-attention}
@@ -184,7 +176,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\label{fig:self-attention-rnn}
 	\end{figure}
 
-	\f{Self-Attention layer} adalah \f{layer} yang digunakan \f{transformer} untuk menghasilkan representasi vektor yang kontekstual dari barisan token \f{input}. Berbeda dengan RNN dalam menghasilkan representasi vektor kontekstual, \f{self-attention} tidak memerlukan ketergantungan sekuensial, yang berarti representasi vektor kontekstual setiap tokennya dapat dihitung secara independen dan paralel. \pic~\ref{fig:self-attention-rnn} mengambarkan perbedaan kedua arsitektur dalam menghasilkan representasi vektor kontekstual. Kemampuan paralelisme dari \f{self-attention} membuat proses komputasi menjadi lebih cepat pada \f{hardware} yang mendukung paralelisme. 
+	\f{Self-attention layer} adalah \f{layer} yang digunakan \f{transformer} untuk menghasilkan representasi vektor yang kontekstual dari barisan token \f{input}. Berbeda dengan RNN dalam menghasilkan representasi vektor kontekstual, \f{self-attention} tidak memerlukan ketergantungan sekuensial, yang berarti representasi vektor kontekstual setiap tokennya dapat dihitung secara independen dan paralel. \pic~\ref{fig:self-attention-rnn} mengambarkan perbedaan kedua arsitektur dalam menghasilkan representasi vektor kontekstual. Kemampuan paralelisme dari \f{self-attention} membuat proses komputasi menjadi lebih cepat pada \f{hardware} yang mendukung paralelisme. 
 
 	Perhitungan \f{self-attention} pada \f{transformer} yang digunakan adalah \f{scaled dot product attention} yang telah dijelaskan pada \sect~\ref{sec:scaled-dot-product-attention}. Pada \f{self-attention}, kumpulan vektor kueri $\mathbf{Q}$, vektor kunci $\mathbf{K}$, dan vektor nilai $\mathbf{V}$ adalah vektor yang sama, yaitu \f{embedding} dari token $\mathbf{E}$ yang dijelaskan pada \sect~\ref{sec:token-embedding}. Selain itu, dimensi dari \f{learned embedding space} $d_{\text{attn}}$ yang digunakan untuk perhitungan nilai atensi adalah $d_{\text{token}}$ yaitu dimensi dari \f{token embedding}. \equ~\ref{equ:self-attention-start} menunjukkan bagaimana \f{self-attention} dihitung.
 	\begin{align}
@@ -219,7 +211,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\text{MHSA}(\mathbf{E}) &= [\text{head}_1 | \dots | \text{head}_h] \mathbf{W}^O \in \mathbb{R}^{L \times d_{\text{token}}}, \\
 		\text{head}_i = \text{Self-Attention}_i(\mathbf{E}) &= \text{Softmax}(\frac{\mathbf{E} \mathbf{W}^q_i (\mathbf{E} \mathbf{W}^k_i)^{\top}}{\sqrt{d_{\text{token}}/h}}) \mathbf{E} \mathbf{W}^v_i  \in  \mathbb{R}^{L \times \frac{d_{\text{token}}}{h}},
 	\end{align}
-	dengan $\mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,\in \mathbb{R}^{\frac{d_{\text{token}}}{h} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}$ adalah matriks bobotnya.
+	dengan $\mathbf{W}^q_i, \mathbf{W}^k_i, \mathbf{W}^v_i,\in \mathbb{R}^{d_{\text{token}} \times \frac{d_{\text{token}}}{h}}, \mathbf{W}^O \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}$ adalah matriks bobotnya.
 
 	Perhatikan bahwa dimensi dari \f{learned embedding space} menjadi $\frac{d_{\text{token}}}{h}$ untuk setiap \f{head}-nya. Hal ini dilakukan untuk menjaga dimensi dari \f{output} terakhir tetap sama dengan dimensi dari \f{input}, yaitu $d_{\text{token}}$. Selain itu, justifikasi lainnya yang dapat dibuat adalah setiap \f{head} hanya perlu menggunakan dimensi yang lebih kecil dari $d_{\text{token}}$ untuk menangkap ketergantungan antar-token \citep{pi-tau2023transformer}.
 
@@ -241,7 +233,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 	\end{align}
 	Namun, urutan dari token penting dalam pemrosesan bahasa alami. Kalimat \code{saya makan nasi} dan \code{nasi makan saya} memiliki makna yang berbeda. Oleh karena itu, informasi mengenai urutan token haruslah diperhatikan dalam pemrosesan bahasa alami.
 	
-	\cite{transformerori} menambahkan informasi posisi dengan Menjumlahkan \f{token embedding} $\mathbf{E}$ dengan suatu matriks \f{positional encoding} $\mathbf{PE}$. setiap entri dari $\mathbf{PE}$ adalah fungsi sinusoidal dari posisi token  dan dimensi dari \f{token embedding} seperti yang ditunjukkan pada \equ~\ref{equ:positional-encoding-start}.
+	\cite{transformerori} menambahkan informasi posisi dengan menjumlahkan \f{token embedding} $\mathbf{E}$ dengan suatu matriks \f{positional encoding} $\mathbf{PE}$. setiap entri dari $\mathbf{PE}$ adalah fungsi sinusoidal dari posisi token  dan dimensi dari \f{token embedding} seperti yang ditunjukkan pada \equ~\ref{equ:positional-encoding-start}.
 	\begin{align}
 		\label{equ:positional-encoding-start}
 		\text{PE}_{ \text {pos }, i}= \begin{cases}\sin \left(\frac{p o s}{10000^{i / d_{\text {token}}}}\right) & \text {jika } i \bmod 2=0 ,\\ \cos \left(\frac{p o s}{10000^{(i-1) / d_{\text {token}}}}\right) & \text { lainnya. }\end{cases}
@@ -268,7 +260,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\caption{Ilustrasi \f{position-wise feed-forward network} pada \f{transformer}.}
 		\label{fig:position-wise-feed-forward-network}
 	\end{figure}
-	\f{Position-wise Feed-Foward Network} adalah \f{feed foward network} dengan dua kali transformasi linear dan sebuah fungsi aktivasi ReLU di antaranya. \pic~\ref{fig:position-wise-feed-forward-network} menunjukkan ilustrasi dari \f{position-wise feed-forward network} dan \equ~\ref{equ:position-wise-feed-forward-network-start} menunjukkan Transformasi yang dilakukan oleh \f{position-wise feed-forward network}.
+	\f{Position-wise Feed-Foward Network} adalah \f{feed foward network} dengan dua kali transformasi linear dan sebuah fungsi aktivasi ReLU di antaranya. \pic~\ref{fig:position-wise-feed-forward-network} menunjukkan ilustrasi dari \f{position-wise feed-forward network} dan \equ~\ref{equ:position-wise-feed-forward-network-start} menunjukkan transformasi yang dilakukan oleh \f{position-wise feed-forward network}.
 	\begin{align}
 		\label{equ:position-wise-feed-forward-network-start}
 		\text{FFN}(\mathbf{X}) &= \max(0, \mathbf{X}\mathbf{W}_1 + \mathbf{b}_1)\mathbf{W}_2 + \mathbf{b}_2 \in \mathbb{R}^{L \times d_{\text{token}}},
@@ -280,7 +272,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 
 	Pembaruan parameter model dilakukan pada semua \f{layer} secara serentak setiap iterasi \f{gradient descent}. Ketika parameter suatu \f{layer} mengalami pembaruan, distribusi dari \f{output} yang dihasilkan \f{layer} tersebut juga akan berubah pada iterasi selanjutnya. \f{Layer-layer} selanjutnya harus beradaptasi karena distribusi \f{input} dari \f{layer} tersebut berubah. Fenomena ini disebut \f{internal covariate shift} yang mengakibatkan proses pencarian parameter menjadi lebih lambat.
 	
-	\f{Layer Normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} -- yang nantinya menjadi \f{input} pada \f{layer} selanjutnya -- sehingga memiliki variansi 1 dan mean 0. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} untuk \f{self-attention layer} haruslah 1 (lihat \sect~\ref{sec:scaled-dot-product-attention}), sehingga variansi dari tiap baris bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga. \equ~\ref{equ:layer-normalization-start} menunjukkan proses kerja dari \f{layer normalization}.
+	\f{Layer normalization} berfungsi untuk mencegah masalah \f{internal covariate shift} di atas dengan membatasi distribusi nilai \f{output} -- yang nantinya menjadi \f{input} pada \f{layer} selanjutnya -- sehingga memiliki variansi 1 dan mean 0. Justifikasi lainnya di balik penggunaan \f{layer normalization} adalah variansi dari \f{input} untuk \f{self-attention layer} haruslah 1 (lihat \sect~\ref{sec:scaled-dot-product-attention}), sehingga variansi dari tiap baris bobot atensi $\text{Softmax}(\frac{\mathbf{EW}^q (\mathbf{EW}^k)^{\top}}{\sqrt{d_{\text{token}}}})$ akan 1 juga. \equ~\ref{equ:layer-normalization-start} menunjukkan proses kerja dari \f{layer normalization}.
 	\begin{align}
 		\label{equ:layer-normalization-start}
 		\nonumber \text{LayerNorm}(\mathbf{X}) &= (\mathbf{X}-\bm{\mu})\odot \frac{1}{\bm{\sigma}}\\
@@ -320,7 +312,7 @@ Mekanisme \f{attention} dapat ditinjau sebagai \f{dictinoary lookup}, yaitu untu
 		\captionsource{Ilustrasi koneksi residu.}{\citep{pml1Book}}
 		\label{fig:residual-connection}
 	\end{figure}
-	Koneksi Residu adalah koneksi yang menghubungkan \f{output} dari suatu \f{layer} dengan \f{input} dari \f{layer} selanjutnya. Koneksi residu digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{deep neural network} dengan memperbaiki \f{flow gradient} dari model. Persamaan matematis dari koneksi residu dijelaskan seperti pada \equ~\ref{equ:residual-connection-start}.
+	Koneksi residu adalah koneksi yang menghubungkan \f{output} dari suatu \f{layer} dengan \f{input} dari \f{layer} selanjutnya. Koneksi residu digunakan untuk mengatasi masalah \f{vanishing gradient} yang terjadi pada \f{deep neural network} dengan memperbaiki \f{flow gradient} dari model. Persamaan matematis dari koneksi residu dijelaskan seperti pada \equ~\ref{equ:residual-connection-start}.
 	\begin{align}
 		\label{equ:residual-connection-start}
 		f_l'(\mathbf{x}) &= f_l(\mathbf{x}) + \mathbf{x},
@@ -425,7 +417,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	\end{tabular}
 \end{table}
 
-\f{Input} dari model BERT adalah hasil penjumlahan dari \f{token embedding}, \f{segment embedding}, dan \f{positional embedding}. Pada penelitian ini, Proses pembentukan \f{input embedding} tersebut diasumsikan menjadi bagian dari fungsi BERT. Oleh karena itu, fungsi $\text{BERT}$ didefinisikan sebagai fungsi yang menerima suatu barisan token (\code{[CLS]}, $t_1, t_2, \dots, t_L$, \code{[SEP]}) dan menghasilkan barisan vektor kontekstual ($\mathbf{T}_{\text{\code{[CLS]}}}, \mathbf{T}_{t_1}, \mathbf{T}_{t_2}, \dots, \mathbf{T}_{t_L}, \mathbf{T}_{\text{\code{[SEP]}}}$) seperti yang ditunjukkan pada \equ~\ref{equ:bert-input-start} dan \pic~\ref{fig:input-representation}.
+\f{Input} dari model BERT adalah hasil penjumlahan dari \f{token embedding}, \f{segment embedding}, dan \f{positional embedding}. Pada penelitian ini, proses pembentukan \f{input embedding} tersebut diasumsikan menjadi bagian dari fungsi BERT. Oleh karena itu, fungsi $\text{BERT}$ didefinisikan sebagai fungsi yang menerima suatu barisan token (\code{[CLS]}, $t_1, t_2, \dots, t_L$, \code{[SEP]}) dan menghasilkan barisan vektor kontekstual ($\mathbf{T}_{\text{\code{[CLS]}}}, \mathbf{T}_{t_1}, \mathbf{T}_{t_2}, \dots, \mathbf{T}_{t_L}, \mathbf{T}_{\text{\code{[SEP]}}}$) seperti yang ditunjukkan pada \equ~\ref{equ:bert-input-start} dan \pic~\ref{fig:input-representation}.
 \begin{align}
 	\label{equ:bert-input-start}
 	\text{BERT}((\text{\code{[CLS]}}, t_1, t_2, \dots, t_L, \text{\code{[SEP]}})) &= (\mathbf{T}_{\text{\code{[CLS]}}}, \mathbf{T}_{t_1}, \mathbf{T}_{t_2}, \dots, \mathbf{T}_{t_L}, \mathbf{T}_{\text{\code{[SEP]}}}).
@@ -455,9 +447,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	Tugas \f{Masked Language Model} (MLM) adalah tugas untuk memprediksi token yang dihilangkan (\f{masking}) pada suatu kalimat. Sebagai contoh, pada kalimat \code{Let's make [MASK] chicken! [SEP] It [MASK] great with orange sauce}, model harus memprediksi token \code{fried} dan \code{tastes} pada token yang dihilangkan (\code{[MASK]}) tersebut.
 
 
-	memprediksi kata yang dihilangkan memaksa \f{transformer} untuk memahami sintaks dan konteks dari kalimat tersebut. Sebagai contoh, model harus memahami bahwa kata sifat \code{red} sering terletak sebelum kata benda seperti \code{house} atau \code{car}, tetapi tidak sebelum kata kerja seperti \code{shout}. Selain itu, tugas ini membuat model untuk memperoleh pemahaman umum tentang bahasa alami. Misalnya, setelah dilatih, model akan memberikan probabilitas yang lebih tinggi untuk kata \code{train} yang hilang dalam kalimat \code{[MASK] pulled into the station} daripada kata \code{chicken}.
-
-	Selama proses pelatiahan MLM, sebanyak 15\% dari semua token dipilih untuk dilakukan \f{masking}. 80\% dari token yang terpilih akan diubah menjadi token \code{[MASK]}, 10\% menjadi token acak, dan 10\% lainnya adalah token yang sama.
+	Prediksi kata yang dihilangkan memaksa \f{transformer} untuk memahami sintaks dan konteks dari kalimat tersebut. Sebagai contoh, model harus memahami bahwa kata sifat \code{red} sering terletak sebelum kata benda seperti \code{house} atau \code{car}, tetapi tidak sebelum kata kerja seperti \code{shout}. Selain itu, tugas ini membuat model untuk memperoleh pemahaman umum tentang bahasa alami. Misalnya, setelah dilatih, model akan memberikan probabilitas yang lebih tinggi untuk kata \code{train} yang hilang dalam kalimat \code{[MASK] pulled into the station} daripada kata \code{chicken}. Selama proses pelatihan MLM, sebanyak 15\% dari semua token dipilih untuk dilakukan \f{masking}. 80\% dari token yang terpilih akan diubah menjadi token \code{[MASK]}, 10\% menjadi token acak, dan 10\% lainnya adalah token yang sama.
 
 	\subsubsection{\f{Next Sentence Prediction}}
 	\label{sec:next-sentence-prediction}
@@ -476,7 +466,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 	
 	\subsection{BERT untuk Bahasa Indonesia (IndoBERT)}
 
-	Pada penelitian ini, BERT yang digunakan adalah BERT untuk bahasa Indonesia yang sudah dilakukan \f{pre-training} sebelumnya oleh \cite{indobert}. \f{Pre-training} BERT untuk bahasa Indonesia dilakukan dengan menggunakan korpus Wikipedia bahasa Indonesia dengan 74 Juta kata, artikel berita dari Kompas, Tempo, dan Liputan6 dengan 55 Juta kata, dan korpus web bahasa Indonesia dengan 90 Juta kata. Model IndoBERT dilatih selama 2.4 Juta iterasi (180 epoch). Informasi lebih lanjut mengenai model IndoBERT dapat dilihat pada laman \url{https://huggingface.co/indolem/indobert-base-uncased}.
+	Pada penelitian ini, BERT yang digunakan adalah BERT untuk bahasa Indonesia yang sudah dilakukan \f{pre-training} sebelumnya oleh \cite{indobert}. \f{Pre-training} BERT untuk bahasa Indonesia dilakukan dengan menggunakan korpus Wikipedia bahasa Indonesia dengan 74 juta kata, artikel berita dari Kompas, Tempo, dan Liputan6 dengan 55 juta kata, dan korpus web bahasa Indonesia dengan 90 juta kata. Model IndoBERT dilatih selama 2.4 juta iterasi (180 epoch). Informasi lebih lanjut mengenai model IndoBERT dapat dilihat pada laman \url{https://huggingface.co/indolem/indobert-base-uncased}.
 
 
 	\subsection{Penggunaan BERT untuk Pemeringkatan Teks}
@@ -496,7 +486,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 		model untuk melakukan \f{soft classification} nilai relevansi dari pasangan (kueri, teks). Dengan kata lain, skor relevansi dari pasangan (kueri, teks) adalah probabilitas bahwa teks tersebut relevan dengan kueri seperti yang ditunjukkan pada \equ~\ref{equ:bert-cat-start} hingga \equ~\ref{equ:bert-cat-end}.
 		\begin{align}
 			\label{equ:bert-cat-start}
-			\text{score}(q,d) &= P(\text{relevance} = 1 | q, d) = \sigma\left(  \mathbf{h}_{\text{[CLS]}} \mathbf{W}^{\text{CLS}}+\mathbf{b}^{\text{CLS}} \right) \in (0,1), \\
+			\text{score}_{\text{CAT}}(q,d) &= P(\text{relevance} = 1 | q, d) = \sigma\left(  \mathbf{h}_{\text{[CLS]}} \mathbf{W}^{\text{CLS}}+\mathbf{b}^{\code{CLS}} \right) \in (0,1), \\
 			\label{equ:bert-cat-end}
 			\mathbf{h}_{\text{\code{[CLS]}}} &= \text{BERT}((\text{\code{[CLS]}}, q, \text{\code{[SEP]}}, d, \text{\code{[SEP]}}))_{\text{\code{[CLS]}}} \in \mathbb{R}^{d_{\text{token}}},
 		\end{align}
@@ -523,7 +513,7 @@ Selanjutnya, setiap token pada barisan token dipetakan ke vektor numerik seperti
 		Berbeda dengan $\text{BERT}_{\text{CAT}}$, $\text{BERT}_{\text{DOT}}$ tidak melakukan \f{soft classification} untuk setiap pasangan (kueri, teks). $\text{BERT}_{\text{DOT}}$ menghitung skor relevansi dari pasangan (kueri, teks) dengan melakukan \f{dot product} antara vektor representasi kontekstual dari kueri dan teks seperti yang ditunjukkan pada \equ~\ref{equ:bert-dot-start} hingga \equ~\ref{equ:bert-dot-end}.
 		\begin{align}
 			\label{equ:bert-dot-start}
-			\text{score}(q,d) &= \mathbf{q}_{\text{\code{[CLS]}}} \cdot \mathbf{d}_{\text{\code{[CLS]}}} \in \mathbb{R}, \\
+			\text{score}_{\text{DOT}}(q,d) &= \mathbf{q}_{\text{\code{[CLS]}}} \cdot \mathbf{d}_{\text{\code{[CLS]}}} \in \mathbb{R}, \\
 			\mathbf{q}_{\text{\code{[CLS]}}} &= \text{BERT}((\text{\code{[CLS]}}, q, \text{\code{[SEP]}}))_{\text{\code{[CLS]}}} \in \mathbb{R}^{d_{\text{token}}}, \\
 			\mathbf{d}_{\text{\code{[CLS]}}} &= \text{BERT}((\text{\code{[CLS]}}, d, \text{\code{[SEP]}}))_{\text{\code{[CLS]}}} \in \mathbb{R}^{d_{\text{token}}}.
 			\label{equ:bert-dot-end}

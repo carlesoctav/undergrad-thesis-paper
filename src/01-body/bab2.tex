@@ -4,7 +4,7 @@
 
 
 \section{Masalah Pemeringkatan Teks}
-    Permasalahan pemeringkatan teks adalah permasalahan untuk menentukan urutan teks yang paling relevan dengan kueri $q$ yang diberikan. Dalam bahasa yang lebih formal, diberikan kueri $q$ dan himpunan teks terbatas $\mathcal{D}= \{d_1, d_2, ..., d_n\}$, keluaran yang diinginkan dari permasalahan ini adalah barisan teks $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$ yang merupakan $k$ teks yang paling relevan dengan kueri $q$. Selain itu, biasanya nilai $k$ akan lebih kecil dari banyaknya teks yang ada, sehingga permasalahan pemeringkatan teks sering juga disebut sebagai \f{top-k retrieval}. Untuk mengukur performa suatu model pemeringkatan, biasanya digunakan metrik evaluasi seperti presisi, \f{recall}, \f{reciprocal rank}, dan \f{normalized discounted cumulative gain} (nDCG) yang akan dijelaskan pada \sect~\ref{sec:metrik-evaluasi}.
+    Permasalahan pemeringkatan teks adalah permasalahan untuk menentukan urutan teks yang paling relevan dengan kueri $q$ yang diberikan. Dalam bahasa yang lebih formal, diberikan kueri $q$ dan himpunan teks terbatas sebanyak $n$ dokumen  $\mathcal{D}= \{d_1, d_2, ..., d_n\}$, keluaran yang diinginkan dari permasalahan ini adalah barisan teks $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$ yang merupakan $k$ teks yang paling relevan dengan kueri $q$. Selain itu, biasanya nilai $k$ akan lebih kecil dari banyaknya teks yang ada ($k<n$), sehingga permasalahan pemeringkatan teks sering juga disebut sebagai \f{top-k retrieval}. Untuk mengukur performa suatu model pemeringkatan, biasanya digunakan metrik evaluasi seperti presisi, \f{recall}, \f{reciprocal rank}, dan \f{normalized Discounted Cumulative Gain} (nDCG) yang akan dijelaskan pada \sect~\ref{sec:metrik-evaluasi}.
 
     \subsection{Bentuk Umum \f{Dataset}}
     \label{sec:dataset-umum}
@@ -61,7 +61,7 @@
 
         \begin{figure}[!ht]
             \centering
-            \includegraphics[width=1\textwidth]{assets/pics/recall-presisi.png}
+            \includegraphics[width=.9\textwidth]{assets/pics/recall-presisi.png}
             \captionsource{Ilustrasi \f{recall} dan presisi. Nilai \f{recall} dihitung sebagai rasio teks relevan yang diambil oleh sistem terhadap seluruh teks yang relevan dengan kueri $q$. Sedangkan nilai presisi dihitung sebagai rasio teks relevan yang diambil oleh sistem terhadap seluruh teks yang diambil oleh sistem.}{\citep{irlecture}.}
             \label{fig:recall-precision}
         \end{figure}
@@ -70,7 +70,10 @@
             \label{eq:recall}
             \text{recall}(q, D_k)\text{@k} &= \frac{\sum_{d \in D_k} \text{rel}(q, d)}{\sum_{d \in \mathcal{D}} \text{rel}(q, d)} \in [0, 1], \\
             \label{eq:presisi}
-            \text{precision}(q, D_k)\text{@k} &= \frac{\sum_{d \in D_k} \text{rel}(q, d)}{|D_k|} \in [0, 1], \\
+            \text{precision}(q, D_k)\text{@k} &= \frac{\sum_{d \in D_k} \text{rel}(q, d)}{|D_k|} \in [0, 1], %\\
+        \end{align}
+dengan
+        \begin{align}
             \label{eq:rel}
             \text{rel}(q, d) &= \begin{cases} 
             1 & \text{jika } r > 1 \\
@@ -78,7 +81,7 @@
             \end{cases}.
         \end{align}
 
-        Sebagai contoh, jika terdapat 10 teks yang relevan dengan kueri $q$, dan sistem mengembalikan $k=100$ teks, namun hanya terdapat 5 teks yang relevan pada $D_k$  maka \f{recall} dan presisi dari sistem tersebut adalah 0.5 ($\frac{5}{10}$) dan 0.05 ($\frac{5}{100}$) masing-masing. Baik \f{recall} maupun presisi memiliki rentang nilai dari 0 hingga 1, dengan nilai 1 menunjukkan performa sistem yang terbaik. Perhitungan \f{recall} biasanya dilakukan untuk $k$ yang cukup besar ($k = 100,1000 $), sedangkan perhitungan presisi dilakukan untuk $k$ yang kecil ($k = 1, 3, 5$) \citep{irlecture}.
+        Sebagai contoh, jika terdapat 10 teks yang relevan dengan kueri $q$, dan sistem mengembalikan $k=100$ teks, namun hanya terdapat 5 teks yang relevan pada $D_k$  maka \f{recall} dan presisi dari sistem tersebut adalah 0.5 ($=\frac{5}{10}$) dan 0.05 ($=\frac{5}{100}$) secara berurutan. Baik \f{recall} maupun presisi memiliki rentang nilai dari 0 hingga 1, dengan nilai 1 menunjukkan performa sistem yang terbaik. Perhitungan \f{recall} biasanya dilakukan untuk $k$ yang cukup besar ($k = 100,1000 $), sedangkan perhitungan presisi dilakukan untuk $k$ yang kecil ($k = 1, 3, 5$) \citep{irlecture}.
 
 
         \subsubsection{\f{Reciprocal Rank}}
@@ -86,7 +89,7 @@
         \begin{figure}[!ht]
             \centering
             \includegraphics[width=1\textwidth]{assets/pics/rr.png}
-            \captionsource{Ilustrasi \f{reciprocal rank} (RR). Kotak berwarnakan hijau menunjukkan teks yang relevan dengan kueri $q$ dan kotak berwarna merah menunjukkan teks yang tidak relevan dengan kueri $q$. Nilai RR pada sistem A, B, dan C berturut-turut adalah 1, 0.33, dan 0.5 karena posisi dari teks yang relevan pertama adalah 1, 3, dan 2.}{\citep{irlecture}.}
+            \captionsource{Ilustrasi \f{reciprocal rank} (RR). Kotak berwarna hijau menunjukkan teks yang relevan dengan kueri $q$ dan kotak berwarna merah menunjukkan teks yang tidak relevan dengan kueri $q$. Nilai RR pada sistem A, B, dan C berturut-turut adalah 1, 0.33, dan 0.5 karena posisi dari teks yang relevan pertama adalah 1, 3, dan 2. }{\citep{irlecture}}
             \label{fig:reciprocal-rank}
         \end{figure}
         Metrik lainnya yang sering digunakan untuk mengukur performa sistem pemeringkatan adalah \f{reciprocal rank} (RR). Metrik RR menitikberatkan pada peringkat dari teks relevan pertama dengan kueri $q$. \equ~\ref{eq:reciprocal-rank-start} hingga \equ~\ref{eq:reciprocal-rank-end} menunjukkan cara menghitung RR dari suatu kueri $q$ dan barisan $k$ teks yang diambil oleh sistem.
@@ -100,7 +103,7 @@
                 \text{FirstRank}(q,D_k) &= \text{posisi teks relevan pertama } d\in D_k \text{ dengan } \text{rel}(q, d) = 1.
         \end{align}
 
-        \pic~\ref{fig:reciprocal-rank} mengilustrasikan metrik RR. Pada gambar tersebut, nilai RR dari sistem A adalah 1 $(\frac{1}{1})$ karena posisi dari teks yang relevan pertama adalah 1. Nilai RR dari sistem B dan sistem C masing-masing adalah  0.33 $(\frac{1}{3})$ dan 0.5 $(\frac{1}{2})$ karena posisi dari teks yang relevan pertama adalah 3 dan 2. Selain itu, jika tidak terdapat teks yang relevan dengan kueri $q$ pada $D_k$, nilai RR dari sistem tersebut adalah 0. 
+        \pic~\ref{fig:reciprocal-rank} mengilustrasikan metrik RR. Pada gambar tersebut, nilai RR dari sistem A adalah  $\frac{1}{1}$ karena posisi dari teks yang relevan pertama adalah 1. Nilai RR dari sistem B dan sistem C masing-masing adalah   $\frac{1}{3}$ dan  $\frac{1}{2}$ karena posisi dari teks yang relevan pertama adalah 3 dan 2. Selain itu, jika tidak terdapat teks yang relevan dengan kueri $q$ pada $D_k$, nilai RR dari sistem tersebut adalah 0. 
 
     \subsubsection{\f{Normalized Discounted Cumulative Gain} (nDCG)}
 
@@ -110,7 +113,7 @@
             \captionsource{Ilustrasi perhitungan NDCG. Kotak berwarna hijau menunjukkan teks yang relevan dengan kueri $q$ dan kotak berwarna merah menunjukkan teks yang tidak relevan dengan kueri $q$ serta nilai disebelah kotak berwarnakan hijau menunjukkan \f{judgements} $r$. Nilai NDCG dari sistem A, B, adalah rasio antara DCG dari sistem tersebut dengan DCG dari sistem ideal.}{\citep{irlecture}, telah diolah kembali.}
             \label{fig:ndcg}
         \end{figure}
-        \f{Normalized Discounted Cumulative Gain} (NDCG) adalah metrik yang umumnya digunakan untuk mengukur kualitas dari pencarian situs web. Tidak seperti metrik yang telah disebutkan sebelumnya, nDCG dirancang untuk suatu $r$ yang tak biner. \equ~\ref{eq:ndcg-start} hingga \equ~\ref{eq:ndcg-end} menunjukkan cara menghitung NDCG dari suatu kueri $q$ dan barisan $k$ teks yang diambil oleh sistem.
+        \f{Normalized Discounted Cumulative Gain} (nDCG) adalah metrik yang umumnya digunakan untuk mengukur kualitas dari pencarian situs web. Tidak seperti metrik yang telah disebutkan sebelumnya, nDCG dirancang untuk suatu $r$ yang tak biner. \equ~\ref{eq:ndcg-start} hingga \equ~\ref{eq:ndcg-end} menunjukkan cara menghitung NDCG dari suatu kueri $q$ dan barisan $k$ teks yang diambil oleh sistem.
         \begin{align}
             \label{eq:ndcg-start}
             \text{nDCG}(q, D_k)\text{@k} &= \frac{\text{DCG}(q, D_k)\text{@k}}{\text{DCG}(q, D_k^{\text{ideal}})\text{@k}} \in [0, 1], \\
@@ -136,10 +139,10 @@
     \subsection{\f{Term Frequency - Inverse Document Frequency} (TF-IDF)}
     \label{sec:tfidf}
  
-    Fungsi skor TF-IDF adalah fungsi skor statistik yang menghitung $\text{score}(q,d,\mathcal{D})$ antara kueri $q$ dan teks $d$ dengan menghitung frekuensi kemunculan kata dan tingkat \f{rarity} kata. Untuk suatu kueri $q$, misalkan $T_q= \{t_1, t_2, \dots, t_{L_1}\}$ adalah himpunan kata yang terdapat pada kueri $q$. Misalkan juga $T_d = \{t_1, t_2, \dots, t_n\}$ adalah himpunan kata yang terdapat pada teks $d$. Nilai skor antara $q$ dan $d$ diberikan oleh persamaan \equ~\ref{eq:tfidf-start} sampai \equ~\ref{eq:tfidf-end}.
+    Fungsi skor TF-IDF adalah fungsi skor statistik yang menghitung $\text{score}(q,d,\mathcal{D})$ antara kueri $q$ dan teks $d$ dengan menghitung frekuensi kemunculan kata dan tingkat \f{rarity} kata. Untuk suatu kueri $q$, misalkan $T_q= \{t_1, t_2, \dots, t_{L_1}\}$ adalah himpunan kata yang terdapat pada kueri $q$. Misalkan juga $T_d = \{t_1, t_2, \dots, t_{L_2}\}$ adalah himpunan kata yang terdapat pada teks $d$. Nilai skor antara $q$ dan $d$ diberikan oleh persamaan \equ~\ref{eq:tfidf-start} sampai \equ~\ref{eq:tfidf-end}.
     \begin{align}
         \label{eq:tfidf-start}
-        \text{score}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{TF-IDF}(t, d, \mathcal{D}) \\
+        \text{score}_{\text{TF-IDF}}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{TF-IDF}(t, d, \mathcal{D}) \\
         \label{eq:tf-idf-weight}
         \text{TF-IDF}(t, d, \mathcal{D}) &= \text{tf}(t, d) \times \text{idf}(t, \mathcal{D}) \\
         \text{tf}(t, d) &= \frac{\text{Count}(t, d)}{|d|} \\
@@ -176,19 +179,19 @@
     \subsection{\f{Best Match 25} (BM25)}
     \label{sec:bm25}
     
-    BM25 (\f{Best Match attempt} 25)  merupakan pengembangan dari fungsi skor TF-IDF dengan perbedaan utama pada fungsi nilai yang berkaitan dengan frekuensi kata -- digunakan $\text{score}_{\text{BM25}}(q,d)$ (\equ~\ref{eq:bm25-weight}) daripada $\text{tf}(q,d)$ (\equ~\ref{eq:tf-idf-weight}). Pada fungsi $\text{score}_{\text{BM25}(q,d)}$ terdapat 2 parameter yang dapat diatur, yaitu $b$, dan $k_1$. Setiap parameter mempunyai efek yang berbeda terhadap nilai $\text{score}_{\text{BM25}(q,d)}$ yang dihasilkan. Sebelum menjelaskan efek dari setiap parameter, \equ~\ref{eq:bm25scoring} hingga \equ~\ref{eq:bm25-end} menunjukkan cara menghitung skor relevansi dari suatu kueri $q$ dan teks $d$. 
+    BM25 (\f{Best Match attempt} 25)  merupakan pengembangan dari fungsi skor TF-IDF dengan perbedaan utama pada fungsi nilai yang berkaitan dengan frekuensi kata -- digunakan $\text{tf}_{\text{BM25}}(q,d)$ (\equ~\ref{eq:bm25-weight}) daripada $\text{tf}(q,d)$ (\equ~\ref{eq:tf-idf-weight}). Pada fungsi $\text{tf}_{\text{BM25}}$ terdapat 2 parameter yang dapat diatur, yaitu $b$, dan $k_1$. Setiap parameter mempunyai efek yang berbeda terhadap nilai $\text{score}_{\text{BM25}}$ yang dihasilkan. Sebelum menjelaskan efek dari setiap parameter, \equ~\ref{eq:bm25scoring} hingga \equ~\ref{eq:smoothed-idf} menunjukkan cara menghitung skor relevansi dari suatu kueri $q$ dan teks $d$. 
     \begin{align}
         \label{eq:bm25scoring}
-        \text{score}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{BM25}(t, d, \mathcal{D}),\\
+        \text{score}_{\text{BM25}}(q,d,\mathcal{D}) &= \sum_{t \in T_q \cap T_d} \text{BM25}(t, d, \mathcal{D}),\\
         \label{eq:bm25-weight}
         \text{BM25}(t, d, \mathcal{D}) &= \text{idf}_{\text{BM25}}(t, \mathcal{D}) \times \text{score}_{\text{BM25}}(q,d,\mathcal{D}), \\
-        \text{score}_{\text{BM25}}(t,d) &= \frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times (1 - b + b \times \frac{|d|}{\text{avgdl}})}, \\
+        \text{tf}_{\text{BM25}}(t,d) &= \frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times (1 - b + b \times \frac{|d|}{\text{avgdl}})}, \\
         \label{eq:smoothed-idf}
-        \text{idf}_{\text{BM25}}(t, \mathcal{D}) &= \log\left(1+\frac{|\mathcal{D}| - \text{df}(t, \mathcal{D}) + 0.5}{\text{df}(t, \mathcal{D}) + 0.5}\right), \\
-        \text{avgdl} &= \text{rata-rata panjang teks pada koleksi } \mathcal{D}.
-        \label{eq:bm25-end}
+        \text{idf}_{\text{BM25}}(t, \mathcal{D}) &= \log\left(1+\frac{|\mathcal{D}| - \text{df}(t, \mathcal{D}) + 0.5}{\text{df}(t, \mathcal{D}) + 0.5}\right),
     \end{align}
-    Efek dari masing-masing parameter dan faktor pada $\text{score}_{\text{BM25}}(t,d)$ dapat dijelaskan sebagai berikut:
+dengan avgdl merupakan rata-rata panjang teks pada koleksi $\mathcal{D}$.
+        
+     Efek dari masing-masing parameter dan faktor pada $\text{score}_{\text{BM25}}(t,d)$ dapat dijelaskan sebagai berikut:
     \begin{enumerate}
         \item Faktor $\frac{|\text{d}|}{\text{avgdl}}$ pada $\frac{\text{tf}(t, d) \times (k_1 + 1)}{\text{tf}(t, d) + k_1 \times \left(1 - b + b \times \textcolor{black}{\frac{|d|}{\text{avgdl}}}\right)}$ men-\f{penalize} skor pada teks yang panjangnya lebih besar dari rata-rata panjang teks pada himpunan teks $\mathcal{D}$. \pic~\ref{fig:effect-bm25-long-doc} menjukkan efek dari perbedaan nilai $\text{avgdl}$ terhadap skor yang dihasilkan, makin besar rasio $\frac{|d|}{\text{avgdl}}$ makin kecil skor yang dihasilkan.
         \item Nilai $b$ menentukan seberapa besar efek dari faktor $\frac{|d|}{\text{avgdl}}$ terhadap skor yang dihasilkan. \pic~\ref{fig:effect-bm25-param-b} menunjukkan efek dari perbedaan nilai $b$ terhadap skor yang dihasilkan. Untuk $\frac{|d|}{\text{avgdl}}=1$, faktor $b$ tidak memiliki pengaruh terhadap skor. Nilai $b$ yang umum dipilih berada pada rentang $[0.5, 0.8]$ \citep{irlecture}.
@@ -247,20 +250,18 @@
     Untuk permasalahan regresi dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $\mathbf{y} \in \mathbb{R}^{d_L}$, \equ~\ref{eq:FFN-regesi-start} hingga \equ~\ref{eq:FFN-regesi-end} menunjukkan arsitektur MLP untuk permasalahan regresi dengan $L$ \f{layer} dan fungsi aktivasi $\phi$.
     \begin{align}
         \label{eq:FFN-regesi-start}
-        f_{\text{model}}(\mathbf{x};\bm{\theta}) &= f_L(f_{L-1}(\dots f_1(\mathbf{x})) \dots), \\
+        f_{\text{model}}(\mathbf{x};\bm{\theta}) &= f_L(f_{L-1}(\dots f_1(\mathbf{x};\bm{\theta}_1)\dots); \bm{\theta}_L), \\
         f_L(\mathbf{x}) &= \mathbf{x} \mathbf{W}_L + \mathbf{b}_L \in \mathbb{R}^{d_L}, \\
         f_l(\mathbf{x};\mathbf{W}_l, \mathbf{b_l}) &= \phi( \mathbf{x} \mathbf{W}_l + \mathbf{b}_l) \in \mathbb{R}^{d_l}, \quad l = 1, 2, \dots, L-1,
         \label{eq:FFN-regesi-end}
     \end{align} 
-    dengan keterangan sebagai berikut:
-    \begin{flalign*}
-        \phi(\mathbf{x}) &= \text{fungsi aktivitasi non-linear},&& \\
-        \bm{\theta} &= \{\mathbf{W}_1, \mathbf{b}_1, \mathbf{W}_2, \mathbf{b}_2, \dots, \mathbf{W}_L, \mathbf{b}_L\},&& \\
-        \mathbf{W}_l &= \text{matriks bobot}  \in \mathbb{R}^{d_{l-1} \times d_l},&& \\
-        \mathbf{b}_l &= \text{vektor bias} \in \mathbb{R}^{d_l}.&&
-    \end{flalign*}
+    dimana $\phi(\mathbf{x})= \text{fungsi aktivitasi non-linear},
+        \bm{\theta} = \{\mathbf{W}_1, \mathbf{b}_1, \mathbf{W}_2, \mathbf{b}_2, \dots, \mathbf{W}_L, \mathbf{b}_L\},
+        \mathbf{W}_l = \text{matriks bobot}  \in \mathbb{R}^{d_{l-1} \times d_l},
+        \mathbf{b}_l = \text{vektor bias} \in \mathbb{R}^{d_l}.$
 
-    Untuk Permasalahan Klasifikasi Biner dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $y \in \{0, 1\}$, \equ~\ref{eq:FFN-klasifikasi-biner-start} hingga \equ~\ref{eq:FFN-klasifikasi-biner-end} menunjukkan arsitektur MLP untuk permasalahan klasifikasi biner.
+       
+    Untuk permasalahan klasifikasi biner dengan \f{input} $\mathbf{x}\in \mathbb{R}^{d_0}$ dan \f{output} $y \in \{0, 1\}$, \equ~\ref{eq:FFN-klasifikasi-biner-start} hingga \equ~\ref{eq:FFN-klasifikasi-biner-end} menunjukkan arsitektur MLP untuk permasalahan klasifikasi biner.
     \begin{align}
         \label{eq:FFN-klasifikasi-biner-start}
         f_{\text{model}}(\mathbf{x};\bm{\theta}) &= f_L(f_{L-1}(\dots f_1(\mathbf{x})) \dots), \\
@@ -268,12 +269,12 @@
         \sigma(x) &= \frac{1}{1 + e^{x}} \in (0, 1), \\
         \text{decision}(\mathbf{x};\bm{\theta}) &= \begin{cases}
         1 & \text{jika } f_{\text{model}}(\mathbf{x};\bm{\theta}) \geq \text{threshold} \\
-        0 & \text{jika } f_{\text{model}}(\mathbf{x};\bm{\theta}) < \text{threshold},
-        \end{cases} \\
+        0 & \text{jika } f_{\text{model}}(\mathbf{x};\bm{\theta}) < \text{threshold},     
         \label{eq:FFN-klasifikasi-biner-end}
-        \text{threshold}&\in [0, 1].
+        \end{cases} 
     \end{align}
-
+dengan \f{threshold} $\in [0, 1]$.
+ 
     Perbedaan utama antara MLP untuk permasalahan regresi dan klasifikasi adalah fungsi aktivasi pada \f{output layer}. Pada permasalahan regresi, fungsi aktivasi pada \f{output layer} adalah fungsi identitas, sedangkan pada permasalahan klasifikasi, fungsi aktivasi pada \f{output layer} adalah fungsi \f{sigmoid}. Tujuan pengunaan fungsi \f{sigmoid} pada permasalahan klasifikasi adalah untuk memastikan bahwa \f{output} dari model berada pada rentang $[0, 1]$, nilai tersebut dapat diinterpretasikan sebagai probabilitas $\mathbf{x}$ termasuk pada kelas positif. Selain itu, \f{threshold} pada \equ~\ref{eq:FFN-klasifikasi-biner-end} digunakan untuk menentukan kelas dari $\mathbf{x}$.
 
     \subsection{Fungsi Aktivasi}

@@ -1,0 +1,82 @@
+\phantomsection 
+\chapter*{Daftar Notasi}
+
+\begin{longtable*}{| P{0.3\textwidth} |  P{0.7\textwidth} |}
+    \hline 
+    \multicolumn{2}{|P{1\textwidth}|}{Variabel tak kapital bercetak tebal seperti $\mathbf{x}, \mathbf{y}$ adalah vektor baris, sedangkan variabel kapital bercetak tebal seperti $\mathbf{X}$ adalah matriks} \\ \hline
+    \bo{Notasi} & \bo{Deskripsi} \\
+    \hline
+    \endfirsthead % batas akhir header yang akan muncul di halaman pertama
+    
+    \hline
+     \bo{Notasi} & \bo{Deskripsi} \\ \hline
+    \endhead % batas akhir header yang akan muncul di halaman berikutnya
+    
+     \multicolumn{2}{|c|}{\bo{BAB 2, Pemeringkatan Teks}} \\ \hline
+     $\mathcal{D}= \{d_1, d_2, ..., d_n\}$ & Himpunan seluruh dokumen yang akan di-\f{retrieve} oleh sistem temu balik informasi \\ \hline
+     $D_k = (d_{i_1}, d_{i_2}, ..., d_{i_k})$ & Barisan $k$ dokumen yang sudah di-\f{retrieve} oleh sistem temu balik informasi, terurut berdasarkan tingkat relevansinya \\ \hline
+     $q$ & Kueri yang digunakan untuk melakukan \f{retrieval} dari $\mathcal{D}$ \\ \hline
+     $r$ & nilai \f{judgement} relevansi dari suatu dokumen terhadap kueri $q$ \\ \hline
+     $\text{recall}(q, D_k)\text{@k}$ & Nilai metrik \f{recall} dari $k$ dokumen yang sudah di-\f{retrieve} terhadap kueri $q$ \\ \hline
+    $\text{precision}(q, D_k)\text{@k}$ & Nilai metrik \f{precision} dari $k$ dokumen yang sudah di-\f{retrieve} terhadap kueri $q$ \\ \hline
+    $\text{rel}:\mathbb{N} \rightarrow \{0,1\}$ & Fungsi indikator dari \f{judgement} $r$ \\ \hline
+    $\text{RR}(q, D_k)$ & Nilai metrik \f{reciprocal rank} dari $k$ dokumen yang sudah di-\f{retrieve} terhadap kueri $q$ \\ \hline
+    $\text{FirstRank}(q, D_k)$ & $\text{posisi teks relevan pertama } d\in D_k$ \\ \hline
+    $\text{rank}(d, D_k)$ & posisi dokumen $d$ pada barisan $k$ dokumen yang sudah di-\f{retrieve} \\ \hline
+    $\text{DCG}(q, D_k)$ & Nilai metrik \f{discounted cumulative gain} dari $k$ dokumen yang sudah di-\f{retrieve} terhadap kueri $q$ \\ \hline
+    $\text{DCG}(q, D_{k}^{\text{ideal}})$ & Nilai metrik \f{discounted cumulative gain} dari $k$ dokumen yang sudah di-\f{retrieve} terhadap kueri $q$ dengan asumsi seluruh dokumen yang relevan terhadap kueri $q$ berada pada posisi teratas \\ \hline
+    $\text{nDCG}(q, D_k)$ & Nilai metrik \f{normalized discounted cumulative gain} dari $k$ dokumen yang sudah di-\f{retrieve} terhadap kueri $q$ \\ \hline
+    $\text{score}(q, d_{i_k},\mathcal{D}) \in \mathbb{R}$ & Skor relevansi dari dokumen $d_{i_k}$ terhadap kueri $q$ pada $\mathcal{D}$ \\ \hline
+    $\text{tf}(t, d)$ & Frekuensi relatif dari kemunculan token $t$ pada dokumen $d$ (\f{term frequency}) \\ \hline
+    $\text{df}(t, \mathcal{D})$ & Jumlah dokumen pada $\mathcal{D}$ yang mengandung kata $t$ (\f{document frequency}) \\ \hline
+    $\text{idf}(t, \mathcal{D})$ & Invers logaritma dari $\text{df}(t, \mathcal{D})$ (\f{inverse document frequency}) \\ \hline
+    $\text{TF-IDF}(t, d, \mathcal{D})$ & Skor TF-IDF dari token $t$ pada dokumen $d$ \\ \hline
+    $\text{score}_{\text{TF-IDF}}(q, d_{i_k},\mathcal{D}) \in \mathbb{R}$ & Skor relevansi dari dokumen $d_{i_k}$ terhadap kueri $q$ pada $\mathcal{D}$ dengan skema fungsi skoring TF-IDF \\ \hline
+    $\text{tf}_{\text{BM25}}(t, d)$ & Skor tf dari token $t$ pada dokumen $d$ dengan skema fungsi skoring BM25 \\ \hline
+    $\text{idf}_{\text{BM25}}(t, \mathcal{D})$ & Skor idf dari token $t$ pada $\mathcal{D}$ dengan skema fungsi skoring BM25 \\ \hline
+    $\text{BM25}(t, d, \mathcal{D})$ & Skor BM25 dari token $t$ pada dokumen $d$ \\ \hline
+    $\text{score}_{\text{BM25}}(q, d_{i_k},\mathcal{D}) \in \mathbb{R}$ & Skor relevansi dari dokumen $d_{i_k}$ terhadap kueri $q$ pada $\mathcal{D}$ dengan skema fungsi skoring BM25 \\ \hline
+    \multicolumn{2}{|c|}{\bo{BAB 2, \f{Deep Learning}}} \\ \hline
+    $\mathbf{x} \in \mathbb{R}^{d_{0}}$ & Vektor \f{input} berdimensi $d_0$ \\ \hline
+    $\mathbf{y} \in \mathbb{R}^{d_{L}}$ & Vektor \f{output} berdimensi $d_L$ \\ \hline
+    $f_\text{model}: \mathbb{R}^{d_{0}} \rightarrow \mathbb{R}^{d_{L}}$ & Fungsi dari model \f{deep learning} \\ \hline
+    $f_l: \mathbb{R}^{d_{l-1}} \rightarrow \mathbb{R}^{d_l}$ & Fungsi dari \f{layer} ke-$l$ \\ \hline
+    $\phi_l(\mathbf{x})$ & Fungsi aktivasi dari \f{layer} ke-$l$ \\ \hline
+    $f_L: \mathbb{R}^{d_{L-1}} \rightarrow \mathbb{R}^{d_L}$ & Fungsi dari \f{layer} ke-$L$, \f{layer} terakhir \\ \hline
+    $\bm{\theta}$ & Parameter dari model \f{deep learning}, parameter dari fungsi $f_\text{model}$ \\ \hline
+    $\mathcal{D} = \{(\mathbf{x}_1, \mathbf{y}_1), \dots, (\mathbf{x}_n, \mathbf{y}_n)\}$ & Himpunan data latih \\ \hline
+    $\mathcal{L}(\bm{\theta}; \mathcal{D})$ & Fungsi \f{likelihood} dari parameter $\bm{\theta}$ terhadap data latih $\mathcal{D}$ \\ \hline
+    $\bm{\theta}_{\text{MLE}}$ & Parameter dari model \f{deep learning} yang diperoleh dengan metode \f{maximum likelihood estimation} \\ \hline
+    $L(\mathbf{y}, f_\text{model}(\mathbf{x}))$ & Fungsi \f{loss} yang menghitung \f{loss} dari \f{output} $\mathbf{y}$ terhadap \f{output} model $f_\text{model}(\mathbf{x})$ \\ \hline
+    $\mathcal{B} \subseteq \mathcal{D}$ & Himpunan data latih yang diambil secara acak dari $\mathcal{D}$ (\f{minibatch}) \\ \hline
+    $ \nabla_{\theta} L_{\mathcal{B}}(\theta)$ & Rata-Rata Gradien dari fungsi \f{loss} $L(\mathbf{y}, f_\text{model}(\mathbf{x}))$ terhadap parameter $\bm{\theta}$ pada data latih $\mathcal{B}$ \\ \hline
+    $\beta_1, \beta_2, \epsilon, \eta$ & Parameter yang digunakan pada metode Adam \\ \hline
+    $\mathbf{m}$ & Nilai Momentum yang digunakan pada metode Adam \\ \hline
+    $\mathbf{v}$ & Nilai \f{running variance} yang digunakan pada metode Adam \\ \hline
+    $\bm{\theta}^{(t)}, \mathbf{m}^{(t)}, \mathbf{v}^{(t)}$ & Parameter, nilai Momentum, dan nilai \f{running variance} pada iterasi ke-$t$ \\ \hline
+    \multicolumn{2}{|c|}{\bo{BAB 3}} \\ \hline
+    $\mathbf{Q} \in \mathbb{R}^{m \times d_{\text{q}}}$ & Matriks \f{query} dari kumpulan vektor baris \f{query} $\{ \mathbf{q}_1, \mathbf{q}_2, \dots, \mathbf{q}_m \}$ \\ \hline
+    $\mathbf{K} \in \mathbb{R}^{n \times d_{\text{k}}}$ & Matriks \f{key} dari kumpulan vektor baris \f{key} $\{ \mathbf{k}_1, \mathbf{k}_2, \dots, \mathbf{k}_n \}$ \\ \hline
+    $\mathbf{V} \in \mathbb{R}^{n \times d_{v}}$ & Matriks \f{value} dari kumpulan vektor baris \f{value} $\{ \mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_n \}$ \\ \hline
+    $f_{\text{attn}}(\mathbf{q}_i, \mathbf{k}_j)$ & Nilai \f{attention} dari \f{query} $\mathbf{q}_i$ terhadap \f{key} $\mathbf{k}_j$, yang dihitung dengan fungsi $f_{\text{attn}}$ \\ \hline
+    $\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \mathbf{AV} \in \mathbb{R}^{m \times d_{v}}$ &  Mekanisme \f{soft attention} yang diterapkan pada kumpulan \f{query} $\mathbf{Q}$, kumpulan \f{key} $\mathbf{K}$, dan kumpulan \f{value} $\mathbf{V}$ \\ \hline
+    $\mathbf{A} = [\alpha_{ij}] \in \mathbb{R}^{m \times n} $ & Matriks bobot \f{attention} yang dihasilkan dari mekanisme \f{soft attention} \\ \hline
+    $\alpha_{ij}(\mathbf{q}_i, \mathbf{k}_j) = \text{Softmax}_j(\mathbf{\alpha}_i) = \frac{\exp(f_{attn}(\mathbf{q}_i, \mathbf{k}_j))}{\sum_{k=1}^{n} \exp(f_{attn}(\mathbf{q}_i, \mathbf{k}_k))} \in (0,1)$ &  bobot \f{attention} dari \f{query} $\mathbf{q}_i$ terhadap \f{key} $\mathbf{k}_j$ \\ \hline
+    $\mathcal{T} = \{t_1, t_2, \dots, t_{|\mathcal{T}|}\}$ &  Himpunan kata atau subkata (token) yang mungkin\\ \hline
+    $t = (t_{i_1}, t_{i_2}, \dots, t_{i_L})$&  Barisan token \f{input} yang menjadi \f{input} dari \f{self-attention} dengan $L$ adalah panjang dari barisan token \f{input} \\ \hline
+    $\mathbf{E} = \text{embed}(t) \in \mathbb{R}^{L \times d_{\text{token}}}$ &  Matriks dari vektor representasi token (non-kontekstual) dari barisan token $t$ \\ \hline
+    $\mathbf{PE} = \text{post}(t) \in \mathbb{R}^{L \times d_{\text{token}}}$  &  Matriks dari vektor representasi token posisi dari barisan token $t$ \\ \hline
+    $\mathbf{X} = \mathbf{E} + \mathbf{PE} \in \mathbb{R}^{L \times d_{\text{token}}}$ &  Matriks dari vektor representasi token \f{input} model \f{transformer} \\ \hline
+    $\mathbf{W}^q, \mathbf{W}^k, \mathbf{W}^v \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}}$ &  Matriks bobot (\f{learnable}) yang digunakan pada \f{self-ttention} \\ \hline
+    $\text{self-Attention}(\mathbf{X}) = \text{Attention}(\underbrace{\mathbf{XW}^q}_{\mathbf{Q}}, \underbrace{\mathbf{XW}^k}_{\mathbf{K}}, \underbrace{\mathbf{XW}^v}_{\mathbf{V}})$ & Mekanisme \f{self-attention} yang diterapkan pada matriks \f{input} $\mathbf{X}$ \\ \hline
+    $\text{MHSA}_h(\mathbf{X})$ & Mekanisme \f{multi-head self-attention}, melakukan \f{self-attention} sebanyak $h$ kali \\ \hline
+    $h$ &  Jumlah \f{head} pada \f{multi-head attention}\\ \hline
+    $\mathbf{W}_{i}^{q}, \mathbf{W}_{i}^{k}, \mathbf{W}_{i}^{v} \in \mathbb{R}^{d_{\text{token}} \times d_{\text{token}}/h}$ &  Matriks bobot (\f{learnable}) yang digunakan pada \f{self-ttention} ke-$i$ \\ \hline
+    $\text{FFN}(\mathbf{X})$ & Mekanisme \f{Position-wise Feed Forward Network} yang diterapkan pada matriks \f{input} $\mathbf{X}$ \\ \hline
+    $\text{LayerNorm}(\mathbf{X})$ & Mekanisme \f{Layer Normalization} yang diterapkan pada vektor $\mathbf{x}$ \\ \hline
+    $(\mathbf{h}_{\code{[CLS]}}, \mathbf{h}_1, \dots, \mathbf{h}_L, \mathbf{h}_{\code{[SEP]}})$ & Representasi vektor kontekstual dari barisan token $t$ dengan model BERT \\ \hline
+    $\text{Score}_{\text{DOT}}(q, d) = \mathbf{h}_{\code{[CLS]}}^q \cdot \mathbf{h}_{\code{[CLS]}}^d$ & Skor relevansi dari kueri $q$ terhadap dokumen $d$ dengan skema fungsi skoring DOT \\ \hline
+    $\text{Score}_{\text{CAT}}(q, d) = \sigma\left(  \mathbf{h}_{\code{[CLS]}} \mathbf{W}^{\text{CLS}}+\mathbf{b}^{\code{CLS}} \right)$ & Skor relevansi dari kueri $q$ terhadap dokumen $d$ dengan skema fungsi skoring CAT \\ \hline
+\end{longtable*}
+
+    
